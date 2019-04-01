@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace TransIT.Models.Entities
+{
+    public partial class Issue
+    {
+        public Issue()
+        {
+            Bill = new HashSet<Bill>();
+            IssueLog = new HashSet<IssueLog>();
+        }
+
+        public int Id { get; set; }
+        public string Summary { get; set; }
+        public int? Warranty { get; set; }
+        public DateTime? Deadline { get; set; }
+        public int StateId { get; set; }
+        public int AssignedTo { get; set; }
+        public int VehicleId { get; set; }
+        public int MalfunctionId { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public DateTime? ModDate { get; set; }
+        public int CreateId { get; set; }
+        public int ModId { get; set; }
+
+        public virtual User AssignedToNavigation { get; set; }
+        public virtual User Create { get; set; }
+        public virtual Malfunction Malfunction { get; set; }
+        public virtual User Mod { get; set; }
+        public virtual State State { get; set; }
+        public virtual Vehicle Vehicle { get; set; }
+        public virtual ICollection<Bill> Bill { get; set; }
+        public virtual ICollection<IssueLog> IssueLog { get; set; }
+    }
+}
