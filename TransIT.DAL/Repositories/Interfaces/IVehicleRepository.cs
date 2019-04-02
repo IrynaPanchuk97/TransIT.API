@@ -4,5 +4,6 @@ namespace TransIT.DAL.Repositories.Interfaces
 {
     interface IVehicleRepository : IBaseRepository<Vehicle>
     {
+
     }
 }
