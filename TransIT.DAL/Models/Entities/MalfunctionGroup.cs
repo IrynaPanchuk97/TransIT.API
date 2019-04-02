@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TransIT.DAL.Models
+namespace TransIT.DAL.Models.Entities
 {
     public partial class MalfunctionGroup
     {
@@ -14,8 +14,8 @@ namespace TransIT.DAL.Models
         public string Name { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
-        public int CreateId { get; set; }
-        public int ModId { get; set; }
+        public int? CreateId { get; set; }
+        public int? ModId { get; set; }
 
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroup { get; set; }
     }

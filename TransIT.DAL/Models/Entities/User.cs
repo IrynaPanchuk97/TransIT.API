@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TransIT.DAL.Models
+namespace TransIT.DAL.Models.Entities
 {
     public partial class User
     {
@@ -29,6 +29,8 @@ namespace TransIT.DAL.Models
             RoleMod = new HashSet<Role>();
             SupplierCreate = new HashSet<Supplier>();
             SupplierMod = new HashSet<Supplier>();
+            TokenCreate = new HashSet<Token>();
+            TokenMod = new HashSet<Token>();
             VehicleCreate = new HashSet<Vehicle>();
             VehicleMod = new HashSet<Vehicle>();
             VehicleTypeCreate = new HashSet<VehicleType>();
@@ -36,13 +38,17 @@ namespace TransIT.DAL.Models
         }
 
         public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
-        public int CreateId { get; set; }
-        public int ModId { get; set; }
+        public int? CreateId { get; set; }
+        public int? ModId { get; set; }
 
         public virtual User Create { get; set; }
         public virtual User Mod { get; set; }
@@ -69,6 +75,8 @@ namespace TransIT.DAL.Models
         public virtual ICollection<Role> RoleMod { get; set; }
         public virtual ICollection<Supplier> SupplierCreate { get; set; }
         public virtual ICollection<Supplier> SupplierMod { get; set; }
+        public virtual ICollection<Token> TokenCreate { get; set; }
+        public virtual ICollection<Token> TokenMod { get; set; }
         public virtual ICollection<Vehicle> VehicleCreate { get; set; }
         public virtual ICollection<Vehicle> VehicleMod { get; set; }
         public virtual ICollection<VehicleType> VehicleTypeCreate { get; set; }

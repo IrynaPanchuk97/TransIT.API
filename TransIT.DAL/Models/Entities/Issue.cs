@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TransIT.DAL.Models
+namespace TransIT.DAL.Models.Entities
 {
     public partial class Issue
     {
@@ -15,14 +15,14 @@ namespace TransIT.DAL.Models
         public string Summary { get; set; }
         public int? Warranty { get; set; }
         public DateTime? Deadline { get; set; }
-        public int StateId { get; set; }
-        public int AssignedTo { get; set; }
-        public int VehicleId { get; set; }
-        public int MalfunctionId { get; set; }
+        public int? StateId { get; set; }
+        public int? AssignedTo { get; set; }
+        public int? VehicleId { get; set; }
+        public int? MalfunctionId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
-        public int CreateId { get; set; }
-        public int ModId { get; set; }
+        public int? CreateId { get; set; }
+        public int? ModId { get; set; }
 
         public virtual User AssignedToNavigation { get; set; }
         public virtual User Create { get; set; }
