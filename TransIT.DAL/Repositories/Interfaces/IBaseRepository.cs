@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace TransIT.DAL.Repositories.Interfaces
 {
     interface IBaseRepository<TEntity> where TEntity : class
     {
-        TEntity GetById(int id);
-        IEnumerable<TEntity> GetAll();
-        EntityEntry<TEntity> Add(TEntity entity);
+        Task<TEntity> GetByIdAsync(int id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<EntityEntry<TEntity>> AddAsync(TEntity entity);
         EntityEntry<TEntity> Remove(TEntity entity);
     }
 }

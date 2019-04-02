@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TransIT.DAL.Repositories.Interfaces
 {
-    interface IPerformancerRepository
+    interface IPerformancerRepository 
     {
     }
 }
