@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TransIT.Models.Entities
+namespace TransIT.DAL.Models
 {
     public partial class State
     {

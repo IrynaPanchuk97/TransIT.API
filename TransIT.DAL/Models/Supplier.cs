@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TransIT.Models.Entities
+namespace TransIT.DAL.Models
 {
-    public partial class Malfunction
+    public partial class Supplier
     {
-        public Malfunction()
+        public Supplier()
         {
-            Issue = new HashSet<Issue>();
+            IssueLog = new HashSet<IssueLog>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public int MalfunctionSubgroupId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
         public int CreateId { get; set; }
@@ -20,6 +19,6 @@ namespace TransIT.Models.Entities
 
         public virtual User Create { get; set; }
         public virtual User Mod { get; set; }
-        public virtual ICollection<Issue> Issue { get; set; }
+        public virtual ICollection<IssueLog> IssueLog { get; set; }
     }
 }
