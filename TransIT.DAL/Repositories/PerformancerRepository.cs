@@ -6,5 +6,6 @@ namespace TransIT.DAL.Repositories
 {
     class PerformancerRepository
     {
+
     }
 }
