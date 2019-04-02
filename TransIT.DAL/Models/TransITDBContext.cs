@@ -1,15 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace TransIT.Models
+namespace TransIT.DAL.Models
 {
-    using Entities;
-    
-    public partial class TransitDbContext : DbContext
+    public partial class TransITDBContext : DbContext
     {
-        public TransitDbContext() {}
+        public TransITDBContext()
+        {
+        }
 
-        public TransitDbContext(DbContextOptions<TransitDbContext> options)
-            : base(options) {}
+        public TransITDBContext(DbContextOptions<TransITDBContext> options)
+            : base(options)
+        {
+        }
 
         public virtual DbSet<ActionType> ActionType { get; set; }
         public virtual DbSet<Bill> Bill { get; set; }
@@ -28,7 +32,11 @@ namespace TransIT.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TransITDB;Trusted_Connection=True;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -40,7 +48,7 @@ namespace TransIT.Models
                 entity.ToTable("ACTION_TYPE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__ACTION_T__D9C1FA00E46D94FC")
+                    .HasName("UQ__ACTION_T__D9C1FA00A91243E9")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -432,7 +440,7 @@ namespace TransIT.Models
                 entity.ToTable("ROLE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__ROLE__D9C1FA000834BCC7")
+                    .HasName("UQ__ROLE__D9C1FA005C4BDA82")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -472,7 +480,7 @@ namespace TransIT.Models
                 entity.ToTable("STATE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__STATE__D9C1FA0083BC3805")
+                    .HasName("UQ__STATE__D9C1FA003F189068")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -487,7 +495,7 @@ namespace TransIT.Models
                 entity.ToTable("SUPPLIER");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__SUPPLIER__D9C1FA001573F600")
+                    .HasName("UQ__SUPPLIER__D9C1FA00BB2E795D")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -635,7 +643,7 @@ namespace TransIT.Models
                 entity.ToTable("VEHICLE_TYPE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__VEHICLE___D9C1FA0014400E4B")
+                    .HasName("UQ__VEHICLE___D9C1FA007B66BE06")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");

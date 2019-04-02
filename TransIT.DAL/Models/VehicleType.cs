@@ -1,27 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TransIT.Models.Entities
+namespace TransIT.DAL.Models
 {
-    public partial class Document
+    public partial class VehicleType
     {
-        public Document()
+        public VehicleType()
         {
-            Bill = new HashSet<Bill>();
+            Vehicle = new HashSet<Vehicle>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public int IssueLogId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
         public int CreateId { get; set; }
         public int ModId { get; set; }
 
         public virtual User Create { get; set; }
-        public virtual IssueLog IssueLog { get; set; }
         public virtual User Mod { get; set; }
-        public virtual ICollection<Bill> Bill { get; set; }
+        public virtual ICollection<Vehicle> Vehicle { get; set; }
     }
 }
