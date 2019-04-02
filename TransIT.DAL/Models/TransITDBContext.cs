@@ -1,19 +1,15 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace TransIT.DAL.Models
 {
+    using Entities;
+    
     public partial class TransITDBContext : DbContext
     {
-        public TransITDBContext()
-        {
-        }
+        public TransITDBContext() {}
 
         public TransITDBContext(DbContextOptions<TransITDBContext> options)
-            : base(options)
-        {
-        }
+            : base(options) {}
 
         public virtual DbSet<ActionType> ActionType { get; set; }
         public virtual DbSet<Bill> Bill { get; set; }
@@ -26,18 +22,12 @@ namespace TransIT.DAL.Models
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<State> State { get; set; }
         public virtual DbSet<Supplier> Supplier { get; set; }
+        public virtual DbSet<Token> Token { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Vehicle> Vehicle { get; set; }
         public virtual DbSet<VehicleType> VehicleType { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=TransITDB;Trusted_Connection=True;");
-            }
-        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,7 +38,7 @@ namespace TransIT.DAL.Models
                 entity.ToTable("ACTION_TYPE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__ACTION_T__D9C1FA00A91243E9")
+                    .HasName("UQ__ACTION_T__D9C1FA007CC2D4F9")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -73,13 +63,11 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.ActionTypeCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_ACTION_TYPE_USER");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.ActionTypeMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_ACTION_TYPE_USER");
             });
 
@@ -112,25 +100,21 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.BillCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_BILL_USER");
 
                 entity.HasOne(d => d.Document)
                     .WithMany(p => p.Bill)
                     .HasForeignKey(d => d.DocumentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BILL_DOCUMENT");
 
                 entity.HasOne(d => d.Issue)
                     .WithMany(p => p.Bill)
                     .HasForeignKey(d => d.IssueId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_BILL_ISSUE");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.BillMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_BILL_USER");
             });
 
@@ -163,19 +147,16 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.DocumentCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_DOCUMENT_USER");
 
                 entity.HasOne(d => d.IssueLog)
                     .WithMany(p => p.Document)
                     .HasForeignKey(d => d.IssueLogId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_DOCUMENT_ISSUE_LOG");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.DocumentMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_DOCUMENT_USER");
             });
 
@@ -208,7 +189,6 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.StateId).HasColumnName("STATE_ID");
 
                 entity.Property(e => e.Summary)
-                    .IsRequired()
                     .HasColumnName("SUMMARY")
                     .HasColumnType("text");
 
@@ -218,37 +198,31 @@ namespace TransIT.DAL.Models
 
                 entity.HasOne(d => d.AssignedToNavigation)
                     .WithMany(p => p.IssueAssignedToNavigation)
-                    .HasForeignKey(d => d.AssignedTo)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
+                    .HasForeignKey(d => d.AssignedTo);
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.IssueCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_ISSUE_USER");
 
                 entity.HasOne(d => d.Malfunction)
                     .WithMany(p => p.Issue)
                     .HasForeignKey(d => d.MalfunctionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_MALFUNCTION");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.IssueMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_ISSUE_USER");
 
                 entity.HasOne(d => d.State)
                     .WithMany(p => p.Issue)
                     .HasForeignKey(d => d.StateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_STATE");
 
                 entity.HasOne(d => d.Vehicle)
                     .WithMany(p => p.Issue)
                     .HasForeignKey(d => d.VehicleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_VEHICLE");
             });
 
@@ -267,7 +241,6 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.Description)
-                    .IsRequired()
                     .HasColumnName("DESCRIPTION")
                     .HasColumnType("text");
 
@@ -292,43 +265,36 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.ActionType)
                     .WithMany(p => p.IssueLog)
                     .HasForeignKey(d => d.ActionTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_LOG_ACTION_TYPE");
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.IssueLogCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_ISSUE_LOG_USER");
 
                 entity.HasOne(d => d.Issue)
                     .WithMany(p => p.IssueLog)
                     .HasForeignKey(d => d.IssueId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_LOG_ISSUE");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.IssueLogMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_ISSUE_LOG_USER");
 
                 entity.HasOne(d => d.NewState)
                     .WithMany(p => p.IssueLogNewState)
                     .HasForeignKey(d => d.NewStateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_NEW_ISSUE_LOG_STATE");
 
                 entity.HasOne(d => d.OldState)
                     .WithMany(p => p.IssueLogOldState)
                     .HasForeignKey(d => d.OldStateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OLD_ISSUE_LOG_STATE");
 
                 entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.IssueLog)
                     .HasForeignKey(d => d.SupplierId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_LOG_SUPPLIER");
             });
 
@@ -359,13 +325,11 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.MalfunctionCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_MALFUNCTION_ROLE");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.MalfunctionMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_MALFUNCTION_USER");
             });
 
@@ -419,19 +383,16 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.MalfunctionSubgroupCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_MALFUNCTION_SUBGROUP_USER");
 
                 entity.HasOne(d => d.MalfunctionGroup)
                     .WithMany(p => p.MalfunctionSubgroup)
                     .HasForeignKey(d => d.MalfunctionGroupId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MALFUNCTION_SUBGROUP_MALFUNCTION_GROUP");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.MalfunctionSubgroupMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_MALFUNCTION_SUBGROUP_USER");
             });
 
@@ -440,7 +401,7 @@ namespace TransIT.DAL.Models
                 entity.ToTable("ROLE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__ROLE__D9C1FA005C4BDA82")
+                    .HasName("UQ__ROLE__D9C1FA00F6590274")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -465,13 +426,11 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.RoleCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_ROLE_USER");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.RoleMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_ROLE_USER");
             });
 
@@ -480,7 +439,7 @@ namespace TransIT.DAL.Models
                 entity.ToTable("STATE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__STATE__D9C1FA003F189068")
+                    .HasName("UQ__STATE__D9C1FA0037E84AB3")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -495,7 +454,7 @@ namespace TransIT.DAL.Models
                 entity.ToTable("SUPPLIER");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__SUPPLIER__D9C1FA00BB2E795D")
+                    .HasName("UQ__SUPPLIER__D9C1FA00BAD8B9D0")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -520,14 +479,43 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.SupplierCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_SUPPLIER_USER");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.SupplierMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_SUPPLIER_USER");
+            });
+
+            modelBuilder.Entity<Token>(entity =>
+            {
+                entity.ToTable("TOKEN");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
+                entity.Property(e => e.ModDate)
+                    .HasColumnName("MOD_DATE")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.ModId).HasColumnName("MOD_ID");
+
+                entity.Property(e => e.RefreshToken).HasColumnName("REFRESH_TOKEN");
+
+                entity.HasOne(d => d.Create)
+                    .WithMany(p => p.TokenCreate)
+                    .HasForeignKey(d => d.CreateId)
+                    .HasConstraintName("FK_CREATE_TOKEN_USER");
+
+                entity.HasOne(d => d.Mod)
+                    .WithMany(p => p.TokenMod)
+                    .HasForeignKey(d => d.ModId)
+                    .HasConstraintName("FK_MOD_TOKEN_USER");
             });
 
             modelBuilder.Entity<User>(entity =>
@@ -541,6 +529,18 @@ namespace TransIT.DAL.Models
                     .HasColumnType("date");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
+                entity.Property(e => e.Email)
+                    .HasColumnName("EMAIL")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FirstName)
+                    .HasColumnName("FIRST_NAME")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.LastName)
+                    .HasColumnName("LAST_NAME")
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Login)
                     .IsRequired()
@@ -558,24 +558,25 @@ namespace TransIT.DAL.Models
                     .HasColumnName("PASSWORD")
                     .HasMaxLength(100);
 
+                entity.Property(e => e.PhoneNumber)
+                    .HasColumnName("PHONE_NUMBER")
+                    .HasMaxLength(15);
+
                 entity.Property(e => e.RoleId).HasColumnName("ROLE_ID");
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.InverseCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CREATE_USER_ROLE");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.InverseMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_USER_ROLE");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.InverseRole)
                     .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_USER_ROLE");
             });
 
@@ -622,19 +623,16 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.VehicleCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_VEHICLE_USER");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.VehicleMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_VEHICLE_ROLE");
 
                 entity.HasOne(d => d.VehicleType)
                     .WithMany(p => p.Vehicle)
                     .HasForeignKey(d => d.VehicleTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_VEHICLE_VEHICLE_TYPE");
             });
 
@@ -643,7 +641,7 @@ namespace TransIT.DAL.Models
                 entity.ToTable("VEHICLE_TYPE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__VEHICLE___D9C1FA007B66BE06")
+                    .HasName("UQ__VEHICLE___D9C1FA00833649CC")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -668,13 +666,11 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.VehicleTypeCreate)
                     .HasForeignKey(d => d.CreateId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_VEHICLE_TYPE_USER");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.VehicleTypeMod)
                     .HasForeignKey(d => d.ModId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MOD_VEHICLE_TYPE_ROLE");
             });
         }
