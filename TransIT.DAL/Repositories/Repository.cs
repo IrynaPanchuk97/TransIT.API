@@ -35,5 +35,10 @@ namespace TransIT.DAL.Repositories
             return Context.Set<TEntity>().Remove(entity);
         }
 
+        public EntityEntry<TEntity> Update(TEntity entity)
+        {
+            return Context.Set<TEntity>().Update(entity);
+        }
+
     }
 }

@@ -10,5 +10,6 @@ namespace TransIT.DAL.Repositories.Interfaces
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<EntityEntry<TEntity>> AddAsync(TEntity entity);
         EntityEntry<TEntity> Remove(TEntity entity);
+        EntityEntry<TEntity> Update(TEntity entity);
     }
 }
