@@ -12,8 +12,8 @@ namespace TransIT.DAL.Models.DTOs
         public SupplierDTO SupplierId { get; set; }
         public ActionTypeDTO ActionTypeId { get; set; }
         public IssueDTO IssueId { get; set; }
-        public int? CreateId { get; set; }
-        public int? ModId { get; set; }
+        public UserDTO CreateId { get; set; }
+        public UserDTO ModId { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
     }
