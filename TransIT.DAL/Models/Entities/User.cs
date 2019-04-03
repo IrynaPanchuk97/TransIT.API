@@ -70,9 +70,9 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<IssueLog> IssueLogMod { get; set; }
         public virtual ICollection<Issue> IssueMod { get; set; }
         public virtual ICollection<Malfunction> MalfunctionCreate { get; set; }
+        public virtual ICollection<Malfunction> MalfunctionMod { get; set; }
         public virtual ICollection<MalfunctionGroup> MalfunctionGroupCreate { get; set; }
         public virtual ICollection<MalfunctionGroup> MalfunctionGroupMod { get; set; }
-        public virtual ICollection<Malfunction> MalfunctionMod { get; set; }
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroupCreate { get; set; }
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroupMod { get; set; }
         public virtual ICollection<Role> RoleCreate { get; set; }
