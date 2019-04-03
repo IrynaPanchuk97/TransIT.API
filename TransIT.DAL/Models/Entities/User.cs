@@ -22,6 +22,8 @@ namespace TransIT.DAL.Models.Entities
             IssueLogMod = new HashSet<IssueLog>();
             IssueMod = new HashSet<Issue>();
             MalfunctionCreate = new HashSet<Malfunction>();
+            MalfunctionGroupCreate = new HashSet<MalfunctionGroup>();
+            MalfunctionGroupMod = new HashSet<MalfunctionGroup>();
             MalfunctionMod = new HashSet<Malfunction>();
             MalfunctionSubgroupCreate = new HashSet<MalfunctionSubgroup>();
             MalfunctionSubgroupMod = new HashSet<MalfunctionSubgroup>();
@@ -69,6 +71,8 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<Issue> IssueMod { get; set; }
         public virtual ICollection<Malfunction> MalfunctionCreate { get; set; }
         public virtual ICollection<Malfunction> MalfunctionMod { get; set; }
+        public virtual ICollection<MalfunctionGroup> MalfunctionGroupCreate { get; set; }
+        public virtual ICollection<MalfunctionGroup> MalfunctionGroupMod { get; set; }
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroupCreate { get; set; }
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroupMod { get; set; }
         public virtual ICollection<Role> RoleCreate { get; set; }
