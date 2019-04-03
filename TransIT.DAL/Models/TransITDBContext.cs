@@ -38,20 +38,21 @@ namespace TransIT.DAL.Models
                 entity.ToTable("ACTION_TYPE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__ACTION_T__D9C1FA007CC2D4F9")
+                    .HasName("UQ__ACTION_T__D9C1FA00F37D4123")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -79,7 +80,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -89,7 +91,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -126,7 +128,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -136,7 +139,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -170,19 +173,20 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.Deadline)
                     .HasColumnName("DEADLINE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.MalfunctionId).HasColumnName("MALFUNCTION_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -236,7 +240,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -252,7 +257,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -306,7 +311,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -314,7 +320,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -341,19 +347,30 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("NAME");
+
+                entity.HasOne(d => d.Create)
+                    .WithMany(p => p.MalfunctionGroupCreate)
+                    .HasForeignKey(d => d.CreateId)
+                    .HasConstraintName("FK__MALFUNCTI__CREAT__5535A963");
+
+                entity.HasOne(d => d.Mod)
+                    .WithMany(p => p.MalfunctionGroupMod)
+                    .HasForeignKey(d => d.ModId)
+                    .HasConstraintName("FK__MALFUNCTI__MOD_I__5629CD9C");
             });
 
             modelBuilder.Entity<MalfunctionSubgroup>(entity =>
@@ -364,7 +381,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -372,7 +390,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -401,20 +419,21 @@ namespace TransIT.DAL.Models
                 entity.ToTable("ROLE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__ROLE__D9C1FA00F6590274")
+                    .HasName("UQ__ROLE__D9C1FA004BEAF6E1")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -439,7 +458,7 @@ namespace TransIT.DAL.Models
                 entity.ToTable("STATE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__STATE__D9C1FA0037E84AB3")
+                    .HasName("UQ__STATE__D9C1FA009B81C38C")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -454,20 +473,21 @@ namespace TransIT.DAL.Models
                 entity.ToTable("SUPPLIER");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__SUPPLIER__D9C1FA00BAD8B9D0")
+                    .HasName("UQ__SUPPLIER__D9C1FA00A2AD8F25")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -495,13 +515,14 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -526,7 +547,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -549,7 +571,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -592,7 +614,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
@@ -602,7 +625,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
@@ -641,20 +664,21 @@ namespace TransIT.DAL.Models
                 entity.ToTable("VEHICLE_TYPE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__VEHICLE___D9C1FA00833649CC")
+                    .HasName("UQ__VEHICLE___D9C1FA0070E7B1BA")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
-                    .HasColumnType("date");
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
