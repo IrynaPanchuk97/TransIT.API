@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TransIT.DAL.Models;
 
-namespace TransIT.DAL.Repositories.Interfaces
+namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
     interface IMalfunctionRepository 
     {

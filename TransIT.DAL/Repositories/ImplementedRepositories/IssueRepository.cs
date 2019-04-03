@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TransIT.DAL.Repositories
+namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class MalfunctionRepository
+    class IssueRepository
     {
     }
 }

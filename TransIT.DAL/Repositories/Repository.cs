@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TransIT.DAL.Repositories.Interfaces;
+using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories
 {
