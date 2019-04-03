@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace TransIT.DAL.Repositories.Interfaces
+namespace TransIT.DAL.Repositories
 {
     interface IBaseRepository<TEntity> where TEntity : class
     {

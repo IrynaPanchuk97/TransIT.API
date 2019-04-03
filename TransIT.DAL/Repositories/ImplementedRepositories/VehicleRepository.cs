@@ -1,7 +1,7 @@
 ﻿using TransIT.DAL.Models;
-using TransIT.DAL.Repositories.Interfaces;
+using TransIT.DAL.Repositories.InterfacesRepositories;
 
-namespace TransIT.DAL.Repositories
+namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
     class VehicleRepository : Repository<Vehicle>, IVehicleRepository
     {
