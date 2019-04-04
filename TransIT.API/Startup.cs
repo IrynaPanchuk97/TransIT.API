@@ -22,21 +22,21 @@ namespace TransIT.API
         {
 
 
-            //services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
-            //services.AddScoped<IBillRepository, BillRepository>();
-            //services.AddScoped<IDocumentRepository, DocumentRepository>();
-            //services.AddScoped<IIssueLogRepository, IssueLogRepository>();
-            //services.AddScoped<IIssueRepository, IIssueRepository>();
-            //services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
-            //services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
-            //services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
-            //services.AddScoped<IRoleRepository, RoleRepository>();
-            //services.AddScoped<IStateRepository, StateRepository>();
-            //services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<ISupplierRepository, SupplierRepository>();
-            //services.AddScoped<IVehicleRepository, VehicleRepository>();
-            //services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
-      
+            services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IIssueLogRepository, IssueLogRepository>();
+            services.AddScoped<IIssueRepository, IIssueRepository>();
+            services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
+            services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
+            services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

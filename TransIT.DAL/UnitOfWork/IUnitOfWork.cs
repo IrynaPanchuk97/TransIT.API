@@ -5,7 +5,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.UnitOfWork
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         int Save();
     }
