@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using TransIT.DAL.Repositories;
-using TransIT.DAL.UnitOfWork;
 using TransIT.DAL.Repositories.ImplementedRepositories;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 
@@ -29,6 +20,23 @@ namespace TransIT.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            //services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
+            //services.AddScoped<IBillRepository, BillRepository>();
+            //services.AddScoped<IDocumentRepository, DocumentRepository>();
+            //services.AddScoped<IIssueLogRepository, IssueLogRepository>();
+            //services.AddScoped<IIssueRepository, IIssueRepository>();
+            //services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
+            //services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
+            //services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
+            //services.AddScoped<IRoleRepository, RoleRepository>();
+            //services.AddScoped<IStateRepository, StateRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<ISupplierRepository, SupplierRepository>();
+            //services.AddScoped<IVehicleRepository, VehicleRepository>();
+            //services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
+      
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

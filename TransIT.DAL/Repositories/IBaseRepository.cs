@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TransIT.DAL.Repositories
 {
-    interface IBaseRepository<TEntity> where TEntity : class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
         Task<TEntity> GetByIdAsync(int id);
         Task<IEnumerable<TEntity>> GetAllAsync();

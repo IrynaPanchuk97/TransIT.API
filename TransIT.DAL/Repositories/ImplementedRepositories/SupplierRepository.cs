@@ -6,7 +6,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class SupplierRepository: BaseRepository<Supplier>, ISupplierRepository
+    public class SupplierRepository: BaseRepository<Supplier>, ISupplierRepository
     {
         public SupplierRepository(DBContext context)
                : base(context)

@@ -5,7 +5,7 @@ using TransIT.DAL.Models;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IStateRepository : IBaseRepository<State>
+    public interface IStateRepository : IBaseRepository<State>
     {
     }
 }

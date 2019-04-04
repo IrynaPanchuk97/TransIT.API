@@ -6,7 +6,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class MalfunctionGroupRepository: BaseRepository<MalfunctionGroup>, IMalfunctionGroupRepository
+    public class MalfunctionGroupRepository : BaseRepository<MalfunctionGroup>, IMalfunctionGroupRepository
     {
         public MalfunctionGroupRepository(DBContext context)
                : base(context)

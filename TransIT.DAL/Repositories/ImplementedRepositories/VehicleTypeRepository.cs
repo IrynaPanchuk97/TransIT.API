@@ -7,7 +7,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class VehicleTypeRepository : BaseRepository<VehicleType>, IVehicleTypeRepository
+    public class VehicleTypeRepository : BaseRepository<VehicleType>, IVehicleTypeRepository
     {
         public VehicleTypeRepository(DBContext context)
             : base(context)

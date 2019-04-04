@@ -6,7 +6,7 @@ using TransIT.DAL.Models;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IMalfunctionRepository : IBaseRepository<Malfunction>
+    public interface IMalfunctionRepository : IBaseRepository<Malfunction>
     {
     }
 }

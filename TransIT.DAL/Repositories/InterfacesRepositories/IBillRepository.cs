@@ -5,7 +5,7 @@ using TransIT.DAL.Models;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IBillRepository : IBaseRepository<Bill>
+    public interface IBillRepository : IBaseRepository<Bill>
     {
     }
 }

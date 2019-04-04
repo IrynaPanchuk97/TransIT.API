@@ -5,7 +5,7 @@ using TransIT.DAL.Models;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IIssueLogRepository : IBaseRepository<IssueLog>
+    public interface IIssueLogRepository : IBaseRepository<IssueLog>
     {
     }
 }

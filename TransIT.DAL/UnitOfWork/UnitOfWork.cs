@@ -8,7 +8,6 @@ namespace TransIT.DAL.UnitOfWork
     class UnitOfWork : IUnitOfWork
     {
         private readonly DBContext _context;
-        public IVehicleRepository Vehicles { get; private set; }
         private readonly IVehicleRepository vehicleRepository;
 
 

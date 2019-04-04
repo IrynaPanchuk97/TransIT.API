@@ -6,7 +6,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class IssueLogRepository : BaseRepository<IssueLog>, IIssueLogRepository
+    public class IssueLogRepository : BaseRepository<IssueLog>, IIssueLogRepository
     {
         public IssueLogRepository(DBContext context)
                : base(context)

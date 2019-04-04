@@ -5,7 +5,7 @@ using TransIT.DAL.Models;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IMalfunctionSybgroupRepository : IBaseRepository<MalfunctionSubgroup>
+    public interface IMalfunctionSybgroupRepository : IBaseRepository<MalfunctionSubgroup>
     {
     }
 }

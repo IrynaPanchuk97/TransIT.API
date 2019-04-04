@@ -5,7 +5,7 @@ using TransIT.DAL.Models;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IVehicleTypeRepository : IBaseRepository<VehicleType>
+    public interface IVehicleTypeRepository : IBaseRepository<VehicleType>
     {
     }
 }

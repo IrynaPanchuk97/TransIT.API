@@ -6,7 +6,7 @@ using TransIT.DAL.Repositories.ImplementedRepositories;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface IActionTypeRepository: IBaseRepository<ActionType>
+    public interface IActionTypeRepository: IBaseRepository<ActionType>
     {
     }
 }

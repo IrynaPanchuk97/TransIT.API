@@ -6,7 +6,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class DocumentRepository: BaseRepository<Document>, IDocumentRepository
+    public class DocumentRepository : BaseRepository<Document>, IDocumentRepository
     {
         public DocumentRepository(DBContext context)
                : base(context)

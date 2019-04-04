@@ -6,12 +6,12 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class MalfunctionRepository: BaseRepository<Malfunction>, IMalfunctionRepository
+    public class MalfunctionRepository : BaseRepository<Malfunction>, IMalfunctionRepository
     {
         public MalfunctionRepository(DBContext context)
                : base(context)
         {
-            _ = context.Set<Vehicle>();
+            _ = context.Set<Malfunction>();
         }
     }
 }
