@@ -6,8 +6,8 @@ namespace TransIT.DAL.Models.DTOs
     {
         public int Id { get; set; }
         public decimal? Sum { get; set; }
-        public int? DocumentId { get; set; }
-        public int? IssueId { get; set; }
+        public DocumentDTO Document { get; set; }
+        public IssueDTO Issue { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
     }

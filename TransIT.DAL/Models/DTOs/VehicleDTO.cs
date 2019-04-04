@@ -6,7 +6,7 @@ namespace TransIT.DAL.Models.DTOs
     public class VehicleDTO
     {
         public int Id { get; set; }
-        public VehicleTypeDTO VehicleTypeId { get; set; }
+        public VehicleTypeDTO VehicleType { get; set; }
         public string Vincode { get; set; }
         public string InventoryId { get; set; }
         public string RegNum { get; set; }

@@ -8,10 +8,10 @@ namespace TransIT.DAL.Models.DTOs
         public string Summary { get; set; }
         public int? Warranty { get; set; }
         public DateTime? Deadline { get; set; }
-        public StateDTO StateId { get; set; }
-        public int? AssignedTo { get; set; }
-        public VehicleDTO VehicleId { get; set; }
-        public MalfunctionDTO MalfunctionId { get; set; }
+        public StateDTO State { get; set; }
+        public UserDTO AssignedTo { get; set; }
+        public VehicleDTO Vehicle { get; set; }
+        public MalfunctionDTO Malfunction { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
     }
