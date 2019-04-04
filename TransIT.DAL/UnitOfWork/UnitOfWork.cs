@@ -23,6 +23,7 @@ namespace TransIT.DAL.UnitOfWork
         private readonly ISupplierRepository _supplierRepository;
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IVehicleTypeRepository _vehicleTypeRepository;
+        private readonly ITokenRepository _tokenRepository;
 
 
         public UnitOfWork(DbContext context,
@@ -39,7 +40,8 @@ namespace TransIT.DAL.UnitOfWork
             SupplierRepository supplierRepository,
             UserRepository userRepository,
             VehicleRepository vehicleRepository,
-            VehicleTypeRepository vehicleTypeRepository)
+            VehicleTypeRepository vehicleTypeRepository,
+            TokenRepository tokenRepository)
         {
             _context = context;
             _actionTypeRepository = actionTypeRepository;
@@ -56,6 +58,7 @@ namespace TransIT.DAL.UnitOfWork
             _supplierRepository = supplierRepository;
             _vehicleRepository = vehicleRepository;
             _vehicleTypeRepository = vehicleTypeRepository;
+            _tokenRepository = tokenRepository;
         }
 
         public async Task<int> Save()
