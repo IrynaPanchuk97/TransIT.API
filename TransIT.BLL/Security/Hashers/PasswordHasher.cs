@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
+[assembly: InternalsVisibleTo("TransIT.BLL.Tests")]
 namespace TransIT.BLL.Security.Hashers
 {
     internal class PasswordHasher : IPasswordHasher
