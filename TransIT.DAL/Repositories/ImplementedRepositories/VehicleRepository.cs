@@ -3,12 +3,12 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories.ImplementedRepositories
 {
-    class VehicleRepository : Repository<Vehicle>, IVehicleRepository
+    class VehicleRepository : BaseRepository<Vehicle>, IVehicleRepository
     {
-        public VehicleRepository(TransITDBContext context)
+        public VehicleRepository(DBContext context)
             :base(context)
         {
-
+            _ = context.Set<Vehicle>();
         }
     }
 }

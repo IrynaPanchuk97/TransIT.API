@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace TransIT.DAL.Models
 {
-    public partial class TransITDBContext : DbContext
+    public partial class DBContext : DbContext
     {
-        public TransITDBContext()
+        public DBContext()
         {
         }
 
-        public TransITDBContext(DbContextOptions<TransITDBContext> options)
+        public DBContext(DbContextOptions<DBContext> options)
             : base(options)
         {
         }

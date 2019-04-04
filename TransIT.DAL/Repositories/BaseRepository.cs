@@ -7,11 +7,11 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.Repositories
 {
-    class Repository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+    class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext Context;
 
-        public Repository(DbContext context)
+        public BaseRepository(DbContext context)
         {
             Context = context;
         }

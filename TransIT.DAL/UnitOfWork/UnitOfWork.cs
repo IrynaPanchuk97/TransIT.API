@@ -1,21 +1,22 @@
 ﻿using TransIT.DAL.Models;
 using TransIT.DAL.Repositories;
-using TransIT.DAL.Repositories.Interfaces;
+using TransIT.DAL.Repositories.ImplementedRepositories;
+using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.UnitOfWork
 {
     class UnitOfWork : IUnitOfWork
     {
-        private readonly TransITDBContext _context;
+        private readonly DBContext _context;
+        public IVehicleRepository Vehicles { get; private set; }
+        private readonly IVehicleRepository vehicleRepository;
 
-        public UnitOfWork(TransITDBContext context)
+
+        public UnitOfWork(DBContext context, ActionTypeRepository actionTypeRepository, BillRepository billRepository, DocumentRepository documentRepository, IssueRepository issueRepository, IssueLogRepository issueLogRepository, MalfunctionRepository malfunctionRepository, MalfunctionGroupRepository malfunctionGroupRepository, MalfunctionSubgroupRepository malfunctionSubgroupRepository, RoleRepository roleRepository, StateRepository stateRepository, SupplierRepository supplierRepository, UserRepository userRepository, VehicleRepository vehicleRepository, VehicleTypeRepository vehicleTypeRepository)
         {
             _context = context;
-            Vehicles = new VehicleRepository(_context);
+            this.vehicleRepository = vehicleRepository;
         }
-
-        public IVehicleRepository Vehicles { get; private set; }
-
 
         public int Save()
         {

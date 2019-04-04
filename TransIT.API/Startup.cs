@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TransIT.DAL.Repositories;
+using TransIT.DAL.UnitOfWork;
+using TransIT.DAL.Repositories.ImplementedRepositories;
+using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.API
 {
