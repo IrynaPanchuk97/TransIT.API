@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TransIT.BLL</name>
+    </assembly>
+    <members>
+        <member name="T:TransIT.BLL.Security.Hashers.IPasswordHasher">
+            <summary>
+            Interface for classes capable of password hashing
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)">
+            <summary>
+            Hashes given password and returns the result.
+            </summary>
+            <param name="password">Password to be hashed</param>
+            <returns>Hash of the given password</returns>
+        </member>
+        <member name="M:TransIT.BLL.Security.Hashers.IPasswordHasher.CheckMatch(System.String,System.String)">
+            <summary>
+            Checks if the given password matches the hashed password.
+            </summary>
+            <param name="password">Given password to be matched</param>
+            <param name="hashedPassword">Hashed password to be matched</param>
+            <returns>True if passwords matched, else returns false</returns>
+        </member>
+        <member name="T:TransIT.BLL.Security.Hashers.PasswordHasher">
+            <summary>
+            Implementation of IPasswordHasher.
+            Class is internal for the assembly.
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Security.Hashers.PasswordHasher.HashPassword(System.String)">
+            <summary>
+            <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)"/>
+            </summary>
+            <note>This method will return different results for the same password</note>
+        </member>
+        <member name="M:TransIT.BLL.Security.Hashers.PasswordHasher.CheckMatch(System.String,System.String)">
+            <summary>
+            <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.CheckMatch(System.String,System.String)"/>
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Security.Hashers.PasswordHasher.GenerateSalt(System.Int32)">
+            <summary>
+            Generates salt for hashing algorithm
+            </summary>
+            <param name="length">Number of bytes in salt</param>
+            <returns>Byte array of generated salt</returns>
+        </member>
+    </members>
+</doc>
