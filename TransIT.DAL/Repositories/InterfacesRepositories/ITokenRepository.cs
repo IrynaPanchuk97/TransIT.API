@@ -2,7 +2,7 @@
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    interface ITokenRepository : IBaseRepository<Token>
+    public interface ITokenRepository : IBaseRepository<Token>
     {
     }
 }

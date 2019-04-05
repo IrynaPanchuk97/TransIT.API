@@ -9,21 +9,21 @@ namespace TransIT.DAL.UnitOfWork
     {
         private readonly DbContext _context;
 
-        private readonly IActionTypeRepository _actionTypeRepository;
-        private readonly IBillRepository _billRepository;
-        private readonly IDocumentRepository _documentRepository;
-        private readonly IIssueRepository _issueRepository;
-        private readonly IIssueLogRepository _issueLogRepository;
-        private readonly IMalfunctionRepository _malfunctionRepository;
-        private readonly IMalfunctionGroupRepository _malfunctionGroupRepository;
-        private readonly IMalfunctionSybgroupRepository _malfunctionSybgroupRepository;
-        private readonly IRoleRepository _roleRepository;
-        private readonly IUserRepository _userRepository;
-        private readonly IStateRepository _stateRepository;
-        private readonly ISupplierRepository _supplierRepository;
-        private readonly IVehicleRepository _vehicleRepository;
-        private readonly IVehicleTypeRepository _vehicleTypeRepository;
-        private readonly ITokenRepository _tokenRepository;
+        public  IActionTypeRepository ActionTypeRepository;
+        public  IBillRepository BillRepository;
+        public  IDocumentRepository DocumentRepository;
+        public  IIssueRepository IssueRepository;
+        public  IIssueLogRepository IssueLogRepository;
+        public  IMalfunctionRepository MalfunctionRepository;
+        public  IMalfunctionGroupRepository MalfunctionGroupRepository;
+        public  IMalfunctionSybgroupRepository MalfunctionSybgroupRepository;
+        public  IRoleRepository RoleRepository;
+        public  IUserRepository UserRepository;
+        public  IStateRepository StateRepository;
+        public  ISupplierRepository SupplierRepository;
+        public  IVehicleRepository VehicleRepository;
+        public  IVehicleTypeRepository VehicleTypeRepository;
+        public  ITokenRepository TokenRepository;
 
 
         public UnitOfWork(DbContext context,
@@ -44,21 +44,21 @@ namespace TransIT.DAL.UnitOfWork
             TokenRepository tokenRepository)
         {
             _context = context;
-            _actionTypeRepository = actionTypeRepository;
-            _billRepository = billRepository;
-            _documentRepository = documentRepository;
-            _issueRepository = issueRepository;
-            _issueLogRepository = issueLogRepository;
-            _malfunctionRepository = malfunctionRepository;
-            _malfunctionGroupRepository = malfunctionGroupRepository;
-            _malfunctionSybgroupRepository = malfunctionSubgroupRepository;
-            _roleRepository = roleRepository;
-            _userRepository = userRepository;
-            _stateRepository = stateRepository;
-            _supplierRepository = supplierRepository;
-            _vehicleRepository = vehicleRepository;
-            _vehicleTypeRepository = vehicleTypeRepository;
-            _tokenRepository = tokenRepository;
+            ActionTypeRepository = actionTypeRepository;
+            BillRepository = billRepository;
+            DocumentRepository = documentRepository;
+            IssueRepository = issueRepository;
+            IssueLogRepository = issueLogRepository;
+            MalfunctionRepository = malfunctionRepository;
+            MalfunctionGroupRepository = malfunctionGroupRepository;
+            MalfunctionSybgroupRepository = malfunctionSubgroupRepository;
+            RoleRepository = roleRepository;
+            UserRepository = userRepository;
+            StateRepository = stateRepository;
+            SupplierRepository = supplierRepository;
+            VehicleRepository = vehicleRepository;
+            VehicleTypeRepository = vehicleTypeRepository;
+            TokenRepository = tokenRepository;
         }
 
         public Task<int> SaveAsync()
