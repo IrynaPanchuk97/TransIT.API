@@ -59,6 +59,16 @@ namespace TransIT.BLL.Tests.Security.Hashers
             Assert.False(match);
         }
 
+        [Fact]
+        public void CheckMatch_GivenInvalidHash_ReturnsFalse()
+        {
+            var hash = "somehash";
+
+            var match = _hasher.CheckMatch("123", hash);
+
+            Assert.False(match);
+        }
+
         public static IEnumerable<object[]> GetPasswordSampleData() =>
             new[]
             {
