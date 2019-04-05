@@ -61,14 +61,10 @@ namespace TransIT.DAL.UnitOfWork
             _tokenRepository = tokenRepository;
         }
 
-        public async Task<int> Save()
+        public Task<int> SaveAsync()
         {
-            return await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
     }
 }

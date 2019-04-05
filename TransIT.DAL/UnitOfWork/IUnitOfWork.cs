@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace TransIT.DAL.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork 
     {
-        Task<int> Save();
+        Task<int> SaveAsync();
     }
 }
