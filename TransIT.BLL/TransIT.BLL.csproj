@@ -17,11 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\UserService.cs" />
-    <Compile Remove="Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Remove="Services\**" />
   </ItemGroup>
 
