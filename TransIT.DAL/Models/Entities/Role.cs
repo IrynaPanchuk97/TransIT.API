@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TransIT.DAL.Models.Entities
 {
     public partial class Role
     {
+        public Role()
+        {
+            User = new HashSet<User>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime? CreateDate { get; set; }
@@ -13,5 +19,6 @@ namespace TransIT.DAL.Models.Entities
 
         public virtual User Create { get; set; }
         public virtual User Mod { get; set; }
+        public virtual ICollection<User> User { get; set; }
     }
 }

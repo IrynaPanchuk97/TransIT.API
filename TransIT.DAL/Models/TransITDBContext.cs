@@ -597,7 +597,7 @@ namespace TransIT.DAL.Models
                     .HasConstraintName("FK_MOD_USER_ROLE");
 
                 entity.HasOne(d => d.Role)
-                    .WithMany(p => p.InverseRole)
+                    .WithMany(p => p.User)
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK_USER_ROLE");
             });
