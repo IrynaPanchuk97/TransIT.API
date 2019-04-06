@@ -9,21 +9,21 @@ namespace TransIT.DAL.UnitOfWork
     {
         private readonly DbContext _context;
 
-        public  IActionTypeRepository ActionTypeRepository;
-        public  IBillRepository BillRepository;
-        public  IDocumentRepository DocumentRepository;
-        public  IIssueRepository IssueRepository;
-        public  IIssueLogRepository IssueLogRepository;
-        public  IMalfunctionRepository MalfunctionRepository;
-        public  IMalfunctionGroupRepository MalfunctionGroupRepository;
-        public  IMalfunctionSybgroupRepository MalfunctionSybgroupRepository;
-        public  IRoleRepository RoleRepository;
-        public  IUserRepository UserRepository;
-        public  IStateRepository StateRepository;
-        public  ISupplierRepository SupplierRepository;
-        public  IVehicleRepository VehicleRepository;
-        public  IVehicleTypeRepository VehicleTypeRepository;
-        public  ITokenRepository TokenRepository;
+        public IActionTypeRepository ActionTypeRepository { get; }
+        public  IBillRepository BillRepository { get; }
+        public  IDocumentRepository DocumentRepository { get; }
+        public  IIssueRepository IssueRepository { get; }
+        public  IIssueLogRepository IssueLogRepository { get; }
+        public  IMalfunctionRepository MalfunctionRepository { get; }
+        public  IMalfunctionGroupRepository MalfunctionGroupRepository { get; }
+        public  IMalfunctionSybgroupRepository MalfunctionSybgroupRepository { get; }
+        public  IRoleRepository RoleRepository { get; }
+        public  IUserRepository UserRepository { get; }
+        public  IStateRepository StateRepository { get; }
+        public  ISupplierRepository SupplierRepository { get; }
+        public  IVehicleRepository VehicleRepository { get; }
+        public  IVehicleTypeRepository VehicleTypeRepository { get; }
+        public  ITokenRepository TokenRepository { get; }
 
 
         public UnitOfWork(DbContext context,
