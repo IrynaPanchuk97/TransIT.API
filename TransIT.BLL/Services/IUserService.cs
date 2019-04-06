@@ -21,7 +21,7 @@ namespace TransIT.BLL.Services
         /// <param name="index">Amount to skip</param>
         /// <param name="amount">Amount to take</param>
         /// <returns>Users</returns>
-        Task<IEnumerable<User>> Get(int index, int amount);
+        Task<IEnumerable<User>> Get(uint index, uint amount);
         /// <summary>
         /// Registers a new user
         /// </summary>
