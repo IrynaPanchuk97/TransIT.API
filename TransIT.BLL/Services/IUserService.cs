@@ -33,7 +33,7 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="value">User model to update</param>
         /// <returns>Whether operation is successful</returns>
-        Task<bool> Modify(User value);
+        Task<bool> Update(User value);
         /// <summary>
         /// Removes user with this id
         /// </summary>

@@ -16,19 +16,19 @@ namespace TransIT.BLL.Services
         /// <summary>
         /// Saves changes
         /// </summary>
-        protected readonly IUnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
         /// <summary>
         /// User repo
         /// </summary>
-        protected readonly IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         /// <summary>
         /// Roles repo
         /// </summary>
-        protected readonly IRoleRepository _roleRepository;
+        private readonly IRoleRepository _roleRepository;
         /// <summary>
         /// Hasher for password
         /// </summary>
-        protected readonly IPasswordHasher _hasher;
+        private readonly IPasswordHasher _hasher;
         
         /// <summary>
         /// Ctor
@@ -68,6 +68,7 @@ namespace TransIT.BLL.Services
 
         /// <summary>
         /// Creates user if login and password not empty and does not exist in DB
+        /// hashes password and set zero to id
         /// </summary>
         /// <param name="value">User model</param>
         /// <returns>Is successful</returns>
