@@ -16,4 +16,17 @@
     <ProjectReference Include="..\TransIT.DAL\TransIT.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Services\UserService.cs" />
+    <Compile Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Services\**" />
+  </ItemGroup>
+
 </Project>

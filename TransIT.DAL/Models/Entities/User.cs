@@ -15,7 +15,6 @@ namespace TransIT.DAL.Models.Entities
             DocumentMod = new HashSet<Document>();
             InverseCreate = new HashSet<User>();
             InverseMod = new HashSet<User>();
-            InverseRole = new HashSet<User>();
             IssueAssignedToNavigation = new HashSet<Issue>();
             IssueCreate = new HashSet<Issue>();
             IssueLogCreate = new HashSet<IssueLog>();
@@ -54,7 +53,7 @@ namespace TransIT.DAL.Models.Entities
 
         public virtual User Create { get; set; }
         public virtual User Mod { get; set; }
-        public virtual User Role { get; set; }
+        public virtual Role Role { get; set; }
         public virtual ICollection<ActionType> ActionTypeCreate { get; set; }
         public virtual ICollection<ActionType> ActionTypeMod { get; set; }
         public virtual ICollection<Bill> BillCreate { get; set; }
@@ -63,16 +62,15 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<Document> DocumentMod { get; set; }
         public virtual ICollection<User> InverseCreate { get; set; }
         public virtual ICollection<User> InverseMod { get; set; }
-        public virtual ICollection<User> InverseRole { get; set; }
         public virtual ICollection<Issue> IssueAssignedToNavigation { get; set; }
         public virtual ICollection<Issue> IssueCreate { get; set; }
         public virtual ICollection<IssueLog> IssueLogCreate { get; set; }
         public virtual ICollection<IssueLog> IssueLogMod { get; set; }
         public virtual ICollection<Issue> IssueMod { get; set; }
         public virtual ICollection<Malfunction> MalfunctionCreate { get; set; }
-        public virtual ICollection<Malfunction> MalfunctionMod { get; set; }
         public virtual ICollection<MalfunctionGroup> MalfunctionGroupCreate { get; set; }
         public virtual ICollection<MalfunctionGroup> MalfunctionGroupMod { get; set; }
+        public virtual ICollection<Malfunction> MalfunctionMod { get; set; }
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroupCreate { get; set; }
         public virtual ICollection<MalfunctionSubgroup> MalfunctionSubgroupMod { get; set; }
         public virtual ICollection<Role> RoleCreate { get; set; }
@@ -85,5 +83,6 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<Vehicle> VehicleMod { get; set; }
         public virtual ICollection<VehicleType> VehicleTypeCreate { get; set; }
         public virtual ICollection<VehicleType> VehicleTypeMod { get; set; }
+
     }
 }
