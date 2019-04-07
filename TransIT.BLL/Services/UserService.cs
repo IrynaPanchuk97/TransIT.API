@@ -21,14 +21,6 @@ namespace TransIT.BLL.Services
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
         /// <summary>
-        /// User repo
-        /// </summary>
-        private readonly IUserRepository _userRepository;
-        /// <summary>
-        /// Roles repo
-        /// </summary>
-        private readonly IRoleRepository _roleRepository;
-        /// <summary>
         /// Hasher for password
         /// </summary>
         private readonly IPasswordHasher _hasher;
@@ -43,18 +35,12 @@ namespace TransIT.BLL.Services
         /// <param name="logger">Logs errors</param>
         /// <param name="hasher">Used to hash password</param>
         /// <param name="unitOfWork">Used to save changes</param>
-        /// <param name="userRepository">Used to CRUD users</param>
-        /// <param name="roleRepository">Used to retrieve roles</param>
         public UserService(
             ILogger<UserService> logger,
             IPasswordHasher hasher,
-            IUnitOfWork unitOfWork,
-            IUserRepository userRepository,
-            IRoleRepository roleRepository)
+            IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _userRepository = userRepository;
-            _roleRepository = roleRepository;
             _hasher = hasher;
             _logger = logger;
         }
@@ -65,7 +51,7 @@ namespace TransIT.BLL.Services
         /// <param name="userId">Id of user</param>
         /// <returns>User or null unless not found</returns>
         public Task<User> Get(int userId) =>
-            _userRepository.GetByIdAsync(userId);
+            _unitOfWork.UserRepository.GetByIdAsync(userId);
 
         /// <summary>
         /// Gives users with pagination
@@ -74,7 +60,7 @@ namespace TransIT.BLL.Services
         /// <param name="amount">Amount to give</param>
         /// <returns>List of users</returns>
         public Task<IEnumerable<User>> Get(uint offset, uint amount) =>
-            _userRepository.GetRangeAsync(offset, amount);
+            _unitOfWork.UserRepository.GetRangeAsync(offset, amount);
 
         /// <summary>
         /// Creates user if login and password not empty and does not exist in DB
@@ -85,12 +71,12 @@ namespace TransIT.BLL.Services
         /// <returns>Is successful</returns>
         public async Task<User> Create(User user)
         {
-            if ((await _userRepository.GetAllAsync(u =>
+            if ((await _unitOfWork.UserRepository.GetAllAsync(u =>
                 u.Login == user.Login)).Any()) 
                 return null;
             
             var role = user.Role.Name.ToUpper();
-            user.Role = (await _roleRepository
+            user.Role = (await _unitOfWork.RoleRepository
                 .GetAllAsync(r => r.Name == role))
                 .SingleOrDefault();
 
@@ -101,7 +87,7 @@ namespace TransIT.BLL.Services
 
             try
             {
-                var res = await _userRepository.AddAsync(user);
+                var res = await _unitOfWork.UserRepository.AddAsync(user);
                 await _unitOfWork.SaveAsync();
                 return res.Entity;
             }
@@ -124,12 +110,12 @@ namespace TransIT.BLL.Services
         /// <returns>Is successful</returns>
         public async Task<User> Update(User user)
         {
-            if (await _userRepository.GetByIdAsync(user.Id) == null)
+            if (await _unitOfWork.UserRepository.GetByIdAsync(user.Id) == null)
                 return null;
 
             try
             {
-                var res = _userRepository.Update(user);
+                var res = _unitOfWork.UserRepository.Update(user);
                 await _unitOfWork.SaveAsync();
                 return res.Entity;
             }
@@ -154,7 +140,7 @@ namespace TransIT.BLL.Services
         {
             try
             {
-                _userRepository.Remove(new User {Id = userId});
+                _unitOfWork.UserRepository.Remove(new User {Id = userId});
                 await _unitOfWork.SaveAsync();
             }
             catch (DbUpdateException e)
