@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 
@@ -47,7 +45,5 @@ namespace TransIT.BLL.Services
         /// <param name="id">Id of Malfunction Group to delete</param>
         /// <returns>Always returns nothing</returns>
         Task DeleteAsync(int id);
-
-
     }
 }
