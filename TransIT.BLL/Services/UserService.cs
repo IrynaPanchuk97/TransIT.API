@@ -50,7 +50,7 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="userId">Id of user</param>
         /// <returns>User or null unless not found</returns>
-        public Task<User> Get(int userId) =>
+        public Task<User> GetAsync(int userId) =>
             _unitOfWork.UserRepository.GetByIdAsync(userId);
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace TransIT.BLL.Services
         /// <param name="offset">Where to start</param>
         /// <param name="amount">Amount to give</param>
         /// <returns>List of users</returns>
-        public Task<IEnumerable<User>> Get(uint offset, uint amount) =>
+        public Task<IEnumerable<User>> GetAsync(uint offset, uint amount) =>
             _unitOfWork.UserRepository.GetRangeAsync(offset, amount);
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace TransIT.BLL.Services
         /// <see cref="IPasswordHasher.HashPassword(string)"/>
         /// <param name="user">User model</param>
         /// <returns>Is successful</returns>
-        public async Task<User> Create(User user)
+        public async Task<User> CreateAsync(User user)
         {
             if ((await _unitOfWork.UserRepository.GetAllAsync(u =>
                 u.Login == user.Login)).Any()) 
@@ -93,12 +93,12 @@ namespace TransIT.BLL.Services
             }
             catch (DbUpdateException e)
             {
-                _logger.LogError(e, nameof(Create), e.Entries);
+                _logger.LogError(e, nameof(CreateAsync), e.Entries);
                 return null;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, nameof(Create));
+                _logger.LogError(e, nameof(CreateAsync));
                 throw e;
             }
         }
@@ -108,7 +108,7 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="user">User to update</param>
         /// <returns>Is successful</returns>
-        public async Task<User> Update(User user)
+        public async Task<User> UpdateAsync(User user)
         {
             if (await _unitOfWork.UserRepository.GetByIdAsync(user.Id) == null)
                 return null;
@@ -121,12 +121,12 @@ namespace TransIT.BLL.Services
             }
             catch (DbUpdateException e)
             {
-                _logger.LogError(e, nameof(Update), e.Entries);
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
                 return null;
             }
             catch (Exception e)
             {
-                _logger.LogError(e, nameof(Update));
+                _logger.LogError(e, nameof(UpdateAsync));
                 throw e;
             }
         }
@@ -136,7 +136,7 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="userId">Id of user to delete</param>
         /// <returns>Is successful</returns>
-        public async Task Delete(int userId)
+        public async Task DeleteAsync(int userId)
         {
             try
             {
@@ -145,11 +145,11 @@ namespace TransIT.BLL.Services
             }
             catch (DbUpdateException e)
             {
-                _logger.LogError(e, nameof(Delete), e.Entries);
+                _logger.LogError(e, nameof(DeleteAsync), e.Entries);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, nameof(Delete));
+                _logger.LogError(e, nameof(DeleteAsync));
                 throw e;
             }
         }
