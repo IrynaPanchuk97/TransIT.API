@@ -6,7 +6,7 @@ namespace TransIT.BLL.Services
     /// <summary>
     /// Set a behavior of services 
     /// </summary>
-    public interface IDataService<T>
+    public interface ICrudService<T>
     {
         /// <summary>
         /// Gets entity by id

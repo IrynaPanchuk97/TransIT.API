@@ -23,7 +23,7 @@ namespace TransIT.API
         {
             #region Services
 
-            services.AddScoped<IDataService<User>, UserService>();
+            services.AddScoped<ICrudService<User>, UserService>();
 
             #endregion
             
