@@ -87,9 +87,9 @@ namespace TransIT.BLL.Services
 
             try
             {
-                var res = await _unitOfWork.UserRepository.AddAsync(user);
+                await _unitOfWork.UserRepository.AddAsync(user);
                 await _unitOfWork.SaveAsync();
-                return res.Entity;
+                return user;
             }
             catch (DbUpdateException e)
             {
@@ -115,9 +115,9 @@ namespace TransIT.BLL.Services
 
             try
             {
-                var res = _unitOfWork.UserRepository.Update(user);
+                _unitOfWork.UserRepository.Update(user);
                 await _unitOfWork.SaveAsync();
-                return res.Entity;
+                return user;
             }
             catch (DbUpdateException e)
             {
