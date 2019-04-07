@@ -14,7 +14,7 @@ namespace TransIT.BLL.Services
     /// <summary>
     /// User model CRUD
     /// </summary>
-    public class UserService : IUserService
+    public class UserService : IDataService<User>
     {
         /// <summary>
         /// Saves changes

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TransIT.BLL.Services;
 using FluentValidation.AspNetCore;
+using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API
 {
@@ -22,7 +23,7 @@ namespace TransIT.API
         {
             #region Services
 
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IDataService<User>, UserService>();
 
             #endregion
             
