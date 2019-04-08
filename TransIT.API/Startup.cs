@@ -8,7 +8,13 @@ using Microsoft.Extensions.Options;
 using TransIT.API.Extensions;
 using TransIT.BLL.Services;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using TransIT.BLL.Security.Hashers;
+using TransIT.DAL.Models;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Repositories.ImplementedRepositories;
+using TransIT.DAL.Repositories.InterfacesRepositories;
+using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.API
 {
@@ -24,14 +30,38 @@ namespace TransIT.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureAutoMapper();
 
             #region Services
 
-            services.AddScoped<ICrudService<User>, UserService>();
+//            services.AddScoped<ICrudService<User>, UserService>();
+            services.AddDbContext<DbContext, TransITDBContext>(options =>
+            {
+                options.UseSqlServer(
+                        "Data Source=localhost;Initial Catalog=TransITDB;persist security info=True;user id=sa;password=i.am.using.docker;");
+            });
+            services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IIssueLogRepository, IssueLogRepository>();
+            services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
+            services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
+            services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
+            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            
             #endregion
             
+            services.ConfigureAutoMapper();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureCors();
             

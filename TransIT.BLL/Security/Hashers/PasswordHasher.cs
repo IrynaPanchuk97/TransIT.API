@@ -10,7 +10,7 @@ namespace TransIT.BLL.Security.Hashers
     /// Implementation of IPasswordHasher.
     /// Class is internal for the assembly.
     /// </summary>
-    internal class PasswordHasher : IPasswordHasher
+    public class PasswordHasher : IPasswordHasher
     {
         /// <summary>
         /// <see cref="IPasswordHasher.HashPassword(string)"/>

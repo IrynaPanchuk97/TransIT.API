@@ -4,6 +4,26 @@
         <name>TransIT.BLL</name>
     </assembly>
     <members>
+        <member name="T:TransIT.BLL.Helpers.Abstractions.IJwtFactory">
+            <summary>
+            Behavior of jwt
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GetPrincipalFromExpiredTokenAsync(System.String)">
+            <summary>
+            Exctracts user info from token
+            </summary>
+            <param name="token">Token string</param>
+            <returns>User info</returns>
+        </member>
+        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GenerateTokenAsync(System.Int32,System.String,System.String)">
+            <summary>
+            Generates new token
+            </summary>
+            <param name="email">Email of user in token</param>
+            <param name="role">Role of user in token</param>
+            <returns>Entity token</returns>
+        </member>
         <member name="T:TransIT.BLL.Security.Hashers.IPasswordHasher">
             <summary>
             Interface for classes capable of password hashing
@@ -47,6 +67,178 @@
             </summary>
             <param name="length">Number of bytes in salt</param>
             <returns>Byte array of generated salt</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.Abstractions.IAuthenticationService">
+            <summary>
+            Behavior of authentication
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.SignInAsync(TransIT.DAL.Models.ViewModels.LoginViewModel)">
+            <summary>
+            Checks credential
+            </summary>
+            <param name="credentials">User login and password</param>
+            <returns>Access and refresh tokens</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.TokenAsync(TransIT.DAL.Models.DTOs.TokenDTO)">
+            <summary>
+            Renews a token
+            </summary>
+            <param name="token">Old tokens</param>
+            <returns>New tokens</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.AuthenticationService">
+            <summary>
+            Authentication service
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.ICrudService`1">
+            <summary>
+            Set a behavior of services 
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.ICrudService`1.GetAsync(System.Int32)">
+            <summary>
+            Gets entity by id
+            </summary>
+            <param name="id">Entity id</param>
+            <returns>Entity</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ICrudService`1.GetAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Gets entities with pagination
+            </summary>
+            <param name="offset">Amount to skip</param>
+            <param name="amount">Amount to take</param>
+            <returns>Entities</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ICrudService`1.CreateAsync(`0)">
+            <summary>
+            Registers a new entity
+            </summary>
+            <param name="value">New entity</param>
+            <returns>Created entity</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ICrudService`1.UpdateAsync(`0)">
+            <summary>
+            Updates entity
+            </summary>
+            <param name="value">Entity model to update</param>
+            <returns>Updated entity</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ICrudService`1.DeleteAsync(System.Int32)">
+            <summary>
+            Removes entity with this id
+            </summary>
+            <param name="id">Entity id</param>
+            <returns>void</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.IUserService">
+            <summary>
+            Set a behavior of entities which act with users
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.IUserService.GetAsync(System.Int32)">
+            <summary>
+            Gets user by id
+            </summary>
+            <param name="userId">User id</param>
+            <returns>User</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.IUserService.GetAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Gets users with pagination
+            </summary>
+            <param name="offset">Amount to skip</param>
+            <param name="amount">Amount to take</param>
+            <returns>Users</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.IUserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
+            <summary>
+            Registers a new user
+            </summary>
+            <param name="user">New user model</param>
+            <returns>Whether operation is successful</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.IUserService.UpdateAsync(TransIT.DAL.Models.Entities.User)">
+            <summary>
+            Updates user
+            </summary>
+            <param name="user">User model to update</param>
+            <returns>Whether operation is successful</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.IUserService.DeleteAsync(System.Int32)">
+            <summary>
+            Removes user with this id
+            </summary>
+            <param name="userId">User id</param>
+            <returns>Whether operation is successful</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.UserService">
+            <summary>
+            User model CRUD
+            </summary>
+        </member>
+        <member name="F:TransIT.BLL.Services.UserService._unitOfWork">
+            <summary>
+            Saves changes
+            </summary>
+        </member>
+        <member name="F:TransIT.BLL.Services.UserService._hasher">
+            <summary>
+            Hasher for password
+            </summary>
+        </member>
+        <member name="F:TransIT.BLL.Services.UserService._logger">
+            <summary>
+            Logger
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.UserService.#ctor(Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.UserService},TransIT.BLL.Security.Hashers.IPasswordHasher,TransIT.DAL.UnitOfWork.IUnitOfWork)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="logger">Logs errors</param>
+            <param name="hasher">Used to hash password</param>
+            <param name="unitOfWork">Used to save changes</param>
+        </member>
+        <member name="M:TransIT.BLL.Services.UserService.GetAsync(System.Int32)">
+            <summary>
+            Finds user by id
+            </summary>
+            <param name="userId">Id of user</param>
+            <returns>User or null unless not found</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.UserService.GetAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Gives users with pagination
+            </summary>
+            <param name="offset">Where to start</param>
+            <param name="amount">Amount to give</param>
+            <returns>List of users</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.UserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
+            <summary>
+            Creates user if login and password not empty and does not exist in DB
+            hashes password and set zero to id
+            </summary>
+            <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)"/>
+            <param name="user">User model</param>
+            <returns>Is successful</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.UserService.UpdateAsync(TransIT.DAL.Models.Entities.User)">
+            <summary>
+            Updates user if it is found
+            </summary>
+            <param name="user">User to update</param>
+            <returns>Is successful</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.UserService.DeleteAsync(System.Int32)">
+            <summary>
+            Removes a user in DB
+            </summary>
+            <param name="userId">Id of user to delete</param>
+            <returns>Is successful</returns>
         </member>
     </members>
 </doc>
