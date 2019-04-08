@@ -3,15 +3,17 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.UnitOfWork;
 
-namespace TransIT.BLL.Services
+namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
-    /// Malfunction Group Crud service
+    /// Malfunction Group CRUD service
     /// </summary>
-    public class MalfunctionGroupService : ICrudService<MalfunctionGroup>
+    /// <see cref="IMalfunctionGroupService"/>
+    public class MalfunctionGroupService : IMalfunctionGroupService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<MalfunctionGroupService> _logger;
@@ -84,7 +86,7 @@ namespace TransIT.BLL.Services
             }
             catch(DbUpdateException e)
             {
-                _logger.LogError(e, nameof(DeleteAsync), e.Entries);
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
                 return null;
             }
             catch (Exception e)
@@ -113,7 +115,7 @@ namespace TransIT.BLL.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, nameof(CreateAsync));
+                _logger.LogError(e, nameof(DeleteAsync));
             }
         }
     }
