@@ -21,11 +21,9 @@ namespace TransIT.BLL.Services
         /// <param name="offset">Amount to skip</param>
         /// <param name="amount">Amount to take</param>
         /// <returns>Entities</returns>
-<<<<<<< HEAD
         Task<IEnumerable<T>> GetRangeAsync(uint offset, uint amount);
-=======
-        Task<IEnumerable<T>> GetAllAsync(uint offset, uint amount);
->>>>>>> Add methods to service
+
+        /// Add methods to service
         /// <summary>
         /// Registers a new entity
         /// </summary>
