@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.BLL.Services
 {
     /// <summary>
     /// Set a behavior of services 
     /// </summary>
-    public interface ICrudService<T>
+    public interface ICrudService<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// Gets entity by id

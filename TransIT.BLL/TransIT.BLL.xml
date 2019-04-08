@@ -48,6 +48,71 @@
             <param name="length">Number of bytes in salt</param>
             <returns>Byte array of generated salt</returns>
         </member>
+        <member name="T:TransIT.BLL.Services.CrudService`1">
+            <summary>
+            Entity CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.ICrudService`1"/>
+        </member>
+        <member name="F:TransIT.BLL.Services.CrudService`1._unitOfWork">
+            <summary>
+            Saves changes
+            </summary>
+        </member>
+        <member name="F:TransIT.BLL.Services.CrudService`1._logger">
+            <summary>
+            Logs on error
+            </summary>
+        </member>
+        <member name="F:TransIT.BLL.Services.CrudService`1._repository">
+            <summary>
+            CRUD operations on entity
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{`0}},TransIT.DAL.Repositories.IBaseRepository{`0})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on model</param>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.GetAsync(System.Int32)">
+            <summary>
+            Get model by id
+            </summary>
+            <param name="id">Id of the model to take</param>
+            <returns>Founded model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.GetRangeAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Get enumerable of models
+            </summary>
+            <param name="offset">How many models to skip</param>
+            <param name="size">How many models to take</param>
+            <returns>Enumerable of models</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.CreateAsync(`0)">
+            <summary>
+            Create model
+            </summary>
+            <param name="model">Model with properties to create</param>
+            <returns>Created model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.UpdateAsync(`0)">
+            <summary>
+            Update model
+            </summary>
+            <param name="model">Model with properties to be updated</param>
+            <returns>Updated model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes model by id
+            </summary>
+            <param name="id">Id of model to be deleted</param>
+            <returns>Nothing</returns>
+        </member>
         <member name="T:TransIT.BLL.Services.ICrudService`1">
             <summary>
             Set a behavior of services 
@@ -95,48 +160,29 @@
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService})">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionGroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionGroupRepository)">
             <summary>
             Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.GetAsync(System.Int32)">
+        <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService">
             <summary>
-            Get model by id
+            Malfunction Subgroup CRUD service
             </summary>
-            <param name="id">Id of the model to take</param>
-            <returns>Founded model or null on failure</returns>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.GetRangeAsync(System.UInt32,System.UInt32)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSybgroupRepository)">
             <summary>
-            Get enumerable of models
+            Ctor
             </summary>
-            <param name="offset">How many models to skip</param>
-            <param name="size">How many models to take</param>
-            <returns>Enumerable of models</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.CreateAsync(TransIT.DAL.Models.Entities.MalfunctionGroup)">
-            <summary>
-            Create model
-            </summary>
-            <param name="malfunctionGroup">Model with properties to create</param>
-            <returns>Created model or null on failure</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.UpdateAsync(TransIT.DAL.Models.Entities.MalfunctionGroup)">
-            <summary>
-            Update model
-            </summary>
-            <param name="malfunctionGroup">Model with properties to be updated</param>
-            <returns>Updated model or null on failure</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.DeleteAsync(System.Int32)">
-            <summary>
-            Deletes model by id
-            </summary>
-            <param name="id">Id of model to be deleted</param>
-            <returns>Nothing</returns>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.UserService">
             <summary>
@@ -144,43 +190,19 @@
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IUserService"/>
         </member>
-        <member name="F:TransIT.BLL.Services.ImplementedServices.UserService._unitOfWork">
-            <summary>
-            Saves changes
-            </summary>
-        </member>
         <member name="F:TransIT.BLL.Services.ImplementedServices.UserService._hasher">
             <summary>
-            Hasher for password
+            Manages password hashing
             </summary>
         </member>
-        <member name="F:TransIT.BLL.Services.ImplementedServices.UserService._logger">
-            <summary>
-            Logger
-            </summary>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.#ctor(Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.ImplementedServices.UserService},TransIT.BLL.Security.Hashers.IPasswordHasher,TransIT.DAL.UnitOfWork.IUnitOfWork)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.User}},TransIT.DAL.Repositories.InterfacesRepositories.IUserRepository,TransIT.BLL.Security.Hashers.IPasswordHasher)">
             <summary>
             Ctor
             </summary>
-            <param name="logger">Logs errors</param>
-            <param name="hasher">Used to hash password</param>
-            <param name="unitOfWork">Used to save changes</param>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.GetAsync(System.Int32)">
-            <summary>
-            Finds user by id
-            </summary>
-            <param name="userId">Id of user</param>
-            <returns>User or null unless not found</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.GetRangeAsync(System.UInt32,System.UInt32)">
-            <summary>
-            Gives users with pagination
-            </summary>
-            <param name="offset">Where to start</param>
-            <param name="amount">Amount to give</param>
-            <returns>List of users</returns>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
             <summary>
@@ -191,23 +213,14 @@
             <param name="user">User model</param>
             <returns>Is successful</returns>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.UpdateAsync(TransIT.DAL.Models.Entities.User)">
-            <summary>
-            Updates user if it is found
-            </summary>
-            <param name="user">User to update</param>
-            <returns>Is successful</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.DeleteAsync(System.Int32)">
-            <summary>
-            Removes a user in DB
-            </summary>
-            <param name="userId">Id of user to delete</param>
-            <returns>Is successful</returns>
-        </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
             Malfunction group model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService">
+            <summary>
+            Malfunction Subgroup model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
