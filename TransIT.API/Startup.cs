@@ -14,6 +14,7 @@ using TransIT.DAL.Repositories.ImplementedRepositories;
 using TransIT.DAL.UnitOfWork;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TransIT.API
 {
@@ -57,7 +58,7 @@ namespace TransIT.API
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDbContext<TransITDBContext>();
+            services.AddDbContext<DbContext, TransITDBContext>();
 
             services.AddSingleton<IPasswordHasher>();
             #endregion
