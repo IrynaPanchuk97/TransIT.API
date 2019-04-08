@@ -5,16 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Security.Hashers;
+using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
-using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
 
-namespace TransIT.BLL.Services
+namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
     /// User model CRUD
     /// </summary>
-    public class UserService : ICrudService<User>
+    /// <see cref="IUserService"/>
+
+    public class UserService : IUserService
     {
         /// <summary>
         /// Saves changes
@@ -59,7 +61,7 @@ namespace TransIT.BLL.Services
         /// <param name="offset">Where to start</param>
         /// <param name="amount">Amount to give</param>
         /// <returns>List of users</returns>
-        public Task<IEnumerable<User>> GetAsync(uint offset, uint amount) =>
+        public Task<IEnumerable<User>> GetRangeAsync(uint offset, uint amount) =>
             _unitOfWork.UserRepository.GetRangeAsync(offset, amount);
 
         /// <summary>
