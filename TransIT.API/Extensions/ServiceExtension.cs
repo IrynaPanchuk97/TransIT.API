@@ -36,6 +36,7 @@ namespace TransIT.API.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMalfunctionGroupService, MalfunctionGroupService>();
+            services.AddScoped<IMalfunctionService, MalfunctionService>();
         }
     }
 }
