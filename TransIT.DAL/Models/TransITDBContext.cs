@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TransIT.DAL.Models.Extensions;
 
 namespace TransIT.DAL.Models
 {
@@ -32,6 +33,15 @@ namespace TransIT.DAL.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
+
+            #region Seeding
+
+            modelBuilder.SeedRoles();
+            modelBuilder.SeedStates();            
+
+            #endregion
+
+            #region Configuration
 
             modelBuilder.Entity<ActionType>(entity =>
             {
@@ -697,6 +707,8 @@ namespace TransIT.DAL.Models
                     .HasForeignKey(d => d.ModId)
                     .HasConstraintName("FK_MOD_VEHICLE_TYPE_ROLE");
             });
+            
+            #endregion
         }
     }
 }
