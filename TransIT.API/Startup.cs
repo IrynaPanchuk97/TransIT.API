@@ -33,6 +33,7 @@ namespace TransIT.API
             #endregion
             
             services.ConfigureAuthentication(Configuration);
+            services.ConfigureCors();
             
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -54,7 +55,7 @@ namespace TransIT.API
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
-//            app.UseCors("CorsPolicy");
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }
