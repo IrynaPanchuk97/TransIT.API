@@ -5,14 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TransIT.API.Extensions;
 using FluentValidation.AspNetCore;
-using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.Repositories.ImplementedRepositories;
 using TransIT.DAL.UnitOfWork;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace TransIT.API
 {
@@ -29,12 +27,6 @@ namespace TransIT.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureAutoMapper();
-
-            #region Services
-
-            services.AddScoped<ICrudService<User>, UserService>();
-
-            #endregion
 
 
             #region Scoped Repositories 
