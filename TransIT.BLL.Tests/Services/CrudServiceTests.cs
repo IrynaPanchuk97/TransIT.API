@@ -33,7 +33,7 @@ namespace TransIT.BLL.Tests.Services
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(4)]
-        public async Task GetAsync_GivenValidId_ReturnsGroup(int id)
+        public async Task GetAsync_GivenValidId_ReturnsEntity(int id)
         {
             var result = await _crudService.GetAsync(id);
 
@@ -56,7 +56,7 @@ namespace TransIT.BLL.Tests.Services
         [InlineData(3, 2)]
         [InlineData(5, 3)]
         [InlineData(0, 0)]
-        public async Task GetAllAsync_GivenOffsetAndSize_ReturnsAllGroupsInRange(uint offset, uint size)
+        public async Task GetAllAsync_GivenOffsetAndSize_ReturnsAllEntitiesInRange(uint offset, uint size)
         {
             var result = await _crudService.GetRangeAsync(offset, size);
 
@@ -65,7 +65,7 @@ namespace TransIT.BLL.Tests.Services
 
         [Theory]
         [MemberData(nameof(SampleData))]
-        public async Task CreateAsync_GivenMalfunctionGroup_AddsGroupToContext(TEntity entity)
+        public async Task CreateAsync_GivenEntity_AddsEntityToContext(TEntity entity)
         {
             await _crudService.CreateAsync(entity);
 
@@ -76,7 +76,7 @@ namespace TransIT.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task CreateAsync_GivenWrongGroup_ReturnsNull()
+        public async Task CreateAsync_GivenWrongEntity_ReturnsNull()
         {
             var entity = new TEntity { Id = 1 };
             var exception = new DbUpdateException("", null as Exception);
@@ -101,7 +101,7 @@ namespace TransIT.BLL.Tests.Services
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(4)]
-        public async Task UpdateAsync_GivenExistingItem_ReturnsUpdatedItem(int id)
+        public async Task UpdateAsync_GivenExistingEntity_ReturnsUpdatedEntity(int id)
         {
             var entity = new TEntity { Id = id };
             int previousCount = _context.Count;
@@ -115,7 +115,7 @@ namespace TransIT.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task UpdateAsync_GivenWrongGroup_ReturnsNull()
+        public async Task UpdateAsync_GivenWrongEntity_ReturnsNull()
         {
             var entity = new TEntity { Id = 1 };
             var exception = new DbUpdateException("", null as Exception);
@@ -140,7 +140,7 @@ namespace TransIT.BLL.Tests.Services
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(4)]
-        public async Task DeleteAsync_GivenExistingItemId_DeletesItem(int id)
+        public async Task DeleteAsync_GivenExistingEntityId_DeletesEntity(int id)
         {
             int previousCount = _context.Count;
 
@@ -156,7 +156,7 @@ namespace TransIT.BLL.Tests.Services
         [Theory]
         [InlineData(0)]
         [InlineData(100)]
-        public async Task DeleteAsync_GivenNonExistingItemId_ReturnsNothing(int id)
+        public async Task DeleteAsync_GivenNonExistingEntityId_ReturnsNothing(int id)
         {
             int previousCount = _context.Count;
 
@@ -168,7 +168,7 @@ namespace TransIT.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task DeleteAsync_GivenExceptionInRepository_ReturnsNull()
+        public async Task DeleteAsync_GivenDpUpdateExceptionInRepository_ReturnsNull()
         {
             var exception = new DbUpdateException("", null as Exception);
             _repository.Setup(r => r.Remove(It.IsAny<TEntity>())).Throws(exception);
@@ -264,9 +264,9 @@ namespace TransIT.BLL.Tests.Services
         public static IEnumerable<object[]> SampleData =>
             new[]
             {
-                new object [] { new MalfunctionGroup { Id = 2, Name = "Roka" } },
-                new object [] { new MalfunctionGroup { Id = 0, Name = "TEst" } },
-                new object [] { new MalfunctionGroup { Id = 5, Name = "Example" } }
+                new object [] { new TEntity { Id = 2 } },
+                new object [] { new TEntity { Id = 0 } },
+                new object [] { new TEntity { Id = 5 } }
             };
     }
 }
