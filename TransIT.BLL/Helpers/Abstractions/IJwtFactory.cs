@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.DTOs;
@@ -14,7 +15,7 @@ namespace TransIT.BLL.Helpers.Abstractions
         /// </summary>
         /// <param name="token">Token string</param>
         /// <returns>User info</returns>
-        Task<ClaimsPrincipal> GetPrincipalFromExpiredTokenAsync(string token);
+        Task<(ClaimsPrincipal principal, JwtSecurityToken jwt)> GetPrincipalFromExpiredTokenAsync(string token);
         /// <summary>
         /// Generates new token
         /// </summary>

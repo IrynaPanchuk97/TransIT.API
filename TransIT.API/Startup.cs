@@ -3,15 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using TransIT.API.Extensions;
-using TransIT.BLL.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
-using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.ImplementedRepositories;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
@@ -36,8 +32,7 @@ namespace TransIT.API
 //            services.AddScoped<ICrudService<User>, UserService>();
             services.AddDbContext<DbContext, TransITDBContext>(options =>
             {
-                options.UseSqlServer(
-                        "Data Source=localhost;Initial Catalog=TransITDB;persist security info=True;user id=sa;password=i.am.using.docker;");
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
@@ -46,7 +41,7 @@ namespace TransIT.API
             services.AddScoped<IIssueLogRepository, IssueLogRepository>();
             services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
             services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
-            services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
+            services.AddScoped<IMalfunctionSubgroupRepository, MalfunctionSubgroupRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();

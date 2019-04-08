@@ -2,7 +2,7 @@
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
-    public interface IMalfunctionSybgroupRepository : IBaseRepository<MalfunctionSubgroup>
+    public interface IMalfunctionSubgroupRepository : IBaseRepository<MalfunctionSubgroup>
     {
     }
 }
