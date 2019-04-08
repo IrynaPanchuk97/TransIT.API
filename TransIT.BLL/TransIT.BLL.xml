@@ -89,6 +89,55 @@
             <param name="id">Entity id</param>
             <returns>void</returns>
         </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.ActionTypeService">
+            <summary>
+            User model CRUD
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.ImplementedServices.ActionTypeService})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.GetAsync(System.Int32)">
+            <summary>
+            Get model by id
+            </summary>
+            <param name="id">Id of the model to take</param>
+            <returns>Founded model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.GetRangeAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Get enumerable of models
+            </summary>
+            <param name="offset">How many models to skip</param>
+            <param name="size">How many models to take</param>
+            <returns>Enumerable of models</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.CreateAsync(TransIT.DAL.Models.Entities.ActionType)">
+            <summary>
+            Create model
+            </summary>
+            <param name="actionType">Model with properties to create</param>
+            <returns>Created model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.UpdateAsync(TransIT.DAL.Models.Entities.ActionType)">
+            <summary>
+            Update model
+            </summary>
+            <param name="actionType">Model with properties to be updated</param>
+            <returns>Updated model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes model by id
+            </summary>
+            <param name="id">Id of model to be deleted</param>
+            <returns>Nothing</returns>
+        </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService">
             <summary>
             Malfunction Group CRUD service
@@ -204,6 +253,11 @@
             </summary>
             <param name="userId">Id of user to delete</param>
             <returns>Is successful</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService">
+            <summary>
+            Action type model CRUD
+            </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
