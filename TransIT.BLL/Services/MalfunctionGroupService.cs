@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.UnitOfWork;
@@ -29,6 +28,7 @@ namespace TransIT.BLL.Services
         {
             try
             {
+                var tmp = _unitOfWork.MalfunctionGroupRepository;
                 await _unitOfWork.MalfunctionGroupRepository.AddAsync(malfunctionGroup);
                 await _unitOfWork.SaveAsync();
                 return malfunctionGroup;
@@ -36,6 +36,11 @@ namespace TransIT.BLL.Services
             catch (DbUpdateException e)
             {
                 _logger.LogError(e, nameof(CreateAsync), e.Entries);
+                return null;
+            }
+            catch(Exception e)
+            {
+                _logger.LogError(e, nameof(CreateAsync));
                 return null;
             }
         }
@@ -53,6 +58,11 @@ namespace TransIT.BLL.Services
                 _logger.LogError(e, nameof(DeleteAsync), e.Entries);
                 return null;
             }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync));
+                return null;
+            }
         }
 
         public async Task DeleteAsync(int id)
@@ -66,6 +76,10 @@ namespace TransIT.BLL.Services
             catch (DbUpdateException e)
             {
                 _logger.LogError(e, nameof(DeleteAsync), e.Entries);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(CreateAsync));
             }
         }
     }
