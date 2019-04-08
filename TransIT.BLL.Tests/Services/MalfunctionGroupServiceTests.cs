@@ -58,7 +58,7 @@ namespace TransIT.BLL.Tests.Services
         [InlineData(0, 0)]
         public async Task GetAllAsync_GivenOffsetAndSize_ReturnsAllGroupsInRange(uint offset, uint size)
         {
-            var result = await _malfunctionGroupService.GetAllAsync(offset, size);
+            var result = await _malfunctionGroupService.GetRangeAsync(offset, size);
 
             Assert.Equal(result, _context.Skip((int)offset).Take((int)size));
         }

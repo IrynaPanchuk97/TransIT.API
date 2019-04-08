@@ -8,22 +8,46 @@ using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.BLL.Services
 {
-    public class MalfunctionGroupService : IMalfunctionGroupService
+    /// <summary>
+    /// Malfunction Group Crud service
+    /// </summary>
+    public class MalfunctionGroupService : ICrudService<MalfunctionGroup>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<MalfunctionGroupService> _logger;
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        /// <param name="unitOfWork">Unit of work pattern</param>
+        /// <param name="logger">Log on error</param>
         public MalfunctionGroupService(IUnitOfWork unitOfWork, ILogger<MalfunctionGroupService> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get model by id
+        /// </summary>
+        /// <param name="id">Id of the model to take</param>
+        /// <returns>Founded model or null on failure</returns>
         public Task<MalfunctionGroup> GetAsync(int id) =>
             _unitOfWork.MalfunctionGroupRepository.GetByIdAsync(id);
 
-        public Task<IEnumerable<MalfunctionGroup>> GetAllAsync(uint offset, uint size) =>
+        /// <summary>
+        /// Get enumerable of models
+        /// </summary>
+        /// <param name="offset">How many models to skip</param>
+        /// <param name="size">How many models to take</param>
+        /// <returns>Enumerable of models</returns>
+        public Task<IEnumerable<MalfunctionGroup>> GetRangeAsync(uint offset, uint size) =>
             _unitOfWork.MalfunctionGroupRepository.GetRangeAsync(offset, size);
 
+        /// <summary>
+        /// Create model
+        /// </summary>
+        /// <param name="malfunctionGroup">Model with properties to create</param>
+        /// <returns>Created model or null on failure</returns>
         public async Task<MalfunctionGroup> CreateAsync(MalfunctionGroup malfunctionGroup)
         {
             try
@@ -45,6 +69,11 @@ namespace TransIT.BLL.Services
             }
         }
 
+        /// <summary>
+        /// Update model
+        /// </summary>
+        /// <param name="malfunctionGroup">Model with properties to be updated</param>
+        /// <returns>Updated model or null on failure</returns>
         public async Task<MalfunctionGroup> UpdateAsync(MalfunctionGroup malfunctionGroup)
         {
             try
@@ -65,6 +94,11 @@ namespace TransIT.BLL.Services
             }
         }
 
+        /// <summary>
+        /// Deletes model by id
+        /// </summary>
+        /// <param name="id">Id of model to be deleted</param>
+        /// <returns>Nothing</returns>
         public async Task DeleteAsync(int id)
         {
             try

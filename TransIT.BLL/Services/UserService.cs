@@ -59,7 +59,7 @@ namespace TransIT.BLL.Services
         /// <param name="offset">Where to start</param>
         /// <param name="amount">Amount to give</param>
         /// <returns>List of users</returns>
-        public Task<IEnumerable<User>> GetAsync(uint offset, uint amount) =>
+        public Task<IEnumerable<User>> GetRangeAsync(uint offset, uint amount) =>
             _unitOfWork.UserRepository.GetRangeAsync(offset, amount);
 
         /// <summary>
