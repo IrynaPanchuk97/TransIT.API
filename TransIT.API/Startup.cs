@@ -9,6 +9,11 @@ using TransIT.API.Extensions;
 using TransIT.BLL.Services;
 using FluentValidation.AspNetCore;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Repositories.InterfacesRepositories;
+using TransIT.DAL.Repositories.ImplementedRepositories;
+using TransIT.DAL.UnitOfWork;
+using TransIT.BLL.Security.Hashers;
+using TransIT.DAL.Models;
 
 namespace TransIT.API
 {
@@ -31,7 +36,31 @@ namespace TransIT.API
             services.AddScoped<ICrudService<User>, UserService>();
 
             #endregion
+
+
+            #region            
+            services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IIssueLogRepository, IssueLogRepository>();
+            services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
+            services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
+            services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
             
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddDbContext<TransITDBContext>();
+
+            services.AddSingleton<IPasswordHasher>();
+            #endregion
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
