@@ -12,7 +12,7 @@ namespace TransIT.BLL.Tests.Services.ImplementedServices
     {
         protected override void InitializeService()
         {
-            var mock = _repository.As<IMalfunctionSybgroupRepository>();
+            var mock = _repository.As<IMalfunctionSubgroupRepository>();
             _crudService = new MalfunctionSubgroupService(_unitOfWork.Object, _logger.Object, mock.Object);
         }
     }

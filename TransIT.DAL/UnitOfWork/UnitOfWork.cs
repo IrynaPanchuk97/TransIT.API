@@ -16,7 +16,7 @@ namespace TransIT.DAL.UnitOfWork
         public  IIssueLogRepository IssueLogRepository { get; }
         public  IMalfunctionRepository MalfunctionRepository { get; }
         public  IMalfunctionGroupRepository MalfunctionGroupRepository { get; }
-        public  IMalfunctionSybgroupRepository MalfunctionSybgroupRepository { get; }
+        public  IMalfunctionSubgroupRepository MalfunctionSybgroupRepository { get; }
         public  IRoleRepository RoleRepository { get; }
         public  IUserRepository UserRepository { get; }
         public  IStateRepository StateRepository { get; }

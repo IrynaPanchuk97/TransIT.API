@@ -26,6 +26,6 @@ namespace TransIT.BLL.Services.ImplementedServices
         public MalfunctionSubgroupService(
             IUnitOfWork unitOfWork,
             ILogger<CrudService<MalfunctionSubgroup>> logger,
-            IMalfunctionSybgroupRepository repository) : base(unitOfWork, logger, repository) { }
+            IMalfunctionSubgroupRepository repository) : base(unitOfWork, logger, repository) { }
     }
 }

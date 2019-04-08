@@ -17,8 +17,4 @@
     <ProjectReference Include="..\TransIT.BLL\TransIT.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mock\" />
-  </ItemGroup>
-
 </Project>

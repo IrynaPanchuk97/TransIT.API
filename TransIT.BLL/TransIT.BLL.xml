@@ -134,6 +134,7 @@
             <returns>Entities</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.CreateAsync(`0)">
+            Add methods to service
             <summary>
             Registers a new entity
             </summary>
@@ -205,7 +206,7 @@
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSybgroupRepository)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSubgroupRepository)">
             <summary>
             Ctor
             </summary>
@@ -243,6 +244,19 @@
             <param name="user">User model</param>
             <returns>Is successful</returns>
         </member>
+        <member name="T:TransIT.BLL.Services.VehicleTypeService">
+            <summary>
+            Service for Vehicle Type
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.VehicleTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.VehicleType}},TransIT.DAL.Repositories.InterfacesRepositories.IVehicleTypeRepository)">
+            <summary>
+            ctor
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="logger"></param>
+            <param name="repository"></param>
+        </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService">
             <summary>
             Action type model CRUD
@@ -266,6 +280,11 @@
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
             <summary>
             User model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.IVehicleTypeService">
+            <summary>
+            Interface for Vehicle type Service
             </summary>
         </member>
     </members>

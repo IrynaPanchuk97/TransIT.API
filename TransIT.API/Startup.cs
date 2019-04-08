@@ -37,7 +37,7 @@ namespace TransIT.API
             services.AddScoped<IIssueLogRepository, IssueLogRepository>();
             services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
             services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
-            services.AddScoped<IMalfunctionSybgroupRepository, MalfunctionSubgroupRepository>();
+            services.AddScoped<IMalfunctionSubgroupRepository, MalfunctionSubgroupRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IStateRepository, StateRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
