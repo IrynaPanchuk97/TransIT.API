@@ -32,6 +32,8 @@ namespace TransIT.API
 
             #endregion
             
+            services.ConfigureAuthentication(Configuration);
+            
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
@@ -51,6 +53,8 @@ namespace TransIT.API
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
+//            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }

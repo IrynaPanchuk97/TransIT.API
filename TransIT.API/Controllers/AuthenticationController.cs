@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.BLL.Services.Abstractions;
@@ -8,6 +9,7 @@ using TransIT.DAL.Models.ViewModels;
 namespace TransIT.API.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [EnableCors("CorsPolicy")]
     [Produces("application/json")]
     [Route("api/v1/[controller]/[action]")]
@@ -15,10 +17,8 @@ namespace TransIT.API.Controllers
     {
         private readonly IAuthenticationService _authenticationService;
         
-        public AuthenticationController(IAuthenticationService authenticationService)
-        {
+        public AuthenticationController(IAuthenticationService authenticationService) =>
             _authenticationService = authenticationService;
-        }
         
         [HttpPost]
         public async Task<IActionResult> SignIn([FromBody] LoginViewModel credentials)
