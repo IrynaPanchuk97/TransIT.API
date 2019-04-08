@@ -149,7 +149,7 @@ namespace TransIT.BLL.Tests.Services
             await _malfunctionGroupService.DeleteAsync(id);
 
             Assert.True(_context.Count == previousCount);
-            _unitOfWork.Verify(u => u.SaveAsync(), Times.Once);
+            _logger.Verify(x => x.Log(LogLevel.Error, It.IsAny<EventId>(), It.IsAny<FormattedLogValues>(), It.IsAny<Exception>(), It.IsAny<Func<object, Exception, string>>()), Times.Once);
         }
 
         [Theory]
@@ -207,7 +207,15 @@ namespace TransIT.BLL.Tests.Services
                 .ReturnsAsync((MalfunctionGroup group) => group);
 
             _repository.Setup(r => r.Remove(It.IsAny<MalfunctionGroup>()))
-                .Callback<MalfunctionGroup>(group => _context.RemoveAll(g => g.Id == group.Id));
+                .Callback<MalfunctionGroup>(group =>
+                {
+                    var founded = _context.Find(g => g.Id == group.Id);
+                    if (founded == null)
+                    {
+                        throw new DbUpdateException("", new Exception());
+                    }
+                    _context.Remove(founded);
+                });
 
             _repository.Setup(r => r.Update(It.IsAny<MalfunctionGroup>()))
                 .Callback<MalfunctionGroup>(group => _context[_context.FindIndex(g => g.Id == group.Id)] = group);
@@ -227,7 +235,7 @@ namespace TransIT.BLL.Tests.Services
 
         private void InitializeService()
         {
-            _malfunctionGroupService = new MalfunctionGroupService(_unitOfWork.Object, _logger.Object);
+            _malfunctionGroupService = new MalfunctionGroupService(_unitOfWork.Object, _logger.Object, _repository.Object);
         }
 
         public static IEnumerable<object[]> SampleData =>
