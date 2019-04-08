@@ -80,7 +80,7 @@ namespace TransIT.BLL.Services
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(CreateAsync));
-                return null;
+                throw e;
             }
         }
 
@@ -105,7 +105,7 @@ namespace TransIT.BLL.Services
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(UpdateAsync));
-                return null;
+                throw e;
             }
         }
 
@@ -129,6 +129,7 @@ namespace TransIT.BLL.Services
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(DeleteAsync));
+                throw e;
             }
         }
     }
