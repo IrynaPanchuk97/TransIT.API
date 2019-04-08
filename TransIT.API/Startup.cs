@@ -25,12 +25,7 @@ namespace TransIT.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureAutoMapper();
-
-            #region Services
-
-            services.AddScoped<ICrudService<User>, UserService>();
-
-            #endregion
+            services.ConfigureDataAccessServices();
             
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

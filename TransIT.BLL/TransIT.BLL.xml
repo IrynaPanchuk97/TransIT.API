@@ -89,6 +89,54 @@
             <param name="id">Entity id</param>
             <returns>void</returns>
         </member>
+        <member name="T:TransIT.BLL.Services.MalfunctionGroupService">
+            <summary>
+            Malfunction Group Crud service
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.MalfunctionGroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.MalfunctionGroupService})">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+        </member>
+        <member name="M:TransIT.BLL.Services.MalfunctionGroupService.GetAsync(System.Int32)">
+            <summary>
+            Get model by id
+            </summary>
+            <param name="id">Id of the model to take</param>
+            <returns>Founded model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.MalfunctionGroupService.GetRangeAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Get enumerable of models
+            </summary>
+            <param name="offset">How many models to skip</param>
+            <param name="size">How many models to take</param>
+            <returns>Enumerable of models</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.MalfunctionGroupService.CreateAsync(TransIT.DAL.Models.Entities.MalfunctionGroup)">
+            <summary>
+            Create model
+            </summary>
+            <param name="malfunctionGroup">Model with properties to create</param>
+            <returns>Created model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.MalfunctionGroupService.UpdateAsync(TransIT.DAL.Models.Entities.MalfunctionGroup)">
+            <summary>
+            Update model
+            </summary>
+            <param name="malfunctionGroup">Model with properties to be updated</param>
+            <returns>Updated model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.MalfunctionGroupService.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes model by id
+            </summary>
+            <param name="id">Id of model to be deleted</param>
+            <returns>Nothing</returns>
+        </member>
         <member name="T:TransIT.BLL.Services.UserService">
             <summary>
             User model CRUD

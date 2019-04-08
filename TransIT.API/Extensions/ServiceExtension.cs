@@ -1,5 +1,7 @@
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
+using TransIT.BLL.Services;
+using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.Mappings;
 
 namespace TransIT.API.Extensions
@@ -26,6 +28,12 @@ namespace TransIT.API.Extensions
                 c.AddProfile(new DocumentProfile());
                 c.AddProfile(new SupplierProfile());
             }).CreateMapper());
+        }
+
+        public static void ConfigureDataAccessServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICrudService<User>, UserService>();
+            services.AddScoped<ICrudService<MalfunctionGroup>, MalfunctionGroupService>();
         }
     }
 }

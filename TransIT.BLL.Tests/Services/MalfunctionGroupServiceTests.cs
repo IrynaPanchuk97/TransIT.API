@@ -205,7 +205,7 @@ namespace TransIT.BLL.Tests.Services
                     group.Id = _idCounter++;
                     _context.Add(group);
                 })
-                .ReturnsAsync((EntityEntry<MalfunctionGroup>)null);
+                .ReturnsAsync((MalfunctionGroup group) => group);
 
             _repository.Setup(r => r.Remove(It.IsAny<MalfunctionGroup>()))
                 .Callback<MalfunctionGroup>(group => _context.RemoveAll(g => g.Id == group.Id));
