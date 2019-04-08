@@ -1,8 +1,9 @@
 ﻿using System;
+using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Models.Entities
 {
-    public partial class Token
+    public partial class Token : IEntity
     {
         public int Id { get; set; }
         public string RefreshToken { get; set; }

@@ -4,26 +4,6 @@
         <name>TransIT.BLL</name>
     </assembly>
     <members>
-        <member name="T:TransIT.BLL.Helpers.Abstractions.IJwtFactory">
-            <summary>
-            Behavior of jwt
-            </summary>
-        </member>
-        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GetPrincipalFromExpiredTokenAsync(System.String)">
-            <summary>
-            Exctracts user info from token
-            </summary>
-            <param name="token">Token string</param>
-            <returns>User info</returns>
-        </member>
-        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GenerateTokenAsync(System.Int32,System.String,System.String)">
-            <summary>
-            Generates new token
-            </summary>
-            <param name="email">Email of user in token</param>
-            <param name="role">Role of user in token</param>
-            <returns>Entity token</returns>
-        </member>
         <member name="T:TransIT.BLL.Security.Hashers.IPasswordHasher">
             <summary>
             Interface for classes capable of password hashing
@@ -68,29 +48,70 @@
             <param name="length">Number of bytes in salt</param>
             <returns>Byte array of generated salt</returns>
         </member>
-        <member name="T:TransIT.BLL.Services.Abstractions.IAuthenticationService">
+        <member name="T:TransIT.BLL.Services.CrudService`1">
             <summary>
-            Behavior of authentication
+            Entity CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.ICrudService`1"/>
+        </member>
+        <member name="F:TransIT.BLL.Services.CrudService`1._unitOfWork">
+            <summary>
+            Saves changes
             </summary>
         </member>
-        <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.SignInAsync(TransIT.DAL.Models.ViewModels.LoginViewModel)">
+        <member name="F:TransIT.BLL.Services.CrudService`1._logger">
             <summary>
-            Checks credential
+            Logs on error
             </summary>
-            <param name="credentials">User login and password</param>
-            <returns>Access and refresh tokens</returns>
         </member>
-        <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.TokenAsync(TransIT.DAL.Models.DTOs.TokenDTO)">
+        <member name="F:TransIT.BLL.Services.CrudService`1._repository">
             <summary>
-            Renews a token
+            CRUD operations on entity
             </summary>
-            <param name="token">Old tokens</param>
-            <returns>New tokens</returns>
         </member>
-        <member name="T:TransIT.BLL.Services.AuthenticationService">
+        <member name="M:TransIT.BLL.Services.CrudService`1.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{`0}},TransIT.DAL.Repositories.IBaseRepository{`0})">
             <summary>
-            Authentication service
+            Ctor
             </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on model</param>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.GetAsync(System.Int32)">
+            <summary>
+            Get model by id
+            </summary>
+            <param name="id">Id of the model to take</param>
+            <returns>Founded model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.GetRangeAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Get enumerable of models
+            </summary>
+            <param name="offset">How many models to skip</param>
+            <param name="size">How many models to take</param>
+            <returns>Enumerable of models</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.CreateAsync(`0)">
+            <summary>
+            Create model
+            </summary>
+            <param name="model">Model with properties to create</param>
+            <returns>Created model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.UpdateAsync(`0)">
+            <summary>
+            Update model
+            </summary>
+            <param name="model">Model with properties to be updated</param>
+            <returns>Updated model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes model by id
+            </summary>
+            <param name="id">Id of model to be deleted</param>
+            <returns>Nothing</returns>
         </member>
         <member name="T:TransIT.BLL.Services.ICrudService`1">
             <summary>
@@ -104,7 +125,7 @@
             <param name="id">Entity id</param>
             <returns>Entity</returns>
         </member>
-        <member name="M:TransIT.BLL.Services.ICrudService`1.GetAsync(System.UInt32,System.UInt32)">
+        <member name="M:TransIT.BLL.Services.ICrudService`1.GetRangeAsync(System.UInt32,System.UInt32)">
             <summary>
             Gets entities with pagination
             </summary>
@@ -133,91 +154,106 @@
             <param name="id">Entity id</param>
             <returns>void</returns>
         </member>
-        <member name="T:TransIT.BLL.Services.IUserService">
+        <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService">
             <summary>
-            Set a behavior of entities which act with users
+            Malfunction Group CRUD service
             </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.IUserService.GetAsync(System.Int32)">
-            <summary>
-            Gets user by id
-            </summary>
-            <param name="userId">User id</param>
-            <returns>User</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.IUserService.GetAsync(System.UInt32,System.UInt32)">
-            <summary>
-            Gets users with pagination
-            </summary>
-            <param name="offset">Amount to skip</param>
-            <param name="amount">Amount to take</param>
-            <returns>Users</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.IUserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
-            <summary>
-            Registers a new user
-            </summary>
-            <param name="user">New user model</param>
-            <returns>Whether operation is successful</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.IUserService.UpdateAsync(TransIT.DAL.Models.Entities.User)">
-            <summary>
-            Updates user
-            </summary>
-            <param name="user">User model to update</param>
-            <returns>Whether operation is successful</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.IUserService.DeleteAsync(System.Int32)">
-            <summary>
-            Removes user with this id
-            </summary>
-            <param name="userId">User id</param>
-            <returns>Whether operation is successful</returns>
-        </member>
-        <member name="T:TransIT.BLL.Services.UserService">
-            <summary>
-            User model CRUD
-            </summary>
-        </member>
-        <member name="F:TransIT.BLL.Services.UserService._unitOfWork">
-            <summary>
-            Saves changes
-            </summary>
-        </member>
-        <member name="F:TransIT.BLL.Services.UserService._hasher">
-            <summary>
-            Hasher for password
-            </summary>
-        </member>
-        <member name="F:TransIT.BLL.Services.UserService._logger">
-            <summary>
-            Logger
-            </summary>
-        </member>
-        <member name="M:TransIT.BLL.Services.UserService.#ctor(Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.UserService},TransIT.BLL.Security.Hashers.IPasswordHasher,TransIT.DAL.UnitOfWork.IUnitOfWork)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionGroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionGroupRepository)">
             <summary>
             Ctor
             </summary>
-            <param name="logger">Logs errors</param>
-            <param name="hasher">Used to hash password</param>
-            <param name="unitOfWork">Used to save changes</param>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
-        <member name="M:TransIT.BLL.Services.UserService.GetAsync(System.Int32)">
+        <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionService">
             <summary>
-            Finds user by id
+            Malfunction CRUD service
             </summary>
-            <param name="userId">Id of user</param>
-            <returns>User or null unless not found</returns>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.UserService.GetAsync(System.UInt32,System.UInt32)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.ImplementedServices.MalfunctionService})">
             <summary>
-            Gives users with pagination
+            Ctor
             </summary>
-            <param name="offset">Where to start</param>
-            <param name="amount">Amount to give</param>
-            <returns>List of users</returns>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
         </member>
-        <member name="M:TransIT.BLL.Services.UserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.CreateAsync(TransIT.DAL.Models.Entities.Malfunction)">
+            <summary>
+            Create model
+            </summary>
+            <param name="malfunction">Model with properties to create</param>
+            <returns>Created model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.UpdateAsync(TransIT.DAL.Models.Entities.Malfunction)">
+            <summary>
+            Update model
+            </summary>
+            <param name="malfunction">Model with properties to be updated</param>
+            <returns>Updated model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.DeleteAsync(System.Int32)">
+            <summary>
+            Deletes model by id
+            </summary>
+            <param name="id">Id of model to be deleted</param>
+            <returns>Nothing</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.GetAsync(System.Int32)">
+            <summary>
+            Get model by id
+            </summary>
+            <param name="id">Id of the model to take</param>
+            <returns>Founded model or null on failure</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.GetRangeAsync(System.UInt32,System.UInt32)">
+            <summary>
+            Get enumerable of models
+            </summary>
+            <param name="offset">How many models to skip</param>
+            <param name="amount">How many models to take</param>
+            <returns>Enumerable of models</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService">
+            <summary>
+            Malfunction Subgroup CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSybgroupRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.UserService">
+            <summary>
+            User model CRUD
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IUserService"/>
+        </member>
+        <member name="F:TransIT.BLL.Services.ImplementedServices.UserService._hasher">
+            <summary>
+            Manages password hashing
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.User}},TransIT.DAL.Repositories.InterfacesRepositories.IUserRepository,TransIT.BLL.Security.Hashers.IPasswordHasher)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
             <summary>
             Creates user if login and password not empty and does not exist in DB
             hashes password and set zero to id
@@ -226,19 +262,25 @@
             <param name="user">User model</param>
             <returns>Is successful</returns>
         </member>
-        <member name="M:TransIT.BLL.Services.UserService.UpdateAsync(TransIT.DAL.Models.Entities.User)">
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
-            Updates user if it is found
+            Malfunction group model CRUD
             </summary>
-            <param name="user">User to update</param>
-            <returns>Is successful</returns>
         </member>
-        <member name="M:TransIT.BLL.Services.UserService.DeleteAsync(System.Int32)">
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService">
             <summary>
-            Removes a user in DB
+            Malfunction model CRUD
             </summary>
-            <param name="userId">Id of user to delete</param>
-            <returns>Is successful</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService">
+            <summary>
+            Malfunction Subgroup model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
+            <summary>
+            User model CRUD
+            </summary>
         </member>
     </members>
 </doc>
