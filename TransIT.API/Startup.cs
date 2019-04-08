@@ -30,12 +30,6 @@ namespace TransIT.API
         {
             services.ConfigureAutoMapper();
 
-            #region Services
-
-            services.AddScoped<ICrudService<User>, UserService>();
-
-            #endregion
-
 
             #region Scoped Repositories 
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
