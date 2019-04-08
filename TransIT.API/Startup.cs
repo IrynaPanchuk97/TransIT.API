@@ -3,10 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using TransIT.API.Extensions;
-using TransIT.BLL.Services;
 using FluentValidation.AspNetCore;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -15,6 +12,7 @@ using TransIT.DAL.UnitOfWork;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace TransIT.API
 {
@@ -62,6 +60,8 @@ namespace TransIT.API
             services.AddDbContext<DbContext, TransITDBContext>();
 
             services.AddSingleton<IPasswordHasher>();
+
+            services.ConfigureDataAccessServices();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,29 +27,29 @@ namespace TransIT.DAL.Repositories
             return Entities.SingleOrDefaultAsync(predicate);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await Entities.ToListAsync();
+            return Task.FromResult<IEnumerable<TEntity>>(Entities.AsQueryable());
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await Entities.Where(predicate).ToListAsync();
+            return Task.FromResult<IEnumerable<TEntity>>(Entities.Where(predicate).AsQueryable());
         }
 
-        public virtual Task<EntityEntry<TEntity>> AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
-            return Entities.AddAsync(entity);
+            return (await Entities.AddAsync(entity)).Entity;
         }
 
-        public virtual EntityEntry<TEntity> Remove(TEntity entity)
+        public virtual TEntity Remove(TEntity entity)
         {
-            return Entities.Remove(entity);
+            return  Entities.Remove(entity).Entity;
         }
 
-        public virtual EntityEntry<TEntity> Update(TEntity entity)
+        public virtual TEntity Update(TEntity entity)
         {
-            return Entities.Update(entity);
+            return  Entities.Update(entity).Entity;
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetRangeAsync(uint index, uint amount)
