@@ -39,7 +39,7 @@ namespace TransIT.API
             #endregion
 
 
-            #region            
+            #region Scoped Repositories 
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -55,13 +55,14 @@ namespace TransIT.API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
-            
+            #endregion
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<DbContext, TransITDBContext>();
 
             services.AddSingleton<IPasswordHasher>();
-            #endregion
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
