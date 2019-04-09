@@ -32,9 +32,17 @@ namespace TransIT.BLL.Services.ImplementedServices
         public override Task<IEnumerable<Malfunction>> SearchAsync(string search)
         {
             search = search.ToUpperInvariant();
-            return _unitOfWork.MalfunctionRepository.GetAllAsync(a =>
-                a.Name.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Name.ToUpperInvariant()));
+            try
+            {
+                return _unitOfWork.MalfunctionRepository.GetAllAsync(a =>
+                    a.Name.ToUpperInvariant().Contains(search)
+                    || search.Contains(a.Name.ToUpperInvariant()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(SearchAsync));
+                return null;
+            }
         }
     }
 }

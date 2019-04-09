@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -29,9 +30,17 @@ namespace TransIT.BLL.Services.ImplementedServices
         public override Task<IEnumerable<Issue>> SearchAsync(string search)
         {
             search = search.ToUpperInvariant();
-            return _unitOfWork.IssueRepository.GetAllAsync(a =>
-                a.Summary.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Summary.ToUpperInvariant()));
+            try
+            {
+                return _unitOfWork.IssueRepository.GetAllAsync(a =>
+                    a.Summary.ToUpperInvariant().Contains(search)
+                    || search.Contains(a.Summary.ToUpperInvariant()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(SearchAsync));
+                return null;
+            }
         }
     }
 }

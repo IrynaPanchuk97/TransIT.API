@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TransIT.DAL.Models.Entities;
@@ -26,9 +27,17 @@ namespace TransIT.BLL.Services
         public override Task<IEnumerable<VehicleType>> SearchAsync(string search)
         {
             search = search.ToUpperInvariant();
-            return _unitOfWork.VehicleTypeRepository.GetAllAsync(a =>
-                a.Name.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Name.ToUpperInvariant()));
+            try
+            {
+                return _unitOfWork.VehicleTypeRepository.GetAllAsync(a =>
+                    a.Name.ToUpperInvariant().Contains(search)
+                    || search.Contains(a.Name.ToUpperInvariant()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(SearchAsync));
+                return null;
+            }
         }
     }
 }
