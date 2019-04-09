@@ -66,17 +66,25 @@ namespace TransIT.BLL.Services.ImplementedServices
         public override Task<IEnumerable<User>> SearchAsync(string search)
         {
             search = search.ToUpperInvariant();
-            return _unitOfWork.UserRepository.GetAllAsync(a =>
-                a.Login.ToUpperInvariant().Contains(search)
-                || a.Email.ToUpperInvariant().Contains(search)
-                || a.PhoneNumber.ToUpperInvariant().Contains(search)
-                || a.LastName.ToUpperInvariant().Contains(search)
-                || a.FirstName.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Login.ToUpperInvariant())
-                || search.Contains(a.Email.ToUpperInvariant())
-                || search.Contains(a.PhoneNumber.ToUpperInvariant())
-                || search.Contains(a.LastName.ToUpperInvariant())
-                || search.Contains(a.FirstName.ToUpperInvariant()));
+            try
+            {
+                return _unitOfWork.UserRepository.GetAllAsync(a =>
+                    a.Login.ToUpperInvariant().Contains(search)
+                    || a.Email.ToUpperInvariant().Contains(search)
+                    || a.PhoneNumber.ToUpperInvariant().Contains(search)
+                    || a.LastName.ToUpperInvariant().Contains(search)
+                    || a.FirstName.ToUpperInvariant().Contains(search)
+                    || search.Contains(a.Login.ToUpperInvariant())
+                    || search.Contains(a.Email.ToUpperInvariant())
+                    || search.Contains(a.PhoneNumber.ToUpperInvariant())
+                    || search.Contains(a.LastName.ToUpperInvariant())
+                    || search.Contains(a.FirstName.ToUpperInvariant()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(SearchAsync));
+                return null;
+            }
         }
     }
 }

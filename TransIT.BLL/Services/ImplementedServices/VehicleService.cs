@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
@@ -26,17 +27,25 @@ namespace TransIT.BLL.Services.ImplementedServices
         public override Task<IEnumerable<Vehicle>> SearchAsync(string search)
         {
             search = search.ToUpperInvariant();
-            return _unitOfWork.VehicleRepository.GetAllAsync(a =>
-                a.Brand.ToUpperInvariant().Contains(search)
-                || a.RegNum.ToUpperInvariant().Contains(search)
-                || a.InventoryId.ToUpperInvariant().Contains(search)
-                || a.Model.ToUpperInvariant().Contains(search)
-                || a.Vincode.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Brand.ToUpperInvariant())
-                || search.Contains(a.RegNum.ToUpperInvariant())
-                || search.Contains(a.InventoryId.ToUpperInvariant())
-                || search.Contains(a.Model.ToUpperInvariant())
-                || search.Contains(a.Vincode.ToUpperInvariant()));
+            try
+            {
+                return _unitOfWork.VehicleRepository.GetAllAsync(a =>
+                    a.Brand.ToUpperInvariant().Contains(search)
+                    || a.RegNum.ToUpperInvariant().Contains(search)
+                    || a.InventoryId.ToUpperInvariant().Contains(search)
+                    || a.Model.ToUpperInvariant().Contains(search)
+                    || a.Vincode.ToUpperInvariant().Contains(search)
+                    || search.Contains(a.Brand.ToUpperInvariant())
+                    || search.Contains(a.RegNum.ToUpperInvariant())
+                    || search.Contains(a.InventoryId.ToUpperInvariant())
+                    || search.Contains(a.Model.ToUpperInvariant())
+                    || search.Contains(a.Vincode.ToUpperInvariant()));
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(SearchAsync));
+                return null;
+            }
         }
     }
 }
