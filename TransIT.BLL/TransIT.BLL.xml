@@ -20,7 +20,7 @@
             <summary>
             Generates new token
             </summary>
-            <param name="email">Email of user in token</param>
+            <param name="login">Login of user in token</param>
             <param name="role">Role of user in token</param>
             <returns>Entity token</returns>
         </member>
@@ -157,6 +157,13 @@
             <param name="id">Id of model to be deleted</param>
             <returns>Nothing</returns>
         </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.SearchAsync(System.String)">
+            <summary>
+            Searches for matches
+            </summary>
+            <param name="search">String to search</param>
+            <returns>All matches</returns>
+        </member>
         <member name="T:TransIT.BLL.Services.ICrudService`1">
             <summary>
             Set a behavior of services 
@@ -199,6 +206,13 @@
             <param name="id">Entity id</param>
             <returns>void</returns>
         </member>
+        <member name="M:TransIT.BLL.Services.ICrudService`1.SearchAsync(System.String)">
+            <summary>
+            Searches for matches
+            </summary>
+            <param name="search">String to search</param>
+            <returns>All matches</returns>
+        </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.ActionTypeService">
             <summary>
             Malfunction Group CRUD service
@@ -206,6 +220,66 @@
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.ActionType}},TransIT.DAL.Repositories.InterfacesRepositories.IActionTypeRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.BillService">
+            <summary>
+            Bill CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IBillService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.BillService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Bill}},TransIT.DAL.Repositories.InterfacesRepositories.IBillRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.DocumentService">
+            <summary>
+            Document CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IDocumentService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.DocumentService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Document}},TransIT.DAL.Repositories.InterfacesRepositories.IDocumentRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.IssueLogService">
+            <summary>
+            IssueLog CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IIssueLogService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.IssueLogService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.IssueLog}},TransIT.DAL.Repositories.InterfacesRepositories.IIssueLogRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.IssueService">
+            <summary>
+            Issue CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IIssueService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.IssueService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Issue}},TransIT.DAL.Repositories.InterfacesRepositories.IIssueRepository)">
             <summary>
             Ctor
             </summary>
@@ -251,6 +325,21 @@
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSubgroupRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.SupplierService">
+            <summary>
+            Supplier CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.ISupplierService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.SupplierService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Supplier}},TransIT.DAL.Repositories.InterfacesRepositories.ISupplierRepository)">
             <summary>
             Ctor
             </summary>
@@ -319,6 +408,26 @@
             Action type model CRUD
             </summary>
         </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IBillService">
+            <summary>
+            Bill type model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IDocumentService">
+            <summary>
+            Document type model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IIssueLogService">
+            <summary>
+            IssueLog type model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IIssueService">
+            <summary>
+            Issue type model CRUD
+            </summary>
+        </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
             Malfunction group model CRUD
@@ -332,6 +441,11 @@
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService">
             <summary>
             Malfunction Subgroup model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.ISupplierService">
+            <summary>
+            Supplier type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
