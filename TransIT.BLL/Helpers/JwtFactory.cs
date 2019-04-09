@@ -19,35 +19,34 @@ namespace TransIT.BLL.Helpers
             ThrowIfInvalidOptions(_jwtOptions);
         }
         
-        public Task<(ClaimsPrincipal principal, JwtSecurityToken jwt)> GetPrincipalFromExpiredTokenAsync(string token) =>
-            Task.Run(() => 
-            {
-                var principal = new JwtSecurityTokenHandler()
-                    .ValidateToken(
-                        token,
-                        new TokenValidationParameters
-                        {
-                            ValidateAudience = false,
-                            ValidateIssuer = false,
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = _jwtOptions.SigningCredentials.Key,
-                            ValidateLifetime = false
-                        },
-                        out var securityToken);
-    
-                var jwtSecurityToken = securityToken as JwtSecurityToken;
-                if (jwtSecurityToken == null
-                    || !jwtSecurityToken.Header.Alg.Equals(
-                        SecurityAlgorithms.HmacSha256,
-                        StringComparison.InvariantCultureIgnoreCase))
-                    throw new SecurityTokenException("Invalid token");
+        public (ClaimsPrincipal principal, JwtSecurityToken jwt) GetPrincipalFromExpiredToken(string token)
+        {
+            var principal = new JwtSecurityTokenHandler()
+                .ValidateToken(
+                    token,
+                    new TokenValidationParameters
+                    {
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = _jwtOptions.SigningCredentials.Key,
+                        ValidateLifetime = false
+                    },
+                    out var securityToken);
 
-                
-                return (principal, jwtSecurityToken);
-            });
-        
-        private Task<string> GenerateAccessTokenAsync(int userId, string email, string role) =>
-            Task.Run(() => new JwtSecurityTokenHandler()
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null
+                || !jwtSecurityToken.Header.Alg.Equals(
+                    SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException("Invalid token");
+
+            
+            return (principal, jwtSecurityToken);
+        }
+
+        private string GenerateAccessToken(int userId, string email, string role) =>
+            new JwtSecurityTokenHandler()
                 .WriteToken(new JwtSecurityToken(
                     issuer: _jwtOptions.Issuer,
                     audience: _jwtOptions.Audience,
@@ -55,10 +54,10 @@ namespace TransIT.BLL.Helpers
                     claims: GenerateClaims(userId, email, role),
                     expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_jwtOptions.AccessExpirationMins)),
                     signingCredentials: _jwtOptions.SigningCredentials
-            )));
+                ));
         
-        private Task<string> GenerateRefreshTokenAsync(int userId, string email, string role) =>
-            Task.Run(() => new JwtSecurityTokenHandler()
+        private string GenerateRefreshToken(int userId, string email, string role) =>
+            new JwtSecurityTokenHandler()
                 .WriteToken(new JwtSecurityToken(
                     issuer: _jwtOptions.Issuer,
                     audience: _jwtOptions.Audience,
@@ -66,14 +65,14 @@ namespace TransIT.BLL.Helpers
                     claims: GenerateClaims(userId, email, role),
                     expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_jwtOptions.RefreshExpirationMins)),
                     signingCredentials: _jwtOptions.SigningCredentials
-            )));
+            ));
         
-        public Task<TokenDTO> GenerateTokenAsync(int userId, string email, string role) =>
-            Task.Run(async () => new TokenDTO
-                {
-                    AccessToken = await GenerateAccessTokenAsync(userId, email, role),
-                    RefreshToken = await GenerateRefreshTokenAsync(userId, email, role)
-                });
+        public TokenDTO GenerateToken(int userId, string email, string role) =>
+            new TokenDTO
+            {
+                AccessToken = GenerateAccessToken(userId, email, role),
+                RefreshToken = GenerateRefreshToken(userId, email, role)
+            };
 
         private Claim[] GenerateClaims(int userId, string email, string role) =>
             new[]

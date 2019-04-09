@@ -47,9 +47,8 @@ namespace TransIT.BLL.Services
                 if (user != null && _hasher.CheckMatch(credentials.Password, user.Password))
                 {
                     var role = await _unitOfWork.RoleRepository.GetByIdAsync((int) user.RoleId);
-                    if (role == null) return null;
-
-                    var token = await _jwtFactory.GenerateTokenAsync(user.Id, user.Login, role.Name);
+                    var token = _jwtFactory.GenerateToken(user.Id, user.Login, role?.Name);
+                    
                     if (token == null) return null;
 
                     await _unitOfWork.TokenRepository.AddAsync(new Token
@@ -65,7 +64,7 @@ namespace TransIT.BLL.Services
             }
             catch (Exception e)
             {
-                _logger.LogError(e, nameof(TokenAsync));
+                _logger.LogError(e, nameof(SignInAsync));
                 throw e;
             }
         }
@@ -74,18 +73,17 @@ namespace TransIT.BLL.Services
         {
             try
             {
-                var principal = await _jwtFactory.GetPrincipalFromExpiredTokenAsync(token.AccessToken);
+                var principal = _jwtFactory.GetPrincipalFromExpiredToken(token.AccessToken);
                 var user = await _unitOfWork.UserRepository.GetByIdAsync(int.Parse(principal.jwt.Subject));
                 var role = await _unitOfWork.RoleRepository.GetByIdAsync((int) user.RoleId);
-
+                
                 _unitOfWork.TokenRepository.Remove(
                     (await _unitOfWork.TokenRepository.GetAllAsync(t =>
                         (int) t.CreateId == user.Id
                         && t.RefreshToken == token.RefreshToken))
                     .SingleOrDefault());
 
-                var newToken = await _jwtFactory.GenerateTokenAsync(
-                    user.Id, user.Login, role.Name);
+                var newToken = _jwtFactory.GenerateToken(user.Id, user.Login, role.Name);
                 await _unitOfWork.TokenRepository.AddAsync(new Token
                 {
                     RefreshToken = newToken.RefreshToken,
@@ -95,12 +93,8 @@ namespace TransIT.BLL.Services
                 await _unitOfWork.SaveAsync();
                 return newToken;
             }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(TokenAsync));
-                return null;
-            }
-            catch (SecurityTokenException e)
+            catch (Exception e) 
+                when (e is SecurityTokenException || e is DbUpdateException)
             {
                 _logger.LogError(e, nameof(TokenAsync));
                 return null;

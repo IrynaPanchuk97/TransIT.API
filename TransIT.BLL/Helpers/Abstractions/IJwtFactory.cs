@@ -15,13 +15,13 @@ namespace TransIT.BLL.Helpers.Abstractions
         /// </summary>
         /// <param name="token">Token string</param>
         /// <returns>User info</returns>
-        Task<(ClaimsPrincipal principal, JwtSecurityToken jwt)> GetPrincipalFromExpiredTokenAsync(string token);
+        (ClaimsPrincipal principal, JwtSecurityToken jwt) GetPrincipalFromExpiredToken(string token);
         /// <summary>
         /// Generates new token
         /// </summary>
         /// <param name="email">Email of user in token</param>
         /// <param name="role">Role of user in token</param>
         /// <returns>Entity token</returns>
-        Task<TokenDTO> GenerateTokenAsync(int userId, string email, string role);
+        TokenDTO GenerateToken(int userId, string email, string role);
     }
 }

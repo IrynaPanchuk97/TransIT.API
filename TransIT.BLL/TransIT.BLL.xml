@@ -9,14 +9,14 @@
             Behavior of jwt
             </summary>
         </member>
-        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GetPrincipalFromExpiredTokenAsync(System.String)">
+        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GetPrincipalFromExpiredToken(System.String)">
             <summary>
             Exctracts user info from token
             </summary>
             <param name="token">Token string</param>
             <returns>User info</returns>
         </member>
-        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GenerateTokenAsync(System.Int32,System.String,System.String)">
+        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GenerateToken(System.Int32,System.String,System.String)">
             <summary>
             Generates new token
             </summary>

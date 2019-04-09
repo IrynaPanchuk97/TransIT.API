@@ -64,17 +64,12 @@ namespace TransIT.API.Extensions
 
         private static string GenerateKey(int length)
         {
-            var characterSet =
+            var characterArray =
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxy0123456789".ToCharArray();
             if (length < 0)
                 throw new ArgumentException("length must not be negative", "length");
             if (length > int.MaxValue / 8)
                 throw new ArgumentException("length is too big", "length");
-            if (characterSet == null)
-                throw new ArgumentNullException("characterSet");
-            var characterArray = characterSet.Distinct().ToArray();
-            if (characterArray.Length == 0)
-                throw new ArgumentException("characterSet must not be empty", "characterSet");
 
             var bytes = new byte[length * 8];
             new RNGCryptoServiceProvider().GetBytes(bytes);
