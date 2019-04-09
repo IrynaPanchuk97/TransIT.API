@@ -44,41 +44,41 @@ namespace TransIT.BLL.Helpers
             return (principal, jwtSecurityToken);
         }
 
-        private string GenerateAccessToken(int userId, string email, string role) =>
+        private string GenerateAccessToken(int userId, string login, string role) =>
             new JwtSecurityTokenHandler()
                 .WriteToken(new JwtSecurityToken(
                     issuer: _jwtOptions.Issuer,
                     audience: _jwtOptions.Audience,
                     notBefore: DateTime.UtcNow,
-                    claims: GenerateClaims(userId, email, role),
+                    claims: GenerateClaims(userId, login, role),
                     expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_jwtOptions.AccessExpirationMins)),
                     signingCredentials: _jwtOptions.SigningCredentials
                 ));
         
-        private string GenerateRefreshToken(int userId, string email, string role) =>
+        private string GenerateRefreshToken(int userId, string login, string role) =>
             new JwtSecurityTokenHandler()
                 .WriteToken(new JwtSecurityToken(
                     issuer: _jwtOptions.Issuer,
                     audience: _jwtOptions.Audience,
                     notBefore: DateTime.UtcNow,
-                    claims: GenerateClaims(userId, email, role),
+                    claims: GenerateClaims(userId, login, role),
                     expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(_jwtOptions.RefreshExpirationMins)),
                     signingCredentials: _jwtOptions.SigningCredentials
             ));
         
-        public TokenDTO GenerateToken(int userId, string email, string role) =>
+        public TokenDTO GenerateToken(int userId, string login, string role) =>
             new TokenDTO
             {
-                AccessToken = GenerateAccessToken(userId, email, role),
-                RefreshToken = GenerateRefreshToken(userId, email, role)
+                AccessToken = GenerateAccessToken(userId, login, role),
+                RefreshToken = GenerateRefreshToken(userId, login, role)
             };
 
-        private Claim[] GenerateClaims(int userId, string email, string role) =>
+        private Claim[] GenerateClaims(int userId, string login, string role) =>
             new[]
             {
-                new Claim(JwtRegisteredClaimNames.Iss, email),
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+                new Claim(nameof(login), login),
                 new Claim(nameof(role), role),
+                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, _jwtOptions.JtiGenerator),
                 new Claim(JwtRegisteredClaimNames.Iat, 
                     ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(),
