@@ -7,7 +7,7 @@ using TransIT.DAL.UnitOfWork;
 namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
-    /// BillService Group CRUD service
+    /// Bill CRUD service
     /// </summary>
     /// <see cref="IBillService"/>
     public class BillService : CrudService<Bill>, IBillService
