@@ -28,7 +28,7 @@ namespace TransIT.BLL.Services
             search = search.ToUpperInvariant();
             return _unitOfWork.VehicleTypeRepository.GetAllAsync(a =>
                 a.Name.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Name));
+                || search.Contains(a.Name.ToUpperInvariant()));
         }
     }
 }

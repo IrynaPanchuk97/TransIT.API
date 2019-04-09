@@ -32,12 +32,11 @@ namespace TransIT.BLL.Services.ImplementedServices
                 || a.InventoryId.ToUpperInvariant().Contains(search)
                 || a.Model.ToUpperInvariant().Contains(search)
                 || a.Vincode.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Brand)
-                || search.Contains(a.RegNum)
-                || search.Contains(a.InventoryId)
-                || search.Contains(a.Model)
-                || search.Contains(a.Vincode)
-            );
+                || search.Contains(a.Brand.ToUpperInvariant())
+                || search.Contains(a.RegNum.ToUpperInvariant())
+                || search.Contains(a.InventoryId.ToUpperInvariant())
+                || search.Contains(a.Model.ToUpperInvariant())
+                || search.Contains(a.Vincode.ToUpperInvariant()));
         }
     }
 }

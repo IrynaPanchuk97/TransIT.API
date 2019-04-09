@@ -33,7 +33,7 @@ namespace TransIT.BLL.Services.ImplementedServices
             search = search.ToUpperInvariant();
             return _unitOfWork.MalfunctionSubgroupRepository.GetAllAsync(a =>
                 a.Name.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Name));
+                || search.Contains(a.Name.ToUpperInvariant()));
         }
     }
 }

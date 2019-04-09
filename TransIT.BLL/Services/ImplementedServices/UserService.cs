@@ -72,11 +72,11 @@ namespace TransIT.BLL.Services.ImplementedServices
                 || a.PhoneNumber.ToUpperInvariant().Contains(search)
                 || a.LastName.ToUpperInvariant().Contains(search)
                 || a.FirstName.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Login)
-                || search.Contains(a.Email)
-                || search.Contains(a.PhoneNumber)
-                || search.Contains(a.LastName)
-                || search.Contains(a.FirstName));
+                || search.Contains(a.Login.ToUpperInvariant())
+                || search.Contains(a.Email.ToUpperInvariant())
+                || search.Contains(a.PhoneNumber.ToUpperInvariant())
+                || search.Contains(a.LastName.ToUpperInvariant())
+                || search.Contains(a.FirstName.ToUpperInvariant()));
         }
     }
 }
