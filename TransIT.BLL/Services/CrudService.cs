@@ -132,5 +132,12 @@ namespace TransIT.BLL.Services
                 throw e;
             }
         }
+
+        /// <summary>
+        /// Searches for matches
+        /// </summary>
+        /// <param name="search">String to search</param>
+        /// <returns>All matches</returns>
+        public abstract Task<IEnumerable<TEntity>> SearchAsync(string search);
     }
 }

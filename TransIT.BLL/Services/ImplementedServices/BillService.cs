@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
@@ -9,10 +9,10 @@ using TransIT.DAL.UnitOfWork;
 namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
-    /// Malfunction Group CRUD service
+    /// Bill CRUD service
     /// </summary>
-    /// <see cref="IMalfunctionGroupService"/>
-    public class MalfunctionGroupService : CrudService<MalfunctionGroup>, IMalfunctionGroupService
+    /// <see cref="IBillService"/>
+    public class BillService : CrudService<Bill>, IBillService
     {
         /// <summary>
         /// Ctor
@@ -21,17 +21,17 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// <param name="logger">Log on error</param>
         /// <param name="repository">CRUD operations on entity</param>
         /// <see cref="CrudService{TEntity}"/>
-        public MalfunctionGroupService(
+        public BillService(
             IUnitOfWork unitOfWork,
-            ILogger<CrudService<MalfunctionGroup>> logger,
-            IMalfunctionGroupRepository repository) : base(unitOfWork, logger, repository) { }
-        
-        public override Task<IEnumerable<MalfunctionGroup>> SearchAsync(string search)
+            ILogger<CrudService<Bill>> logger,
+            IBillRepository repository) : base(unitOfWork, logger, repository) { }
+            
+        public override Task<IEnumerable<Bill>> SearchAsync(string search)
         {
             search = search.ToUpperInvariant();
-            return _unitOfWork.MalfunctionGroupRepository.GetAllAsync(a =>
-                a.Name.ToUpperInvariant().Contains(search)
-                || search.Contains(a.Name.ToUpperInvariant()));
+            return _unitOfWork.BillRepository.GetAllAsync(a =>
+                a.Sum.ToString().Contains(search)
+                || search.Contains(a.Sum.ToString()));
         }
     }
 }
