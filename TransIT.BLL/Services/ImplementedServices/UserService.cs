@@ -62,5 +62,21 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>
             _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
+        
+        public override Task<IEnumerable<User>> SearchAsync(string search)
+        {
+            search = search.ToUpperInvariant();
+            return _unitOfWork.UserRepository.GetAllAsync(a =>
+                a.Login.ToUpperInvariant().Contains(search)
+                || a.Email.ToUpperInvariant().Contains(search)
+                || a.PhoneNumber.ToUpperInvariant().Contains(search)
+                || a.LastName.ToUpperInvariant().Contains(search)
+                || a.FirstName.ToUpperInvariant().Contains(search)
+                || search.Contains(a.Login)
+                || search.Contains(a.Email)
+                || search.Contains(a.PhoneNumber)
+                || search.Contains(a.LastName)
+                || search.Contains(a.FirstName));
+        }
     }
 }

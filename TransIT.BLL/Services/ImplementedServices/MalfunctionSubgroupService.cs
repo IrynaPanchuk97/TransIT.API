@@ -27,5 +27,13 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<MalfunctionSubgroup>> logger,
             IMalfunctionSubgroupRepository repository) : base(unitOfWork, logger, repository) { }
+        
+        public override Task<IEnumerable<MalfunctionSubgroup>> SearchAsync(string search)
+        {
+            search = search.ToUpperInvariant();
+            return _unitOfWork.MalfunctionSubgroupRepository.GetAllAsync(a =>
+                a.Name.ToUpperInvariant().Contains(search)
+                || search.Contains(a.Name));
+        }
     }
 }
