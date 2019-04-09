@@ -29,7 +29,6 @@ namespace TransIT.API
 
             #region Services
 
-//            services.AddScoped<ICrudService<User>, UserService>();
             services.AddDbContext<DbContext, TransITDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
@@ -59,7 +58,8 @@ namespace TransIT.API
             services.ConfigureAutoMapper();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureCors();
-            
+            services.ConfigureDataAccessServices();
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());

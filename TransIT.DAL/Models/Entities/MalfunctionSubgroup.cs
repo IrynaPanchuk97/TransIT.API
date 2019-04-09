@@ -1,8 +1,9 @@
 ﻿using System;
+using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Models.Entities
 {
-    public partial class MalfunctionSubgroup
+    public partial class MalfunctionSubgroup : IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Models.Entities
 {
-    public partial class Issue
+    public partial class Issue : IEntity
     {
         public Issue()
         {

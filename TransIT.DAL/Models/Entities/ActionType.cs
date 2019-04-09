@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Models.Entities
 {
-    public partial class ActionType
+    public partial class ActionType : IEntity
     {
         public ActionType()
         {

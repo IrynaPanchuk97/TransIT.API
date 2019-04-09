@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.BLL.Services
 {
     /// <summary>
     /// Set a behavior of services 
     /// </summary>
-    public interface ICrudService<T>
+    public interface ICrudService<T> where T : class, IEntity, new()
     {
         /// <summary>
         /// Gets entity by id
@@ -20,7 +21,8 @@ namespace TransIT.BLL.Services
         /// <param name="offset">Amount to skip</param>
         /// <param name="amount">Amount to take</param>
         /// <returns>Entities</returns>
-        Task<IEnumerable<T>> GetAsync(uint offset, uint amount);
+        Task<IEnumerable<T>> GetRangeAsync(uint offset, uint amount);
+        /// Add methods to service
         /// <summary>
         /// Registers a new entity
         /// </summary>
