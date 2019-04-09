@@ -4,6 +4,26 @@
         <name>TransIT.BLL</name>
     </assembly>
     <members>
+        <member name="T:TransIT.BLL.Helpers.Abstractions.IJwtFactory">
+            <summary>
+            Behavior of jwt
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GetPrincipalFromExpiredToken(System.String)">
+            <summary>
+            Exctracts user info from token
+            </summary>
+            <param name="token">Token string</param>
+            <returns>User info</returns>
+        </member>
+        <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GenerateToken(System.Int32,System.String,System.String)">
+            <summary>
+            Generates new token
+            </summary>
+            <param name="email">Email of user in token</param>
+            <param name="role">Role of user in token</param>
+            <returns>Entity token</returns>
+        </member>
         <member name="T:TransIT.BLL.Security.Hashers.IPasswordHasher">
             <summary>
             Interface for classes capable of password hashing
@@ -47,6 +67,30 @@
             </summary>
             <param name="length">Number of bytes in salt</param>
             <returns>Byte array of generated salt</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.Abstractions.IAuthenticationService">
+            <summary>
+            Behavior of authentication
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.SignInAsync(TransIT.DAL.Models.ViewModels.LoginViewModel)">
+            <summary>
+            Checks credential
+            </summary>
+            <param name="credentials">User login and password</param>
+            <returns>Access and refresh tokens</returns>
+        </member>
+        <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.TokenAsync(TransIT.DAL.Models.DTOs.TokenDTO)">
+            <summary>
+            Renews a token
+            </summary>
+            <param name="token">Old tokens</param>
+            <returns>New tokens</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.AuthenticationService">
+            <summary>
+            Authentication service
+            </summary>
         </member>
         <member name="T:TransIT.BLL.Services.CrudService`1">
             <summary>
@@ -244,6 +288,19 @@
             <param name="user">User model</param>
             <returns>Is successful</returns>
         </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.VehicleService">
+            <summary>
+            Service for Vehicle
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.VehicleService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Vehicle}},TransIT.DAL.Repositories.InterfacesRepositories.IVehicleRepository)">
+            <summary>
+            ctor
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="logger"></param>
+            <param name="repository"></param>
+        </member>
         <member name="T:TransIT.BLL.Services.VehicleTypeService">
             <summary>
             Service for Vehicle Type
@@ -280,6 +337,11 @@
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
             <summary>
             User model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IVehicleService">
+            <summary>
+            Interface for Vehicle service
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.IVehicleTypeService">
