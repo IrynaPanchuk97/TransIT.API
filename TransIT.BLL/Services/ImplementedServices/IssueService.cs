@@ -7,7 +7,7 @@ using TransIT.DAL.UnitOfWork;
 namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
-    /// Malfunction Group CRUD service
+    /// Issue CRUD service
     /// </summary>
     /// <see cref="IIssueService"/>
     public class IssueService : CrudService<Issue>, IIssueService
