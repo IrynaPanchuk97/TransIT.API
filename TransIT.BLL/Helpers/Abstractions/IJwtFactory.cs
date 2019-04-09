@@ -19,9 +19,9 @@ namespace TransIT.BLL.Helpers.Abstractions
         /// <summary>
         /// Generates new token
         /// </summary>
-        /// <param name="email">Email of user in token</param>
+        /// <param name="login">Login of user in token</param>
         /// <param name="role">Role of user in token</param>
         /// <returns>Entity token</returns>
-        TokenDTO GenerateToken(int userId, string email, string role);
+        TokenDTO GenerateToken(int userId, string login, string role);
     }
 }
