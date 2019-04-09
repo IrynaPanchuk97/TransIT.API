@@ -46,7 +46,7 @@ namespace TransIT.BLL.Services
         /// Searches for matches
         /// </summary>
         /// <param name="search">String to search</param>
-        /// <returns>All mathces</returns>
+        /// <returns>All matches</returns>
         Task<IEnumerable<T>> SearchAsync(string search);
     }
 }
