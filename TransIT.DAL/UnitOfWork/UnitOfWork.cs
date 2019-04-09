@@ -16,7 +16,7 @@ namespace TransIT.DAL.UnitOfWork
         public  IIssueLogRepository IssueLogRepository { get; }
         public  IMalfunctionRepository MalfunctionRepository { get; }
         public  IMalfunctionGroupRepository MalfunctionGroupRepository { get; }
-        public  IMalfunctionSubgroupRepository MalfunctionSybgroupRepository { get; }
+        public  IMalfunctionSubgroupRepository MalfunctionSubgroupRepository { get; }
         public  IRoleRepository RoleRepository { get; }
         public  IUserRepository UserRepository { get; }
         public  IStateRepository StateRepository { get; }
@@ -27,21 +27,21 @@ namespace TransIT.DAL.UnitOfWork
 
 
         public UnitOfWork(DbContext context,
-            ActionTypeRepository actionTypeRepository,
-            BillRepository billRepository,
-            DocumentRepository documentRepository,
-            IssueRepository issueRepository,
-            IssueLogRepository issueLogRepository,
-            MalfunctionRepository malfunctionRepository,
-            MalfunctionGroupRepository malfunctionGroupRepository,
-            MalfunctionSubgroupRepository malfunctionSubgroupRepository,
-            RoleRepository roleRepository,
-            StateRepository stateRepository,
-            SupplierRepository supplierRepository,
-            UserRepository userRepository,
-            VehicleRepository vehicleRepository,
-            VehicleTypeRepository vehicleTypeRepository,
-            TokenRepository tokenRepository)
+            IActionTypeRepository actionTypeRepository,
+            IBillRepository billRepository,
+            IDocumentRepository documentRepository,
+            IIssueRepository issueRepository,
+            IIssueLogRepository issueLogRepository,
+            IMalfunctionRepository malfunctionRepository,
+            IMalfunctionGroupRepository malfunctionGroupRepository,
+            IMalfunctionSubgroupRepository malfunctionSubgroupRepository,
+            IRoleRepository roleRepository,
+            IStateRepository stateRepository,
+            ISupplierRepository supplierRepository,
+            IUserRepository userRepository,
+            IVehicleRepository vehicleRepository,
+            IVehicleTypeRepository vehicleTypeRepository,
+            ITokenRepository tokenRepository)
         {
             _context = context;
             ActionTypeRepository = actionTypeRepository;
@@ -51,7 +51,7 @@ namespace TransIT.DAL.UnitOfWork
             IssueLogRepository = issueLogRepository;
             MalfunctionRepository = malfunctionRepository;
             MalfunctionGroupRepository = malfunctionGroupRepository;
-            MalfunctionSybgroupRepository = malfunctionSubgroupRepository;
+            MalfunctionSubgroupRepository = malfunctionSubgroupRepository;
             RoleRepository = roleRepository;
             UserRepository = userRepository;
             StateRepository = stateRepository;

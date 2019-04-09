@@ -5,12 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TransIT.API.Extensions;
 using FluentValidation.AspNetCore;
-using TransIT.DAL.Repositories.InterfacesRepositories;
-using TransIT.DAL.Repositories.ImplementedRepositories;
-using TransIT.DAL.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
-using Microsoft.EntityFrameworkCore;
+using TransIT.DAL.Repositories.ImplementedRepositories;
+using TransIT.DAL.Repositories.InterfacesRepositories;
+using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.API
 {
@@ -26,10 +26,13 @@ namespace TransIT.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.ConfigureAutoMapper();
 
+            #region Services
 
-            #region Scoped Repositories 
+            services.AddDbContext<DbContext, TransITDBContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -45,14 +48,16 @@ namespace TransIT.API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
-            #endregion
-
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddDbContext<DbContext, TransITDBContext>();
-
-            services.AddSingleton<IPasswordHasher>();
-
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+            
+            #endregion
+            
+            services.ConfigureAutoMapper();
+            services.ConfigureAuthentication(Configuration);
+            services.ConfigureCors();
             services.ConfigureDataAccessServices();
 
             services.AddMvc()
@@ -74,6 +79,8 @@ namespace TransIT.API
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }
