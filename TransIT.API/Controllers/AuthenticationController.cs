@@ -26,9 +26,7 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var res = await _authenticationService.SignInAsync(credentials);
-                return res == null
-                    ? Forbid() as IActionResult
-                    : Json(res);
+                if (res != null) return Json(res);
             }
             return BadRequest();
         }
