@@ -134,6 +134,7 @@
             <returns>Entities</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.CreateAsync(`0)">
+            Add methods to service
             <summary>
             Registers a new entity
             </summary>
@@ -153,6 +154,21 @@
             </summary>
             <param name="id">Entity id</param>
             <returns>void</returns>
+        </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.ActionTypeService">
+            <summary>
+            Malfunction Group CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.ActionType}},TransIT.DAL.Repositories.InterfacesRepositories.IActionTypeRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService">
             <summary>
@@ -175,48 +191,14 @@
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.ImplementedServices.MalfunctionService})">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Malfunction}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionRepository)">
             <summary>
             Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.CreateAsync(TransIT.DAL.Models.Entities.Malfunction)">
-            <summary>
-            Create model
-            </summary>
-            <param name="malfunction">Model with properties to create</param>
-            <returns>Created model or null on failure</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.UpdateAsync(TransIT.DAL.Models.Entities.Malfunction)">
-            <summary>
-            Update model
-            </summary>
-            <param name="malfunction">Model with properties to be updated</param>
-            <returns>Updated model or null on failure</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.DeleteAsync(System.Int32)">
-            <summary>
-            Deletes model by id
-            </summary>
-            <param name="id">Id of model to be deleted</param>
-            <returns>Nothing</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.GetAsync(System.Int32)">
-            <summary>
-            Get model by id
-            </summary>
-            <param name="id">Id of the model to take</param>
-            <returns>Founded model or null on failure</returns>
-        </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.GetRangeAsync(System.UInt32,System.UInt32)">
-            <summary>
-            Get enumerable of models
-            </summary>
-            <param name="offset">How many models to skip</param>
-            <param name="amount">How many models to take</param>
-            <returns>Enumerable of models</returns>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService">
             <summary>
@@ -224,7 +206,7 @@
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService"/>
         </member>
-        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSybgroupRepository)">
+        <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSubgroupRepository)">
             <summary>
             Ctor
             </summary>
@@ -262,6 +244,24 @@
             <param name="user">User model</param>
             <returns>Is successful</returns>
         </member>
+        <member name="T:TransIT.BLL.Services.VehicleTypeService">
+            <summary>
+            Service for Vehicle Type
+            </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.VehicleTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.VehicleType}},TransIT.DAL.Repositories.InterfacesRepositories.IVehicleTypeRepository)">
+            <summary>
+            ctor
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="logger"></param>
+            <param name="repository"></param>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService">
+            <summary>
+            Action type model CRUD
+            </summary>
+        </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
             Malfunction group model CRUD
@@ -280,6 +280,11 @@
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
             <summary>
             User model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.IVehicleTypeService">
+            <summary>
+            Interface for Vehicle type Service
             </summary>
         </member>
     </members>
