@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -20,5 +24,14 @@ namespace TransIT.BLL.Services.ImplementedServices
         public VehicleService(IUnitOfWork unitOfWork,
             ILogger<CrudService<Vehicle>> logger,
             IVehicleRepository repository) : base(unitOfWork, logger, repository) { }
+
+        protected override Task<IEnumerable<Vehicle>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.VehicleRepository.GetAllAsync(entity =>
+                strs.Any(str =>
+                    entity.Brand.ToUpperInvariant().Contains(str)
+                    || entity.RegNum.ToUpperInvariant().Contains(str)
+                    || entity.InventoryId.ToUpperInvariant().Contains(str)
+                    || entity.Model.ToUpperInvariant().Contains(str)
+                    || entity.Vincode.ToUpperInvariant().Contains(str)));
     }
 }
