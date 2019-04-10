@@ -30,7 +30,7 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await _dataService.GetRangeAsync(offset, amount)
+                var res = await _dataService.GetRangeAsync(offset, amount);
                 if (res != null) 
                     return Json(res.Select(x =>
                         _mapper.Map<TEntityDTO>(x)));
