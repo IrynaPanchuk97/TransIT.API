@@ -62,29 +62,13 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>
             _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
-        
-        public override Task<IEnumerable<User>> SearchAsync(string search)
-        {
-            search = search.ToUpperInvariant();
-            try
-            {
-                return _unitOfWork.UserRepository.GetAllAsync(a =>
-                    a.Login.ToUpperInvariant().Contains(search)
-                    || a.Email.ToUpperInvariant().Contains(search)
-                    || a.PhoneNumber.ToUpperInvariant().Contains(search)
-                    || a.LastName.ToUpperInvariant().Contains(search)
-                    || a.FirstName.ToUpperInvariant().Contains(search)
-                    || search.Contains(a.Login.ToUpperInvariant())
-                    || search.Contains(a.Email.ToUpperInvariant())
-                    || search.Contains(a.PhoneNumber.ToUpperInvariant())
-                    || search.Contains(a.LastName.ToUpperInvariant())
-                    || search.Contains(a.FirstName.ToUpperInvariant()));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(SearchAsync));
-                return null;
-            }
-        }
+
+        protected override Task<IEnumerable<User>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.UserRepository.GetAllAsync(entity =>
+                strs.Any(str => entity.Login.ToUpperInvariant().Contains(str)
+                || entity.Email.ToUpperInvariant().Contains(str)
+                || entity.PhoneNumber.ToUpperInvariant().Contains(str)
+                || entity.LastName.ToUpperInvariant().Contains(str)
+                || entity.FirstName.ToUpperInvariant().Contains(str)));
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TransIT.BLL.Services.InterfacesRepositories;
@@ -28,21 +29,9 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<Malfunction>> logger,
             IMalfunctionRepository repository) : base(unitOfWork, logger, repository) { }
-        
-        public override Task<IEnumerable<Malfunction>> SearchAsync(string search)
-        {
-            search = search.ToUpperInvariant();
-            try
-            {
-                return _unitOfWork.MalfunctionRepository.GetAllAsync(a =>
-                    a.Name.ToUpperInvariant().Contains(search)
-                    || search.Contains(a.Name.ToUpperInvariant()));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(SearchAsync));
-                return null;
-            }
-        }
+
+        protected override Task<IEnumerable<Malfunction>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.MalfunctionRepository.GetAllAsync(entity =>
+                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
     }
 }
