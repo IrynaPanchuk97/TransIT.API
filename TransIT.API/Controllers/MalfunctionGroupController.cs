@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,35 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
+    [Authorize(Roles = "ADMIN")]
     public class MalfunctionGroupController : DataController<MalfunctionGroup, MalfunctionGroupDTO>
     {
-        private IMalfunctionGroupService _malfunctionGroupService;
+        private readonly IMalfunctionGroupService _malfunctionGroupService;
 
         public MalfunctionGroupController(IMapper mapper, IMalfunctionGroupService malfunctionGroupService) : base(mapper, malfunctionGroupService)
         {
             _malfunctionGroupService = malfunctionGroupService;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
+        public override Task<IActionResult> Get([FromQuery] uint offset, uint amount)
+        {
+            return base.Get(offset, amount);
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
+        public override Task<IActionResult> Get(int id)
+        {
+            return base.Get(id);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
+        public override Task<IActionResult> Get([FromQuery] string search)
+        {
+            return base.Get(search);
         }
     }
 }
