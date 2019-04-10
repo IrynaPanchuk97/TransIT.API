@@ -164,6 +164,13 @@
             <param name="search">String to search</param>
             <returns>All matches</returns>
         </member>
+        <member name="M:TransIT.BLL.Services.CrudService`1.SearchExpressionAsync(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Expression to find matches
+            </summary>
+            <param name="strs">Trimmed strings</param>
+            <returns>Matched entities</returns>
+        </member>
         <member name="T:TransIT.BLL.Services.ICrudService`1">
             <summary>
             Set a behavior of services 
@@ -367,6 +374,13 @@
             <param name="logger">Log on error</param>
             <param name="repository">CRUD operations on entity</param>
             <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.GetAsync(System.Int32)">
+            <summary>
+            Gets user by id and ensures that role is assigned
+            </summary>
+            <param name="id">Id of user</param>
+            <returns>User with id</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
             <summary>
