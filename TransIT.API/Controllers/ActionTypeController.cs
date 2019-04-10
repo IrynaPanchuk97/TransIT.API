@@ -35,6 +35,5 @@ namespace TransIT.API.Controllers
         {
             return base.Get(offset, amount);
         }
-
     }
 }
