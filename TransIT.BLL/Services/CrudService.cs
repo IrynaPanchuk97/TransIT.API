@@ -142,9 +142,9 @@ namespace TransIT.BLL.Services
         /// <returns>All matches</returns>
         public async virtual Task<IEnumerable<TEntity>> SearchAsync(string search)
         {
-            var words = search.ToUpperInvariant()
+            var words = search
                 .Split(' ', ',', '.')
-                .Select(x => x.Trim());
+                .Select(x => x.Trim().ToUpperInvariant());
             try
             {
                 return await SearchExpressionAsync(words);
