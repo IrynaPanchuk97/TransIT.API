@@ -87,8 +87,7 @@ namespace TransIT.API.Controllers
             {
                 var entity = _mapper.Map<TEntity>(obj);
                 entity.Id = id;
-                entity = await _dataService.UpdateAsync(entity);
-                if (entity != null)
+                if (await _dataService.UpdateAsync(entity) != null)
                     return NoContent();
             }
             return BadRequest();
