@@ -50,7 +50,7 @@ namespace TransIT.API.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
+        [HttpGet("/search")]
         public virtual async Task<IActionResult> Get([FromQuery] string search)
         {
             if (ModelState.IsValid)
