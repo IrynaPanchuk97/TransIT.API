@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 
@@ -10,5 +11,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
             : base(context)
         {
         }
+
+        protected override IQueryable<User> ComplexEntities => Entities.Include(u => u.Role);
     }
 }
