@@ -343,6 +343,11 @@ namespace TransIT.DAL.Models
                     .HasForeignKey(d => d.CreateId)
                     .HasConstraintName("FK_CREATE_MALFUNCTION_ROLE");
 
+                entity.HasOne(d => d.MalfunctionSubgroup)
+                    .WithMany(p => p.Malfunction)
+                    .HasForeignKey(d => d.MalfunctionSubgroupId)
+                    .HasConstraintName("FK_MALFUNCTION_SUBGROUP_MALFUNCTION_SUBGROUP");
+
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.MalfunctionMod)
                     .HasForeignKey(d => d.ModId)
