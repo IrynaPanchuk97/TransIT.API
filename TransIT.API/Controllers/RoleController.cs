@@ -21,5 +21,23 @@ namespace TransIT.API.Controllers
         {
             _roleService = roleService;
         }
+
+        [HttpPost]
+        public virtual Task<IActionResult> Create([FromBody] Role obj)
+        {
+            return Task.FromResult(BadRequest() as IActionResult);
+        }
+        
+        [HttpPut("{id}")]
+        public virtual Task<IActionResult> Update(int id, [FromBody] Role obj)
+        {
+            return Task.FromResult(BadRequest() as IActionResult);
+        }
+
+        [HttpDelete("{id}")]
+        public virtual Task<IActionResult> Delete(int id)
+        {
+            return Task.FromResult(BadRequest() as IActionResult);
+        }
     }
 }
