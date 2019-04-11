@@ -19,18 +19,21 @@ namespace TransIT.API.Controllers
             _vehicleTypeService = vehicleTypeService;
         }
 
+        [HttpGet("{id}")]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get(int id)
         {
             return base.Get(id);
         }
 
+        [HttpGet]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] string search)
         {
             return base.Get(search);
         }
 
+        [HttpGet]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] uint offset, uint amount)
         {
@@ -38,3 +41,4 @@ namespace TransIT.API.Controllers
         }
     }
 }
+
