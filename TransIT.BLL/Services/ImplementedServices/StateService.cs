@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
@@ -12,10 +10,10 @@ using TransIT.DAL.UnitOfWork;
 namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
-    /// Malfunction Group CRUD service
+    /// State Group CRUD service
     /// </summary>
-    /// <see cref="IActionTypeService"/>
-    public class ActionTypeService : CrudService<ActionType>, IActionTypeService
+    /// <see cref="IStateService"/>
+    public class StateService : CrudService<State>, IStateService
     {
         /// <summary>
         /// Ctor
@@ -24,13 +22,13 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// <param name="logger">Log on error</param>
         /// <param name="repository">CRUD operations on entity</param>
         /// <see cref="CrudService{TEntity}"/>
-        public ActionTypeService(
+        public StateService(
             IUnitOfWork unitOfWork,
-            ILogger<CrudService<ActionType>> logger,
-            IActionTypeRepository repository) : base(unitOfWork, logger, repository) { }
+            ILogger<CrudService<State>> logger,
+            IStateRepository repository) : base(unitOfWork, logger, repository) { }
         
-        protected override Task<IEnumerable<ActionType>> SearchExpressionAsync(IEnumerable<string> strs) =>
-                _unitOfWork.ActionTypeRepository.GetAllAsync(entity =>
-                    strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
+        protected override Task<IEnumerable<State>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.StateRepository.GetAllAsync(entity =>
+                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
     }
 }

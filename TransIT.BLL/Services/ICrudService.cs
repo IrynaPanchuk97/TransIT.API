@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities.Abstractions;
@@ -41,5 +42,11 @@ namespace TransIT.BLL.Services
         /// <param name="id">Entity id</param>
         /// <returns>void</returns>
         Task DeleteAsync(int id);
+        /// <summary>
+        /// Searches for matches
+        /// </summary>
+        /// <param name="search">String to search</param>
+        /// <returns>All matches</returns>
+        Task<IEnumerable<T>> SearchAsync(string search);
     }
 }

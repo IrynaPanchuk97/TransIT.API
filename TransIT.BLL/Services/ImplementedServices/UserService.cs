@@ -41,6 +41,20 @@ namespace TransIT.BLL.Services.ImplementedServices
         }
 
         /// <summary>
+        /// Gets user by id and ensures that role is assigned
+        /// </summary>
+        /// <param name="id">Id of user</param>
+        /// <returns>User with id</returns>
+        public async override Task<User> GetAsync(int id)
+        {
+            var user = await base.GetAsync(id);
+            if (user.Role == null)
+                user.Role = await _unitOfWork.RoleRepository
+                    .GetByIdAsync((int)user.RoleId);
+            return user;
+        }
+
+        /// <summary>
         /// Creates user if login and password not empty and does not exist in DB
         /// hashes password and set zero to id
         /// </summary>
@@ -62,5 +76,13 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>
             _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
+        
+        protected override Task<IEnumerable<User>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.UserRepository.GetAllAsync(entity =>
+                strs.Any(str => entity.Login.ToUpperInvariant().Contains(str)
+                || entity.Email.ToUpperInvariant().Contains(str)
+                || entity.PhoneNumber.ToUpperInvariant().Contains(str)
+                || entity.LastName.ToUpperInvariant().Contains(str)
+                || entity.FirstName.ToUpperInvariant().Contains(str)));
     }
 }
