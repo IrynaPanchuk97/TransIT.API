@@ -35,7 +35,7 @@ namespace TransIT.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public virtual Task<IActionResult> Delete(int id)
+        public override Task<IActionResult> Delete(int id)
         {
             return Task.FromResult(BadRequest() as IActionResult);
         }
