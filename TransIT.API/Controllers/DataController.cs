@@ -14,7 +14,7 @@ namespace TransIT.API.Controllers
     [Route("api/v1/[controller]")]
     public abstract class DataController<TEntity, TEntityDTO> : Controller
         where TEntity : class, IEntity, new()
-        where TEntityDTO : class, new()
+        where TEntityDTO : class
     {
         private readonly ICrudService<TEntity> _dataService;
         protected readonly IMapper _mapper;
@@ -69,7 +69,7 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var entity = await _dataService.CreateAsync(
-                    Mapper.Map<TEntity>(obj));
+                    _mapper.Map<TEntity>(obj));
                 if (entity != null)
                     return CreatedAtRoute(
                         routeName: $"{Request.Path.Value}/{entity.Id.ToString()}",

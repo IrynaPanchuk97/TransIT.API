@@ -13,13 +13,13 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 namespace TransIT.API.Controllers
 {
     [Authorize(Roles = "ADMIN")]
-    public class UserController : DataController<User, UserDTO>
+    public class RoleController : DataController<Role, string>
     {
-        private IUserService _userService;
+        private IRoleService _roleService;
         
-        public UserController(IMapper mapper, IUserService userService) : base(mapper, userService)
+        public RoleController(IMapper mapper, IRoleService roleService) : base(mapper, roleService)
         {
-            _userService = userService;
+            _roleService = roleService;
         }
     }
 }
