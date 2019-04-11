@@ -7,11 +7,11 @@ namespace TransIT.API.Extensions
         public static void ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options => options
-                    .AddPolicy("CorsPolicy", x => x
-                        .AllowAnyHeader()
-                        .AllowCredentials()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin()));
+                .AddPolicy("CorsPolicy", x => x
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()));
         }
     }
 }
