@@ -163,6 +163,11 @@
             </summary>
             <param name="search">String to search</param>
             <returns>All matches</returns>
+            <summary>
+            Searches for matches
+            </summary>
+            <param name="search">String to search</param>
+            <returns>All matches</returns>
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.SearchExpressionAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -340,6 +345,21 @@
             <param name="repository">CRUD operations on entity</param>
             <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.RoleService">
+            <summary>
+            Malfunction CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.RoleService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Role}},TransIT.DAL.Repositories.InterfacesRepositories.IRoleRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.SupplierService">
             <summary>
                 Supplier CRUD service
@@ -455,6 +475,11 @@
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService">
             <summary>
                 Malfunction Subgroup model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IRoleService">
+            <summary>
+            Role model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.ISupplierService">
