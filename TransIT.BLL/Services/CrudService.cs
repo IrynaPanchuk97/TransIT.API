@@ -134,12 +134,6 @@ namespace TransIT.BLL.Services
             }
         }
 
-        /// <summary>
-        /// Searches for matches
-        /// </summary>
-        /// <param name="search">String to search</param>
-        /// <returns>All matches</returns>
-        /// <summary>
         /// Searches for matches
         /// </summary>
         /// <param name="search">String to search</param>
