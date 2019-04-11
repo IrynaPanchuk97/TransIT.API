@@ -20,6 +20,6 @@ namespace TransIT.API.Controllers
         public UserController(IMapper mapper, IUserService userService) : base(mapper, userService)
         {
             _userService = userService;
-        }   
+        }
     }
 }

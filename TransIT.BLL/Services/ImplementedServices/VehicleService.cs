@@ -24,7 +24,7 @@ namespace TransIT.BLL.Services.ImplementedServices
         public VehicleService(IUnitOfWork unitOfWork,
             ILogger<CrudService<Vehicle>> logger,
             IVehicleRepository repository) : base(unitOfWork, logger, repository) { }
-
+        
         protected override Task<IEnumerable<Vehicle>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.VehicleRepository.GetAllAsync(entity =>
                 strs.Any(str =>

@@ -76,7 +76,7 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>
             _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
-
+        
         protected override Task<IEnumerable<User>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.UserRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Login.ToUpperInvariant().Contains(str)

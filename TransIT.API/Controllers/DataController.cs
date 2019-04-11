@@ -14,7 +14,7 @@ namespace TransIT.API.Controllers
     [Route("api/v1/[controller]")]
     public abstract class DataController<TEntity, TEntityDTO> : Controller
         where TEntity : class, IEntity, new()
-        where TEntityDTO : class, new()
+        where TEntityDTO : class
     {
         private readonly ICrudService<TEntity> _dataService;
         protected readonly IMapper _mapper;
@@ -26,7 +26,7 @@ namespace TransIT.API.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> Get([FromQuery] uint offset, uint amount)
+        public virtual async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +70,6 @@ namespace TransIT.API.Controllers
             {
                 var entity = await _dataService.CreateAsync(
                     _mapper.Map<TEntity>(obj));
-
                 if (entity != null)
                     return CreatedAtRoute(
                         routeName: $"{Request.Path.Value}/{entity.Id.ToString()}",

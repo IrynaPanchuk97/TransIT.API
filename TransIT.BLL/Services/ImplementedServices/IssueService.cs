@@ -27,7 +27,7 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<Issue>> logger,
             IIssueRepository repository) : base(unitOfWork, logger, repository) { }
-
+        
         protected override Task<IEnumerable<Issue>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.IssueRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Summary.ToUpperInvariant().Contains(str)));

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -135,7 +134,6 @@ namespace TransIT.BLL.Services
             }
         }
 
-        /// <summary>
         /// Searches for matches
         /// </summary>
         /// <param name="search">String to search</param>
@@ -155,7 +153,7 @@ namespace TransIT.BLL.Services
                 return null;
             }
         }
-
+        
         /// <summary>
         /// Expression to find matches
         /// </summary>
