@@ -33,9 +33,9 @@ namespace TransIT.API.Controllers
             return base.Get(search);
         }
 
-        [HttpGet]
+        [HttpGet("/search")]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
-        public override Task<IActionResult> Get([FromQuery] uint offset, uint amount)
+        public virtual Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
             return base.Get(offset, amount);
         }
