@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -23,22 +26,10 @@ namespace TransIT.BLL.Services
             IUnitOfWork unitOfWork,
             ILogger<CrudService<VehicleType>> logger,
             IVehicleTypeRepository repository) : base(unitOfWork, logger, repository) { }
-        
-        public override Task<IEnumerable<VehicleType>> SearchAsync(string search)
-        {
-            search = search.ToUpperInvariant();
-            try
-            {
-                return _unitOfWork.VehicleTypeRepository.GetAllAsync(a =>
-                    a.Name.ToUpperInvariant().Contains(search)
-                    || search.Contains(a.Name.ToUpperInvariant()));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(SearchAsync));
-                return null;
-            }
-        }
+
+        protected override Task<IEnumerable<VehicleType>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.VehicleTypeRepository.GetAllAsync(entity =>
+                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
     }
 }
 

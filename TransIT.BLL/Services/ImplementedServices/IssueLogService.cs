@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
@@ -26,21 +27,9 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<IssueLog>> logger,
             IIssueLogRepository repository) : base(unitOfWork, logger, repository) { }
-        
-        public override Task<IEnumerable<IssueLog>> SearchAsync(string search)
-        {
-            search = search.ToUpperInvariant();
-            try
-            {
-                return _unitOfWork.IssueLogRepository.GetAllAsync(a =>
-                    a.Description.ToUpperInvariant().Contains(search)
-                    || search.Contains(a.Description.ToUpperInvariant()));
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(SearchAsync));
-                return null;
-            }
-        }
+
+        protected override Task<IEnumerable<IssueLog>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork.IssueLogRepository.GetAllAsync(entity =>
+                strs.Any(str => entity.Description.ToUpperInvariant().Contains(str)));
     }
 }

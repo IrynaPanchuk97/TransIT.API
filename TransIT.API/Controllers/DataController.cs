@@ -1,8 +1,8 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.JsonWebTokens;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
 
@@ -11,38 +11,41 @@ namespace TransIT.API.Controllers
     [ApiController]
     [EnableCors("CorsPolicy")]
     [Produces("application/json")]
-    [Route("api/v1/[controller]/[action]")]
+    [Route("api/v1/[controller]")]
     public abstract class DataController<TEntity, TEntityDTO> : Controller
         where TEntity : class, IEntity, new()
         where TEntityDTO : class, new()
     {
         private readonly ICrudService<TEntity> _dataService;
-        protected readonly IMapper Mapper;
+        protected readonly IMapper _mapper;
         
         public DataController(IMapper mapper, ICrudService<TEntity> dataService)
         {
-            Mapper = mapper;
+            _mapper = mapper;
             _dataService = dataService;
         }
 
         [HttpGet]
-        public virtual async Task<IActionResult> Get([FromQuery] uint offset, uint amount)
+        public virtual async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
             if (ModelState.IsValid)
             {
                 var res = await _dataService.GetRangeAsync(offset, amount);
-                if (res != null) return Json(res);
+                if (res != null) 
+                    return Json(res.Select(x =>
+                        _mapper.Map<TEntityDTO>(x)));
             }
             return BadRequest();
         }
 
-        [HttpGet]
-        public virtual async Task<IActionResult> Get([FromQuery] int id)
+        [HttpGet("{id}")]
+        public virtual async Task<IActionResult> Get(int id)
         {
             if (ModelState.IsValid)
             {
                 var res = await _dataService.GetAsync(id);
-                if (res != null) return Json(res);
+                if (res != null)
+                    return Json(_mapper.Map<TEntityDTO>(res));
             }
             return BadRequest();
         }
@@ -53,7 +56,9 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var res = await _dataService.SearchAsync(search);
-                if (res != null) return Json(res);
+                if (res != null) 
+                    return Json(res.Select(x => 
+                        _mapper.Map<TEntityDTO>(x)));
             }
             return BadRequest();
         }
@@ -65,31 +70,30 @@ namespace TransIT.API.Controllers
             {
                 var entity = await _dataService.CreateAsync(
                     Mapper.Map<TEntity>(obj));
-                var res = Mapper.Map<TEntityDTO>(entity);
-                
-                if (res != null)
-                    return Created($"{Request.Path.Value}/{entity.Id.ToString()}", res);
+                if (entity != null)
+                    return CreatedAtRoute(
+                        routeName: $"{Request.Path.Value}/{entity.Id.ToString()}",
+                        routeValues: new {id = entity.Id},
+                        value: _mapper.Map<TEntityDTO>(entity));
             }
             return BadRequest();
         }
 
-        [HttpPut]
-        public virtual async Task<IActionResult> Update([FromBody] TEntityDTO obj)
+        [HttpPut("{id}")]
+        public virtual async Task<IActionResult> Update(int id, [FromBody] TEntityDTO obj)
         {
             if (ModelState.IsValid)
             {
-                var entity = await _dataService.UpdateAsync(
-                    Mapper.Map<TEntity>(obj));
-                var res = Mapper.Map<TEntityDTO>(entity);
-
-                if (res != null)
+                var entity = _mapper.Map<TEntity>(obj);
+                entity.Id = id;
+                if (await _dataService.UpdateAsync(entity) != null)
                     return NoContent();
             }
             return BadRequest();
         }
 
-        [HttpDelete]
-        public virtual async Task<IActionResult> Delete([FromQuery] int id)
+        [HttpDelete("{id}")]
+        public virtual async Task<IActionResult> Delete(int id)
         {
             await _dataService.DeleteAsync(id);
             return NoContent();

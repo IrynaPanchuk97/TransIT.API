@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities.Abstractions;
@@ -138,6 +139,32 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="search">String to search</param>
         /// <returns>All matches</returns>
-        public abstract Task<IEnumerable<TEntity>> SearchAsync(string search);
+        /// <summary>
+        /// Searches for matches
+        /// </summary>
+        /// <param name="search">String to search</param>
+        /// <returns>All matches</returns>
+        public async virtual Task<IEnumerable<TEntity>> SearchAsync(string search)
+        {
+            var words = search
+                .Split(' ', ',', '.')
+                .Select(x => x.Trim().ToUpperInvariant());
+            try
+            {
+                return await SearchExpressionAsync(words);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(SearchAsync));
+                return null;
+            }
+        }
+        
+        /// <summary>
+        /// Expression to find matches
+        /// </summary>
+        /// <param name="strs">Trimmed strings</param>
+        /// <returns>Matched entities</returns>
+        protected abstract Task<IEnumerable<TEntity>> SearchExpressionAsync(IEnumerable<string> strs);
     }
 }
