@@ -12,6 +12,9 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         {
         }
 
-        protected override IQueryable<User> ComplexEntities => Entities.Include(u => u.Role);
+        protected override IQueryable<User> ComplexEntities => Entities.
+            Include(u => u.Role).
+            Include(a => a.Create).
+            Include(b => b.Mod);
     }
 }
