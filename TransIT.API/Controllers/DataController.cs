@@ -69,7 +69,7 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var entity = await _dataService.CreateAsync(
-                    Mapper.Map<TEntity>(obj));
+                    _mapper.Map<TEntity>(obj));
                 if (entity != null)
                     return CreatedAtRoute(
                         routeName: $"{Request.Path.Value}/{entity.Id.ToString()}",
