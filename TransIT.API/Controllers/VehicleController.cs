@@ -26,7 +26,7 @@ namespace TransIT.API.Controllers
             return base.Get(id);
         }
 
-        [HttpGet]
+        [HttpGet("/search")]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] string search)
         {
