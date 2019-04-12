@@ -1,35 +1,32 @@
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
-using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
-    public class RoleController : DataController<Role, string>
+    [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
+    public class StateController : DataController<State, StateDTO>
     {
-        private readonly IRoleService _roleService;
+        private readonly IStateService _stateService;
         
-        public RoleController(IMapper mapper, IRoleService roleService) : base(mapper, roleService)
+        public StateController(IMapper mapper, IStateService stateService) : base(mapper, stateService)
         {
-            _roleService = roleService;
+            _stateService = stateService;
         }
 
         [HttpPost]
-        public override Task<IActionResult> Create([FromBody] string obj)
+        public virtual Task<IActionResult> Create([FromBody] Role obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }
         
         [HttpPut("{id}")]
-        public override Task<IActionResult> Update(int id, [FromBody] string obj)
+        public virtual Task<IActionResult> Update(int id, [FromBody] Role obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }

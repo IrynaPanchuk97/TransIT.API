@@ -12,7 +12,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ENGINEER,CUSTOMER,ANALYST")]
     public class SupplierController : DataController<Supplier, SupplierDTO>
     {
-        private ISupplierService _supplierService;
+        private readonly ISupplierService _supplierService;
         
         public SupplierController(IMapper mapper, ISupplierService supplierService) : base(mapper, supplierService)
         {

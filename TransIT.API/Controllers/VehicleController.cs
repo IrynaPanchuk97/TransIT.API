@@ -2,7 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TransIT.BLL.Services;
+using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 
@@ -10,13 +10,13 @@ using TransIT.DAL.Models.Entities;
 namespace TransIT.API.Controllers
 {
     [Authorize(Roles = "ADMIN")]
-    public class VehicleTypeController : DataController<VehicleType, VehicleTypeDTO>
+    public class VehicleController : DataController<Vehicle, VehicleDTO>
     {
-        private readonly IVehicleTypeService _vehicleTypeService;
+        private readonly IVehicleService _vehicleService;
 
-        public VehicleTypeController(IMapper mapper, IVehicleTypeService vehicleTypeService) : base(mapper, vehicleTypeService)
+        public VehicleController(IMapper mapper, IVehicleService vehicleService) : base(mapper, vehicleService)
         {
-            _vehicleTypeService = vehicleTypeService;
+            _vehicleService = vehicleService;
         }
 
         [HttpGet("{id}")]
@@ -26,19 +26,18 @@ namespace TransIT.API.Controllers
             return base.Get(id);
         }
 
-        [HttpGet]
+        [HttpGet("/search")]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] string search)
         {
             return base.Get(search);
         }
 
-        [HttpGet("/search")]
+        [HttpGet]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
-        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
+        public override Task<IActionResult> Get([FromQuery] uint offset, uint amount)
         {
             return base.Get(offset, amount);
         }
     }
 }
-

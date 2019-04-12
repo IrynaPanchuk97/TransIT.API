@@ -12,7 +12,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ENGINEER,CUSTOMER,ANALYST")]
     public class BillController : DataController<Bill, BillDTO>
     {
-        private IBillService _billService;
+        private readonly IBillService _billService;
         
         public BillController(IMapper mapper, IBillService billService) : base(mapper, billService)
         {

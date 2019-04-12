@@ -46,6 +46,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IIssueService, IssueService>();
             services.AddScoped<IIssueLogService, IssueLogService>();
             services.AddScoped<ISupplierService, SupplierService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IStateService, StateService>();
         }
     }
 }

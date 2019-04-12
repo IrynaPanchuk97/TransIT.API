@@ -2,25 +2,25 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TransIT.BLL.Services.ImplementedServices;
+using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
     [Authorize(Roles = "ADMIN")]
-    public class MalfunctionSubGroupController : DataController<MalfunctionSubgroup, MalfunctionSubgroupDTO>
+    public class MalfunctionController : DataController<Malfunction, MalfunctionDTO>
     {
-        private readonly MalfunctionSubgroupService _malfunctionSubgroupService;
+        private readonly IMalfunctionService _malfunctionService;
 
-        public MalfunctionSubGroupController(IMapper mapper, MalfunctionSubgroupService malfunctionSubgroupService) : base(mapper, malfunctionSubgroupService)
+        public MalfunctionController(IMapper mapper, IMalfunctionService malfunctionService) : base(mapper, malfunctionService)
         {
-            _malfunctionSubgroupService = malfunctionSubgroupService;
+            _malfunctionService = malfunctionService;
         }
 
         [HttpGet]
         [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
+        public override Task<IActionResult> Get([FromQuery] uint offset, uint amount)
         {
             return base.Get(offset, amount);
         }
@@ -32,7 +32,7 @@ namespace TransIT.API.Controllers
             return base.Get(id);
         }
 
-        [HttpGet("/search")]
+        [HttpGet]
         [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
         public override Task<IActionResult> Get([FromQuery] string search)
         {
