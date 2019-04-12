@@ -12,7 +12,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ENGINEER,CUSTOMER,ANALYST")]
     public class IssueController : DataController<Issue, IssueDTO>
     {
-        private IIssueService _issueService;
+        private readonly IIssueService _issueService;
         
         public IssueController(IMapper mapper, IIssueService issueService) : base(mapper, issueService)
         {
