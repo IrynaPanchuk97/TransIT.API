@@ -32,7 +32,7 @@ namespace TransIT.API.Controllers
         }
 
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
-        public virtual Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
+        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
             return base.Get(offset, amount);
         }

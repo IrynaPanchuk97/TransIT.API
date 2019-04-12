@@ -15,7 +15,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ADMIN")]
     public class UserController : DataController<User, UserDTO>
     {
-        private IUserService _userService;
+        private readonly IUserService _userService;
         
         public UserController(IMapper mapper, IUserService userService) : base(mapper, userService)
         {
