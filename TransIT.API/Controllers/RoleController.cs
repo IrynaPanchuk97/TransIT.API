@@ -15,7 +15,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ADMIN")]
     public class RoleController : DataController<Role, string>
     {
-        private IRoleService _roleService;
+        private readonly IRoleService _roleService;
         
         public RoleController(IMapper mapper, IRoleService roleService) : base(mapper, roleService)
         {

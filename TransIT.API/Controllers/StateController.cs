@@ -12,7 +12,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
     public class StateController : DataController<State, StateDTO>
     {
-        private IStateService _stateService;
+        private readonly IStateService _stateService;
         
         public StateController(IMapper mapper, IStateService stateService) : base(mapper, stateService)
         {
