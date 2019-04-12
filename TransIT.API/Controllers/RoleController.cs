@@ -13,7 +13,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 namespace TransIT.API.Controllers
 {
     [Authorize(Roles = "ADMIN")]
-    public class RoleController : DataController<Role, string>
+    public class RoleController : DataController<Role, RoleDTO>
     {
         private readonly IRoleService _roleService;
         
@@ -23,13 +23,13 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost]
-        public override Task<IActionResult> Create([FromBody] string obj)
+        public override Task<IActionResult> Create([FromBody] RoleDTO obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }
         
         [HttpPut("{id}")]
-        public override Task<IActionResult> Update(int id, [FromBody] string obj)
+        public override Task<IActionResult> Update(int id, [FromBody] RoleDTO obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }
