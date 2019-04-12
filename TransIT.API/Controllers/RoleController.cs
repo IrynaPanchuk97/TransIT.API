@@ -23,13 +23,13 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost]
-        public virtual Task<IActionResult> Create([FromBody] Role obj)
+        public override Task<IActionResult> Create([FromBody] string obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }
         
         [HttpPut("{id}")]
-        public virtual Task<IActionResult> Update(int id, [FromBody] Role obj)
+        public override Task<IActionResult> Update(int id, [FromBody] string obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }
