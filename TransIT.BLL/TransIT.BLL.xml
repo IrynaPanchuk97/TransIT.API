@@ -349,6 +349,21 @@
             <param name="repository">CRUD operations on entity</param>
             <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
+        <member name="T:TransIT.BLL.Services.ImplementedServices.StateService">
+            <summary>
+            State Group CRUD service
+            </summary>
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IStateService"/>
+        </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.StateService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.State}},TransIT.DAL.Repositories.InterfacesRepositories.IStateRepository)">
+            <summary>
+            Ctor
+            </summary>
+            <param name="unitOfWork">Unit of work pattern</param>
+            <param name="logger">Log on error</param>
+            <param name="repository">CRUD operations on entity</param>
+            <see cref="T:TransIT.BLL.Services.CrudService`1"/>
+        </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.SupplierService">
             <summary>
                 Supplier CRUD service
@@ -469,6 +484,11 @@
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IRoleService">
             <summary>
                 Role model CRUD
+            </summary>
+        </member>
+        <member name="T:TransIT.BLL.Services.InterfacesRepositories.IStateService">
+            <summary>
+            Action type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.ISupplierService">

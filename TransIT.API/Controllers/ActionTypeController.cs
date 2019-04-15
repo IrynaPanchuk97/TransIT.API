@@ -18,6 +18,7 @@ namespace TransIT.API.Controllers
             _actionTypeService = actionType;
         }
 
+        [HttpGet("{id}")]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
         public override Task<IActionResult> Get(int id)
         {
@@ -31,6 +32,7 @@ namespace TransIT.API.Controllers
             return base.Get(search);
         }
 
+        [HttpGet]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
         public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
