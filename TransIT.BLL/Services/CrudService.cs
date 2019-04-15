@@ -143,6 +143,11 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="search">String to search</param>
         /// <returns>All matches</returns>
+        /// <summary>
+        /// Searches for matches
+        /// </summary>
+        /// <param name="search">String to search</param>
+        /// <returns>All matches</returns>
         public async virtual Task<IEnumerable<TEntity>> SearchAsync(string search)
         {
             var words = search
