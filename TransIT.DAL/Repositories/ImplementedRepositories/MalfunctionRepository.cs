@@ -12,8 +12,10 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         {
         }
 
-        protected override IQueryable<Malfunction> ComplexEntities => Entities.
-                   Include(t => t.Create).
-                   Include(z => z.Mod);
+        protected override IQueryable<Malfunction> ComplexEntities => Entities
+                    .Include(m => m.Create)
+                    .Include(m => m.Mod)
+                    .Include(m => m.MalfunctionSubgroup)
+                        .ThenInclude(s => s.MalfunctionGroup);
     }
 }

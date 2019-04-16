@@ -5,6 +5,9 @@ using TransIT.BLL.Services.ImplementedServices;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.Mappings;
+using TransIT.DAL.Repositories.ImplementedRepositories;
+using TransIT.DAL.Repositories.InterfacesRepositories;
+using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.API.Extensions
 {
@@ -38,9 +41,9 @@ namespace TransIT.API.Extensions
             services.AddScoped<IActionTypeService, ActionTypeService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IVehicleTypeService, VehicleTypeService>();
+            services.AddScoped<IMalfunctionService, MalfunctionService>();
             services.AddScoped<IMalfunctionGroupService, MalfunctionGroupService>();
             services.AddScoped<IMalfunctionSubgroupService, MalfunctionSubgroupService>();
-            services.AddScoped<IMalfunctionService, MalfunctionService>();
             services.AddScoped<IBillService, BillService>();
             services.AddScoped<IDocumentService, DocumentService>();
             services.AddScoped<IIssueService, IssueService>();
@@ -48,6 +51,27 @@ namespace TransIT.API.Extensions
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IStateService, StateService>();
+        }
+
+        public static void ConfigureModelRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IIssueRepository, IssueRepository>();
+            services.AddScoped<IIssueLogRepository, IssueLogRepository>();
+            services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
+            services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
+            services.AddScoped<IMalfunctionSubgroupRepository, MalfunctionSubgroupRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IStateRepository, StateRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<ITokenRepository, TokenRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

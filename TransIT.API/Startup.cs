@@ -27,37 +27,17 @@ namespace TransIT.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            #region Services
-
             services.AddDbContext<DbContext, TransITDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
             });
-            services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
-            services.AddScoped<IBillRepository, BillRepository>();
-            services.AddScoped<IDocumentRepository, DocumentRepository>();
-            services.AddScoped<IIssueRepository, IssueRepository>();
-            services.AddScoped<IIssueLogRepository, IssueLogRepository>();
-            services.AddScoped<IMalfunctionRepository, MalfunctionRepository>();
-            services.AddScoped<IMalfunctionGroupRepository, MalfunctionGroupRepository>();
-            services.AddScoped<IMalfunctionSubgroupRepository, MalfunctionSubgroupRepository>();
-            services.AddScoped<IRoleRepository, RoleRepository>();
-            services.AddScoped<IStateRepository, StateRepository>();
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
-            services.AddScoped<ITokenRepository, TokenRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IVehicleRepository, VehicleRepository>();
-            services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
-            
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            
-            #endregion
             
             services.ConfigureAutoMapper();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureCors();
+            services.ConfigureModelRepositories();
             services.ConfigureDataAccessServices();
 
             services.AddMvc()
