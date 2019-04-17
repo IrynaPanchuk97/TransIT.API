@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +19,13 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost]
-        public virtual Task<IActionResult> Create([FromBody] Role obj)
+        public override Task<IActionResult> Create([FromBody] StateDTO obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }
         
         [HttpPut("{id}")]
-        public virtual Task<IActionResult> Update(int id, [FromBody] Role obj)
+        public override Task<IActionResult> Update(int id, [FromBody] StateDTO obj)
         {
             return Task.FromResult(StatusCode(501) as IActionResult);
         }

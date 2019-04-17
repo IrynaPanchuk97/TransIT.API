@@ -31,7 +31,7 @@ namespace TransIT.API
 
             services.AddDbContext<DbContext, TransITDBContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
             });
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
