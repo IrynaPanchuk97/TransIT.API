@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -95,7 +97,14 @@ namespace TransIT.API.Controllers
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Delete(int id)
         {
-            await _dataService.DeleteAsync(id);
+            try
+            {
+                await _dataService.DeleteAsync(id);
+            }
+            catch (ConstraintException e)
+            {
+                return Conflict(e.Message);
+            }
             return NoContent();
         }
     }

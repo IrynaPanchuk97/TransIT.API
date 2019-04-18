@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 
 namespace TransIT.BLL.Services.InterfacesRepositories
@@ -7,5 +9,11 @@ namespace TransIT.BLL.Services.InterfacesRepositories
     /// </summary>
     public interface IIssueLogService : ICrudService<IssueLog>
     {
+        /// <summary>
+        /// Find issue logs with related issue
+        /// </summary>
+        /// <param name="issueId"></param>
+        /// <returns>Related issue log to issue</returns>
+        Task<IEnumerable<IssueLog>> GetRangeByIssueIdAsync(int issueId);
     }
 }
