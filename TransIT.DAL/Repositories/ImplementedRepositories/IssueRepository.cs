@@ -12,13 +12,15 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         {
         }
 
-        protected override IQueryable<Issue> ComplexEntities => Entities.
-            Include(t => t.AssignedToNavigation).
-            Include(e => e.Create).
-            Include(x => x.Malfunction).
-            Include(x => x.Mod).
-            Include(x => x.State).
-            Include(x => x.Vehicle);        
+        protected override IQueryable<Issue> ComplexEntities => Entities
+            .Include(i => i.AssignedToNavigation)
+            .Include(i => i.Create)
+            .Include(i => i.Malfunction)
+                .ThenInclude(m => m.MalfunctionSubgroup)
+                    .ThenInclude(s => s.MalfunctionGroup)
+            .Include(i => i.Mod)
+            .Include(i => i.State)
+            .Include(i => i.Vehicle);        
 
     }
 }
