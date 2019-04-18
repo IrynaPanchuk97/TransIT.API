@@ -26,14 +26,14 @@ namespace TransIT.API.Controllers
             return base.Get(id);
         }
 
-        [HttpGet]
+        [HttpGet("/search")]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] string search)
         {
             return base.Get(search);
         }
 
-        [HttpGet("/search")]
+        [HttpGet]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
