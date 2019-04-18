@@ -6,19 +6,19 @@
     <members>
         <member name="T:TransIT.BLL.Helpers.Abstractions.IJwtFactory">
             <summary>
-                Behavior of jwt
+            Behavior of jwt
             </summary>
         </member>
         <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GetPrincipalFromExpiredToken(System.String)">
             <summary>
-                Exctracts user info from token
+            Exctracts user info from token
             </summary>
             <param name="token">Token string</param>
             <returns>User info</returns>
         </member>
         <member name="M:TransIT.BLL.Helpers.Abstractions.IJwtFactory.GenerateToken(System.Int32,System.String,System.String)">
             <summary>
-                Generates new token
+            Generates new token
             </summary>
             <param name="login">Login of user in token</param>
             <param name="role">Role of user in token</param>
@@ -26,19 +26,19 @@
         </member>
         <member name="T:TransIT.BLL.Security.Hashers.IPasswordHasher">
             <summary>
-                Interface for classes capable of password hashing
+            Interface for classes capable of password hashing
             </summary>
         </member>
         <member name="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)">
             <summary>
-                Hashes given password and returns the result.
+            Hashes given password and returns the result.
             </summary>
             <param name="password">Password to be hashed</param>
             <returns>Hash of the given password</returns>
         </member>
         <member name="M:TransIT.BLL.Security.Hashers.IPasswordHasher.CheckMatch(System.String,System.String)">
             <summary>
-                Checks if the given password matches the hashed password.
+            Checks if the given password matches the hashed password.
             </summary>
             <param name="password">Given password to be matched</param>
             <param name="hashedPassword">Hashed password to be matched</param>
@@ -46,76 +46,76 @@
         </member>
         <member name="T:TransIT.BLL.Security.Hashers.PasswordHasher">
             <summary>
-                Implementation of IPasswordHasher.
-                Class is internal for the assembly.
+            Implementation of IPasswordHasher.
+            Class is internal for the assembly.
             </summary>
         </member>
         <member name="M:TransIT.BLL.Security.Hashers.PasswordHasher.HashPassword(System.String)">
             <summary>
-                <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)"/>
+            <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)"/>
             </summary>
             <note>This method will return different results for the same password</note>
         </member>
         <member name="M:TransIT.BLL.Security.Hashers.PasswordHasher.CheckMatch(System.String,System.String)">
             <summary>
-                <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.CheckMatch(System.String,System.String)"/>
+            <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.CheckMatch(System.String,System.String)"/>
             </summary>
         </member>
         <member name="M:TransIT.BLL.Security.Hashers.PasswordHasher.GenerateSalt(System.Int32)">
             <summary>
-                Generates salt for hashing algorithm
+            Generates salt for hashing algorithm
             </summary>
             <param name="length">Number of bytes in salt</param>
             <returns>Byte array of generated salt</returns>
         </member>
         <member name="T:TransIT.BLL.Services.Abstractions.IAuthenticationService">
             <summary>
-                Behavior of authentication
+            Behavior of authentication
             </summary>
         </member>
         <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.SignInAsync(TransIT.DAL.Models.ViewModels.LoginViewModel)">
             <summary>
-                Checks credential
+            Checks credential
             </summary>
             <param name="credentials">User login and password</param>
             <returns>Access and refresh tokens</returns>
         </member>
         <member name="M:TransIT.BLL.Services.Abstractions.IAuthenticationService.TokenAsync(TransIT.DAL.Models.DTOs.TokenDTO)">
             <summary>
-                Renews a token
+            Renews a token
             </summary>
             <param name="token">Old tokens</param>
             <returns>New tokens</returns>
         </member>
         <member name="T:TransIT.BLL.Services.AuthenticationService">
             <summary>
-                Authentication service
+            Authentication service
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.CrudService`1">
             <summary>
-                Entity CRUD service
+            Entity CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.ICrudService`1"/>
         </member>
         <member name="F:TransIT.BLL.Services.CrudService`1._unitOfWork">
             <summary>
-                Saves changes
+            Saves changes
             </summary>
         </member>
         <member name="F:TransIT.BLL.Services.CrudService`1._logger">
             <summary>
-                Logs on error
+            Logs on error
             </summary>
         </member>
         <member name="F:TransIT.BLL.Services.CrudService`1._repository">
             <summary>
-                CRUD operations on entity
+            CRUD operations on entity
             </summary>
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{`0}},TransIT.DAL.Repositories.IBaseRepository{`0})">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -123,14 +123,14 @@
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.GetAsync(System.Int32)">
             <summary>
-                Get model by id
+            Get model by id
             </summary>
             <param name="id">Id of the model to take</param>
             <returns>Founded model or null on failure</returns>
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.GetRangeAsync(System.UInt32,System.UInt32)">
             <summary>
-                Get enumerable of models
+            Get enumerable of models
             </summary>
             <param name="offset">How many models to skip</param>
             <param name="size">How many models to take</param>
@@ -138,48 +138,59 @@
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.CreateAsync(`0)">
             <summary>
-                Create model
+            Create model
             </summary>
             <param name="model">Model with properties to create</param>
             <returns>Created model or null on failure</returns>
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.UpdateAsync(`0)">
             <summary>
-                Update model
+            Update model
             </summary>
             <param name="model">Model with properties to be updated</param>
             <returns>Updated model or null on failure</returns>
         </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.DeleteAsync(System.Int32)">
             <summary>
-                Deletes model by id
+            Deletes model by id
             </summary>
             <param name="id">Id of model to be deleted</param>
             <returns>Nothing</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:TransIT.BLL.Services.CrudService`1.SearchAsync(System.String)" -->
+        <member name="M:TransIT.BLL.Services.CrudService`1.SearchAsync(System.String)">
+            <summary>
+            Searches for matches
+            </summary>
+            <param name="search">String to search</param>
+            <returns>All matches</returns>
+            <summary>
+            Searches for matches
+            </summary>
+            <param name="search">String to search</param>
+            <returns>All matches</returns>
+        </member>
         <member name="M:TransIT.BLL.Services.CrudService`1.SearchExpressionAsync(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-                Expression to find matches
+            Expression to find matches
             </summary>
             <param name="strs">Trimmed strings</param>
             <returns>Matched entities</returns>
         </member>
         <member name="T:TransIT.BLL.Services.ICrudService`1">
             <summary>
-                Set a behavior of services
+            Set a behavior of services 
             </summary>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.GetAsync(System.Int32)">
             <summary>
-                Gets entity by id
+            Gets entity by id
             </summary>
             <param name="id">Entity id</param>
             <returns>Entity</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.GetRangeAsync(System.UInt32,System.UInt32)">
             <summary>
-                Gets entities with pagination
+            Gets entities with pagination
             </summary>
             <param name="offset">Amount to skip</param>
             <param name="amount">Amount to take</param>
@@ -188,41 +199,41 @@
         <member name="M:TransIT.BLL.Services.ICrudService`1.CreateAsync(`0)">
             Add methods to service
             <summary>
-                Registers a new entity
+            Registers a new entity
             </summary>
             <param name="value">New entity</param>
             <returns>Created entity</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.UpdateAsync(`0)">
             <summary>
-                Updates entity
+            Updates entity
             </summary>
             <param name="value">Entity model to update</param>
             <returns>Updated entity</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.DeleteAsync(System.Int32)">
             <summary>
-                Removes entity with this id
+            Removes entity with this id
             </summary>
             <param name="id">Entity id</param>
             <returns>void</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ICrudService`1.SearchAsync(System.String)">
             <summary>
-                Searches for matches
+            Searches for matches
             </summary>
             <param name="search">String to search</param>
             <returns>All matches</returns>
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.ActionTypeService">
             <summary>
-                Malfunction Group CRUD service
+            Malfunction Group CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.ActionTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.ActionType}},TransIT.DAL.Repositories.InterfacesRepositories.IActionTypeRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -231,13 +242,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.BillService">
             <summary>
-                Bill CRUD service
+            Bill CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IBillService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.BillService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Bill}},TransIT.DAL.Repositories.InterfacesRepositories.IBillRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -246,13 +257,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.DocumentService">
             <summary>
-                Document CRUD service
+            Document CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IDocumentService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.DocumentService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Document}},TransIT.DAL.Repositories.InterfacesRepositories.IDocumentRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -261,13 +272,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.IssueLogService">
             <summary>
-                IssueLog CRUD service
+            IssueLog CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IIssueLogService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.IssueLogService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.IssueLog}},TransIT.DAL.Repositories.InterfacesRepositories.IIssueLogRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -276,13 +287,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.IssueService">
             <summary>
-                Issue CRUD service
+            Issue CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IIssueService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.IssueService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Issue}},TransIT.DAL.Repositories.InterfacesRepositories.IIssueRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -291,13 +302,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService">
             <summary>
-                Malfunction Group CRUD service
+            Malfunction Group CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionGroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionGroupRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -306,13 +317,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionService">
             <summary>
-                Malfunction CRUD service
+            Malfunction CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Malfunction}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -321,13 +332,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService">
             <summary>
-                Malfunction Subgroup CRUD service
+            Malfunction Subgroup CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.MalfunctionSubgroupService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.MalfunctionSubgroup}},TransIT.DAL.Repositories.InterfacesRepositories.IMalfunctionSubgroupRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -336,13 +347,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.RoleService">
             <summary>
-                Malfunction CRUD service
+            Malfunction CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.RoleService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Role}},TransIT.DAL.Repositories.InterfacesRepositories.IRoleRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -366,13 +377,13 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.SupplierService">
             <summary>
-                Supplier CRUD service
+            Supplier CRUD service
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.ISupplierService"/>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.SupplierService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Supplier}},TransIT.DAL.Repositories.InterfacesRepositories.ISupplierRepository)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -381,18 +392,18 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.UserService">
             <summary>
-                User model CRUD
+            User model CRUD
             </summary>
             <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IUserService"/>
         </member>
         <member name="F:TransIT.BLL.Services.ImplementedServices.UserService._hasher">
             <summary>
-                Manages password hashing
+            Manages password hashing
             </summary>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.User}},TransIT.DAL.Repositories.InterfacesRepositories.IUserRepository,TransIT.BLL.Security.Hashers.IPasswordHasher)">
             <summary>
-                Ctor
+            Ctor
             </summary>
             <param name="unitOfWork">Unit of work pattern</param>
             <param name="logger">Log on error</param>
@@ -401,15 +412,15 @@
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.GetAsync(System.Int32)">
             <summary>
-                Gets user by id and ensures that role is assigned
+            Gets user by id and ensures that role is assigned
             </summary>
             <param name="id">Id of user</param>
             <returns>User with id</returns>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.UserService.CreateAsync(TransIT.DAL.Models.Entities.User)">
             <summary>
-                Creates user if login and password not empty and does not exist in DB
-                hashes password and set zero to id
+            Creates user if login and password not empty and does not exist in DB
+            hashes password and set zero to id
             </summary>
             <see cref="M:TransIT.BLL.Security.Hashers.IPasswordHasher.HashPassword(System.String)"/>
             <param name="user">User model</param>
@@ -417,12 +428,12 @@
         </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.VehicleService">
             <summary>
-                Service for Vehicle
+            Service for Vehicle
             </summary>
         </member>
         <member name="M:TransIT.BLL.Services.ImplementedServices.VehicleService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.Vehicle}},TransIT.DAL.Repositories.InterfacesRepositories.IVehicleRepository)">
             <summary>
-                ctor
+            ctor
             </summary>
             <param name="unitOfWork"></param>
             <param name="logger"></param>
@@ -430,12 +441,12 @@
         </member>
         <member name="T:TransIT.BLL.Services.VehicleTypeService">
             <summary>
-                Service for Vehicle Type
+            Service for Vehicle Type
             </summary>
         </member>
         <member name="M:TransIT.BLL.Services.VehicleTypeService.#ctor(TransIT.DAL.UnitOfWork.IUnitOfWork,Microsoft.Extensions.Logging.ILogger{TransIT.BLL.Services.CrudService{TransIT.DAL.Models.Entities.VehicleType}},TransIT.DAL.Repositories.InterfacesRepositories.IVehicleTypeRepository)">
             <summary>
-                ctor
+            ctor
             </summary>
             <param name="unitOfWork"></param>
             <param name="logger"></param>
@@ -443,47 +454,54 @@
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IActionTypeService">
             <summary>
-                Action type model CRUD
+            Action type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IBillService">
             <summary>
-                Bill type model CRUD
+            Bill type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IDocumentService">
             <summary>
-                Document type model CRUD
+            Document type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IIssueLogService">
             <summary>
-                IssueLog type model CRUD
+            IssueLog type model CRUD
             </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.InterfacesRepositories.IIssueLogService.GetRangeByIssueIdAsync(System.Int32)">
+            <summary>
+            Find issue logs with related issue
+            </summary>
+            <param name="issueId"></param>
+            <returns>Related issue log to issue</returns>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IIssueService">
             <summary>
-                Issue type model CRUD
+            Issue type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
-                Malfunction group model CRUD
+            Malfunction group model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionService">
             <summary>
-                Malfunction model CRUD
+            Malfunction model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionSubgroupService">
             <summary>
-                Malfunction Subgroup model CRUD
+            Malfunction Subgroup model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IRoleService">
             <summary>
-                Role model CRUD
+            Role model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IStateService">
@@ -493,22 +511,22 @@
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.ISupplierService">
             <summary>
-                Supplier type model CRUD
+            Supplier type model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IUserService">
             <summary>
-                User model CRUD
+            User model CRUD
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IVehicleService">
             <summary>
-                Interface for Vehicle service
+            Interface for Vehicle service
             </summary>
         </member>
         <member name="T:TransIT.BLL.Services.IVehicleTypeService">
             <summary>
-                Interface for Vehicle type Service
+            Interface for Vehicle type Service
             </summary>
         </member>
     </members>
