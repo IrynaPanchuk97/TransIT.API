@@ -1,10 +1,13 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.Extensions;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -26,11 +29,20 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                var res = await _issueService.GetRegisteredIssuesAsync(offset, amount, userId);
+                IEnumerable<IssueDTO> res = null;
+
+                switch (User.FindFirst(nameof(ROLE).ToLower())?.Value)
+                {
+                    case ROLE.CUSTOMER:
+                        res = await GetForCustomer(offset, amount);
+                        break;
+                    case ROLE.ENGINEER:
+                        res = await GetForEngineer(offset, amount);
+                        break;
+                }
+
                 if (res != null)
-                    return Json(res.Select(x =>
-                        _mapper.Map<IssueDTO>(x)));
+                    return Json(res);
             }
             return BadRequest();
         }
@@ -52,6 +64,23 @@ namespace TransIT.API.Controllers
                     return CreatedAtAction(nameof(Create), _mapper.Map<IssueDTO>(entity));
             }
             return BadRequest();
+        }
+
+        private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)
+        {
+            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var res = await _issueService.GetRegisteredIssuesAsync(offset, amount, userId);
+            if (res != null)
+                res.Select(x => _mapper.Map<IssueDTO>(x));
+            return null;
+        }
+
+        private async Task<IEnumerable<IssueDTO>> GetForEngineer(uint offset, uint amount)
+        {
+            var res = await _issueService.GetRangeAsync(offset, amount);
+            if (res != null)
+                res.Select(x => _mapper.Map<IssueDTO>(x));
+            return null;
         }
     }
 }
