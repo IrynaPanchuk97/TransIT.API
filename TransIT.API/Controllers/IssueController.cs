@@ -15,12 +15,10 @@ namespace TransIT.API.Controllers
     public class IssueController : DataController<Issue, IssueDTO>
     {
         private readonly IIssueService _issueService;
-        private readonly IStateService _stateService;
         
-        public IssueController(IMapper mapper, IIssueService issueService, IStateService stateService) : base(mapper, issueService)
+        public IssueController(IMapper mapper, IIssueService issueService) : base(mapper, issueService)
         {
             _issueService = issueService;
-            _stateService = stateService;
         }
 
         [HttpGet]
@@ -45,7 +43,6 @@ namespace TransIT.API.Controllers
                 var entity = _mapper.Map<Issue>(obj);
                 entity.Vehicle = null;
                 entity.Malfunction = null;
-                entity.State = await _stateService.GetAsync(1);
 
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                 entity.CreateId = userId;
