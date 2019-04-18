@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
@@ -28,6 +29,24 @@ namespace TransIT.BLL.Services.ImplementedServices
             ILogger<CrudService<IssueLog>> logger,
             IIssueLogRepository repository) : base(unitOfWork, logger, repository) { }
 
+        public async Task<IEnumerable<IssueLog>> GetRangeByIssueIdAsync(int issueId)
+        {
+            try
+            {
+                return await _repository.GetAllAsync(i => i.IssueId == issueId);
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(GetRangeByIssueIdAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(GetRangeByIssueIdAsync));
+                throw e;
+            }
+        }
+        
         protected override Task<IEnumerable<IssueLog>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.IssueLogRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Description.ToUpperInvariant().Contains(str)));
