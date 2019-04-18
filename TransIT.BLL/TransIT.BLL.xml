@@ -289,6 +289,9 @@
             <param name="repository">CRUD operations on entity</param>
             <see cref="T:TransIT.BLL.Services.CrudService`1"/>
         </member>
+        <member name="M:TransIT.BLL.Services.ImplementedServices.IssueService.GetRegisteredIssuesAsync(System.UInt32,System.UInt32,System.Int32)">
+            <see cref="T:TransIT.BLL.Services.InterfacesRepositories.IIssueService"/>
+        </member>
         <member name="T:TransIT.BLL.Services.ImplementedServices.MalfunctionGroupService">
             <summary>
             Malfunction Group CRUD service
@@ -473,6 +476,13 @@
             <summary>
             Issue type model CRUD
             </summary>
+        </member>
+        <member name="M:TransIT.BLL.Services.InterfacesRepositories.IIssueService.GetRegisteredIssuesAsync(System.UInt32,System.UInt32,System.Int32)">
+            <summary>
+            Gets issues specific for current customer
+            </summary>
+            <param name="userId">Id of customer</param>
+            <returns>List of issues</returns>
         </member>
         <member name="T:TransIT.BLL.Services.InterfacesRepositories.IMalfunctionGroupService">
             <summary>
