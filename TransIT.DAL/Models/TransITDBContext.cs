@@ -667,10 +667,6 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("VEHICLE");
 
-                entity.HasIndex(e => e.InventoryId)
-                    .HasName("UQ__VEHICLE__65E4F1E6C39150D1")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.RegNum)
                     .HasName("UQ__VEHICLE__0189DFA30AFC74AE")
                     .IsUnique();
