@@ -31,7 +31,7 @@ namespace TransIT.API.Controllers
             {
                 IEnumerable<IssueDTO> res = null;
 
-                switch (User.FindFirst(nameof(ROLE).ToLower())?.Value)
+                switch (User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value)
                 {
                     case ROLE.CUSTOMER:
                         res = await GetForCustomer(offset, amount);
@@ -71,7 +71,7 @@ namespace TransIT.API.Controllers
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var res = await _issueService.GetRegisteredIssuesAsync(offset, amount, userId);
             if (res != null)
-                res.Select(x => _mapper.Map<IssueDTO>(x));
+                return res.Select(x => _mapper.Map<IssueDTO>(x));
             return null;
         }
 
@@ -79,7 +79,7 @@ namespace TransIT.API.Controllers
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
             if (res != null)
-                res.Select(x => _mapper.Map<IssueDTO>(x));
+                return res.Select(x => _mapper.Map<IssueDTO>(x));
             return null;
         }
     }
