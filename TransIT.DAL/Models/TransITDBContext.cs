@@ -641,7 +641,7 @@ namespace TransIT.DAL.Models
                     .HasColumnName("PHONE_NUMBER")
                     .HasMaxLength(15);
 
-                entity.Property(e => e.RoleId).HasColumnName("ROLE_ID");
+                entity.Property(e => e.RoleId).HasColumnName("ROLE_ID").IsRequired();
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.InverseCreate)
