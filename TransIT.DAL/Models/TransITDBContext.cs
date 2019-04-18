@@ -667,14 +667,6 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("VEHICLE");
 
-                entity.HasIndex(e => e.RegNum)
-                    .HasName("UQ__VEHICLE__0189DFA30AFC74AE")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Vincode)
-                    .HasName("UQ__VEHICLE__5C84FBD285375A1F")
-                    .IsUnique();
-
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Brand)
