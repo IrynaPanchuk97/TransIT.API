@@ -591,10 +591,6 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("USER");
 
-                entity.HasIndex(e => e.Email)
-                    .HasName("UQ__USER__161CF7243EA2B5F0")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.Login)
                     .HasName("UQ__USER__E39E2665C934E6A0")
                     .IsUnique();
