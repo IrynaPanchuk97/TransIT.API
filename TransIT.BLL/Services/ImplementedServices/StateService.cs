@@ -26,7 +26,19 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<State>> logger,
             IStateRepository repository) : base(unitOfWork, logger, repository) { }
-        
+
+        /// <summary>
+        /// Returns state by name
+        /// </summary>
+        /// <param name="name">State's name</param>
+        /// <returns>State</returns>
+        /// <see cref="IStateService"/>
+        public async Task<State> GetStateByNameAsync(string name)
+        {
+            var states = await _repository.GetAllAsync(s => s.Name == name);
+            return states.SingleOrDefault();
+        }
+
         protected override Task<IEnumerable<State>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.StateRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));

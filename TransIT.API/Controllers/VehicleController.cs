@@ -9,7 +9,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN,CUSTOMER")]
     public class VehicleController : DataController<Vehicle, VehicleDTO>
     {
         private readonly IVehicleService _vehicleService;
@@ -35,7 +35,7 @@ namespace TransIT.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
-        public override Task<IActionResult> Get([FromQuery] uint offset, uint amount)
+        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
             return base.Get(offset, amount);
         }

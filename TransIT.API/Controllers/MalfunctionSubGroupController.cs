@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TransIT.BLL.Services.ImplementedServices;
+using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 
@@ -11,9 +11,9 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ADMIN")]
     public class MalfunctionSubGroupController : DataController<MalfunctionSubgroup, MalfunctionSubgroupDTO>
     {
-        private readonly MalfunctionSubgroupService _malfunctionSubgroupService;
+        private readonly IMalfunctionSubgroupService _malfunctionSubgroupService;
 
-        public MalfunctionSubGroupController(IMapper mapper, MalfunctionSubgroupService malfunctionSubgroupService) : base(mapper, malfunctionSubgroupService)
+        public MalfunctionSubGroupController(IMapper mapper, IMalfunctionSubgroupService malfunctionSubgroupService) : base(mapper, malfunctionSubgroupService)
         {
             _malfunctionSubgroupService = malfunctionSubgroupService;
         }
