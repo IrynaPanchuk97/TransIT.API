@@ -74,6 +74,31 @@ namespace TransIT.BLL.Services.ImplementedServices
             return await base.CreateAsync(user);
         }
 
+        public virtual async Task<User> UpdateAsync(User model, bool modifyPassword = false)
+        {
+            try
+            {
+                if (!modifyPassword)
+                {
+                    var res = _repository.UpdateWithIgnoreProperty(model, u => u.Password);
+                    await _unitOfWork.SaveAsync();
+                    return res;
+                }
+
+                return await base.UpdateAsync(model);
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync));
+                throw e;
+            }
+        }
+
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>
             _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
         

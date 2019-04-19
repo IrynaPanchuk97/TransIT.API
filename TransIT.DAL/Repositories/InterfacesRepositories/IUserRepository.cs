@@ -1,4 +1,4 @@
-﻿using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.Entities;
 
 namespace TransIT.DAL.Repositories.InterfacesRepositories
 {
