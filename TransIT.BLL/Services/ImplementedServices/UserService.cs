@@ -24,6 +24,8 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// </summary>
         protected IPasswordHasher _hasher;
 
+        protected IUserRepository _userRepository;
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -38,6 +40,7 @@ namespace TransIT.BLL.Services.ImplementedServices
             IPasswordHasher hasher) : base(unitOfWork, logger, repository)
         {
             _hasher = hasher;
+            _userRepository = repository;
         }
 
         /// <summary>
@@ -72,6 +75,26 @@ namespace TransIT.BLL.Services.ImplementedServices
             user.Password = _hasher.HashPassword(user.Password);
 
             return await base.CreateAsync(user);
+        }
+
+        public virtual async Task<User> UpdateAsync(User model, bool modifyPassword = false)
+        {
+            try
+            {
+                if (!modifyPassword)
+                    return _repository.UpdateWithIgnoreProperty(model, u => u.Password);
+                return await base.UpdateAsync(model);
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync));
+                throw e;
+            }
         }
 
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>

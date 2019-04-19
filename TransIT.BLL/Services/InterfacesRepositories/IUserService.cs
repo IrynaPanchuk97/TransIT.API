@@ -1,4 +1,5 @@
-﻿using TransIT.DAL.Models.Entities;
+﻿using System.Threading.Tasks;
+using TransIT.DAL.Models.Entities;
 
 namespace TransIT.BLL.Services.InterfacesRepositories
 {
@@ -7,5 +8,6 @@ namespace TransIT.BLL.Services.InterfacesRepositories
     /// </summary>
     public interface IUserService : ICrudService<User>
     {
+        Task<User> UpdateAsync(User model, bool modifyPassword = false);
     }
 }

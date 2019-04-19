@@ -16,5 +16,7 @@ namespace TransIT.DAL.Repositories
         Task<TEntity> AddAsync(TEntity entity);
         TEntity Remove(TEntity entity);
         TEntity Update(TEntity entity);
+        TEntity UpdateWithIgnoreProperty<TProperty>(TEntity entity,
+            Expression<Func<TEntity, TProperty>> ignorePropertyExpression);
     }
 }
