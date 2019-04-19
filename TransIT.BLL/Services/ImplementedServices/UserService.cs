@@ -24,8 +24,6 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// </summary>
         protected IPasswordHasher _hasher;
 
-        protected IUserRepository _userRepository;
-
         /// <summary>
         /// Ctor
         /// </summary>
@@ -40,7 +38,6 @@ namespace TransIT.BLL.Services.ImplementedServices
             IPasswordHasher hasher) : base(unitOfWork, logger, repository)
         {
             _hasher = hasher;
-            _userRepository = repository;
         }
 
         /// <summary>
@@ -82,7 +79,12 @@ namespace TransIT.BLL.Services.ImplementedServices
             try
             {
                 if (!modifyPassword)
-                    return _repository.UpdateWithIgnoreProperty(model, u => u.Password);
+                {
+                    var res = _repository.UpdateWithIgnoreProperty(model, u => u.Password);
+                    await _unitOfWork.SaveAsync();
+                    return res;
+                }
+
                 return await base.UpdateAsync(model);
             }
             catch (DbUpdateException e)
