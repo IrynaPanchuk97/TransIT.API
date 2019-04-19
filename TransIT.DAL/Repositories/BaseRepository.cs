@@ -58,6 +58,14 @@ namespace TransIT.DAL.Repositories
            return await ComplexEntities.Skip((int)index).Take((int)amount).ToListAsync();
         }
 
+        public virtual TEntity UpdateWithIgnoreProperty<TProperty>(
+            TEntity entity, Expression<Func<TEntity, TProperty>> ignorePropertyExpression)
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity).Property(ignorePropertyExpression).IsModified = false;
+            return entity;
+        }
+        
         protected virtual DbSet<TEntity> Entities => _entities ?? (_entities = _context.Set<TEntity>());
 
         protected virtual IQueryable<TEntity> ComplexEntities => Entities;
