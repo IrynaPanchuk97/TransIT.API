@@ -74,7 +74,7 @@ namespace TransIT.BLL.Services
             {
                 await _repository.AddAsync(model);
                 await _unitOfWork.SaveAsync();
-                return model;
+                return await GetAsync(model.Id);
             }
             catch (DbUpdateException e)
             {
