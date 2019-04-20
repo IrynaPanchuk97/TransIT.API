@@ -27,7 +27,14 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<Issue>> logger,
             IIssueRepository repository) : base(unitOfWork, logger, repository) { }
-        
+
+        /// <see cref="IIssueService"/>
+        public async Task<IEnumerable<Issue>> GetRegisteredIssuesAsync(uint offset, uint amount, int userId)
+        {
+            var issues = await _repository.GetAllAsync(i => i.CreateId == userId);
+            return issues.AsQueryable().Skip((int)offset).Take((int)amount);
+        }
+
         protected override Task<IEnumerable<Issue>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.IssueRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Summary.ToUpperInvariant().Contains(str)));

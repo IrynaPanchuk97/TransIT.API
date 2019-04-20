@@ -14,7 +14,7 @@ namespace TransIT.DAL.Models.Entities
 
         public int Id { get; set; }
         public string Name { get; set; }
-
+        public string TransName { get; set; }
         public virtual ICollection<Issue> Issue { get; set; }
         public virtual ICollection<IssueLog> IssueLogNewState { get; set; }
         public virtual ICollection<IssueLog> IssueLogOldState { get; set; }

@@ -1,6 +1,6 @@
-﻿namespace TransIT.DAL.Models.DTOs
+namespace TransIT.DAL.Models.DTOs
 {
-    public class StateDTO
+    public class RoleDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

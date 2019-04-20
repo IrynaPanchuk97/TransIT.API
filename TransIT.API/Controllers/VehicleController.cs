@@ -2,21 +2,21 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TransIT.BLL.Services;
+using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
-    public class VehicleTypeController : DataController<VehicleType, VehicleTypeDTO>
+    [Authorize(Roles = "ADMIN,CUSTOMER")]
+    public class VehicleController : DataController<Vehicle, VehicleDTO>
     {
-        private readonly IVehicleTypeService _vehicleTypeService;
+        private readonly IVehicleService _vehicleService;
 
-        public VehicleTypeController(IMapper mapper, IVehicleTypeService vehicleTypeService) : base(mapper, vehicleTypeService)
+        public VehicleController(IMapper mapper, IVehicleService vehicleService) : base(mapper, vehicleService)
         {
-            _vehicleTypeService = vehicleTypeService;
+            _vehicleService = vehicleService;
         }
 
         [HttpGet("{id}")]
@@ -41,4 +41,3 @@ namespace TransIT.API.Controllers
         }
     }
 }
-

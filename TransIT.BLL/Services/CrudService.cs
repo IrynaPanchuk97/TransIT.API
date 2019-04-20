@@ -2,6 +2,9 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,7 +74,7 @@ namespace TransIT.BLL.Services
             {
                 await _repository.AddAsync(model);
                 await _unitOfWork.SaveAsync();
-                return model;
+                return await GetAsync(model.Id);
             }
             catch (DbUpdateException e)
             {
@@ -125,6 +128,13 @@ namespace TransIT.BLL.Services
             }
             catch (DbUpdateException e)
             {
+                var sqlExc = e.GetBaseException() as SqlException;
+                if (sqlExc != null && sqlExc.Number == 547)
+                {
+                    _logger.LogDebug(sqlExc, $"Number of sql exception: {sqlExc.Number.ToString()}");
+                    throw new ConstraintException(
+                        "There are constrained entities, delete them firstly.", sqlExc);
+                }
                 _logger.LogError(e, nameof(DeleteAsync), e.Entries);
             }
             catch (Exception e)
@@ -134,6 +144,7 @@ namespace TransIT.BLL.Services
             }
         }
 
+        /// <summary>
         /// Searches for matches
         /// </summary>
         /// <param name="search">String to search</param>

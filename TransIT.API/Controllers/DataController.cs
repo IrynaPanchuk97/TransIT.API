@@ -1,3 +1,5 @@
+using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -71,10 +73,9 @@ namespace TransIT.API.Controllers
                 var entity = await _dataService.CreateAsync(
                     _mapper.Map<TEntity>(obj));
                 if (entity != null)
-                    return CreatedAtRoute(
-                        routeName: $"{Request.Path.Value}/{entity.Id.ToString()}",
-                        routeValues: new {id = entity.Id},
-                        value: _mapper.Map<TEntityDTO>(entity));
+                    return CreatedAtAction(
+                        nameof(Create),
+                        _mapper.Map<TEntityDTO>(entity));
             }
             return BadRequest();
         }
@@ -95,7 +96,14 @@ namespace TransIT.API.Controllers
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Delete(int id)
         {
-            await _dataService.DeleteAsync(id);
+            try
+            {
+                await _dataService.DeleteAsync(id);
+            }
+            catch (ConstraintException e)
+            {
+                return Conflict(e.Message);
+            }
             return NoContent();
         }
     }

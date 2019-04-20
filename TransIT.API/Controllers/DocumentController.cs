@@ -12,7 +12,7 @@ namespace TransIT.API.Controllers
     [Authorize(Roles = "ADMIN,ENGINEER,ANALYST")]
     public class DocumentController : DataController<Document, DocumentDTO>
     {
-        private IDocumentService _documentService;
+        private readonly IDocumentService _documentService;
         
         public DocumentController(IMapper mapper, IDocumentService documentService) : base(mapper, documentService)
         {
