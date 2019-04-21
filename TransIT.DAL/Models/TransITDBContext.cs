@@ -290,6 +290,7 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.ActionType)
                     .WithMany(p => p.IssueLog)
                     .HasForeignKey(d => d.ActionTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_LOG_ACTION_TYPE");
 
                 entity.HasOne(d => d.Create)
@@ -300,6 +301,7 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Issue)
                     .WithMany(p => p.IssueLog)
                     .HasForeignKey(d => d.IssueId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_ISSUE_LOG_ISSUE");
 
                 entity.HasOne(d => d.Mod)
@@ -310,11 +312,13 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.NewState)
                     .WithMany(p => p.IssueLogNewState)
                     .HasForeignKey(d => d.NewStateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_NEW_ISSUE_LOG_STATE");
 
                 entity.HasOne(d => d.OldState)
                     .WithMany(p => p.IssueLogOldState)
                     .HasForeignKey(d => d.OldStateId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_OLD_ISSUE_LOG_STATE");
 
                 entity.HasOne(d => d.Supplier)
