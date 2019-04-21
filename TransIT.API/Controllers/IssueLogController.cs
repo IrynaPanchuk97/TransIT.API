@@ -20,8 +20,8 @@ namespace TransIT.API.Controllers
             _issueLogService = issueLogService;
         }
 
-        [HttpGet("/filter/{issueId}")]
-        public virtual async Task<IActionResult> Get(int issueId)
+        [HttpGet("~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog))]
+        public virtual async Task<IActionResult> GetByIssue(int issueId)
         {
             if (ModelState.IsValid)
             {
