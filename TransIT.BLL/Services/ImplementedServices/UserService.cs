@@ -24,6 +24,8 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// </summary>
         protected IPasswordHasher _hasher;
 
+        protected IRoleRepository _roleRepository;
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -35,9 +37,11 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<User>> logger,
             IUserRepository repository,
+            IRoleRepository roleRepository,
             IPasswordHasher hasher) : base(unitOfWork, logger, repository)
         {
             _hasher = hasher;
+            _roleRepository = roleRepository;
         }
 
         /// <summary>
@@ -63,15 +67,24 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// <returns>Is successful</returns>
         public override async Task<User> CreateAsync(User user)
         {
-            var role = user.Role.Name.ToUpper();
-            user.Role = (await GetRolesByName(role)).SingleOrDefault();
-
-            if (user.Role == null) return null;
-
-            user.Id = 0;
-            user.Password = _hasher.HashPassword(user.Password);
-
-            return await base.CreateAsync(user);
+            try
+            {
+                user.Id = 0;
+                user.RoleId = (await _roleRepository.GetByIdAsync((int)user.RoleId)).Id;
+                user.Role = null;
+                user.Password = _hasher.HashPassword(user.Password);
+                return await base.CreateAsync(user);
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(CreateAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(CreateAsync));
+                throw e;
+            }
         }
 
         public virtual async Task<User> UpdateAsync(User model, bool modifyPassword = false)
