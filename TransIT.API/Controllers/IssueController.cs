@@ -52,6 +52,8 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
+                obj.State = null;
+
                 var entity = _mapper.Map<Issue>(obj);
                 entity.Vehicle = null;
                 entity.Malfunction = null;
