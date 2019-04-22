@@ -28,7 +28,7 @@ namespace TransIT.API.Controllers
                 var res = await _issueLogService.GetRangeByIssueIdAsync(issueId);
                 if (res != null)
                     return Json(res.Select(x =>
-                        _mapper.Map<IssueLogDTO>(res)));
+                        _mapper.Map<IssueLogDTO>(x)));
             }
 
             return BadRequest();
