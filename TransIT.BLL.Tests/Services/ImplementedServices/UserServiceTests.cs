@@ -14,7 +14,7 @@ namespace TransIT.BLL.Tests.Services.ImplementedServices
         protected override void InitializeService()
         {
             var mock = _repository.As<IUserRepository>();
-            _crudService = new UserService(_unitOfWork.Object, _logger.Object, mock.Object, new PasswordHasher());
+//            _crudService = new UserService(_unitOfWork.Object, _logger.Object, mock.Object, new PasswordHasher());
         }
     }
 }

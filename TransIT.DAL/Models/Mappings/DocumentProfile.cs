@@ -14,7 +14,9 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(d => d.Mod, opt => opt.Ignore())
                 .ForMember(d => d.Create, opt => opt.Ignore())
                 .ForMember(d => d.Bill, opt => opt.Ignore())
-                .ForMember(d => d.IssueLogId, opt => opt.Ignore());
+                .ForMember(d => d.IssueLogId, opt => opt.Condition((dto, model) => dto.IssueLog != null))
+                .ForMember(d => d.IssueLogId, opt => opt.MapFrom(x => x.IssueLog.Id))
+                .ForMember(d => d.IssueLog, opt => opt.Ignore());
             CreateMap<Document, DocumentDTO>();
         }
     }
