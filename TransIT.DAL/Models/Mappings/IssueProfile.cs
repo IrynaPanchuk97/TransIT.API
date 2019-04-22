@@ -10,6 +10,7 @@ namespace TransIT.DAL.Models.Mappings
         public IssueProfile()
         {
             CreateMap<IssueDTO, Issue>()
+                .ForMember(i => i.AssignedTo, opt => opt.Condition((dto, model) => dto.AssignedTo != null))
                 .ForMember(i => i.AssignedToNavigation, opt => opt.Ignore())
                 .ForMember(i => i.ModId, opt => opt.Ignore())
                 .ForMember(i => i.CreateId, opt => opt.Ignore())
