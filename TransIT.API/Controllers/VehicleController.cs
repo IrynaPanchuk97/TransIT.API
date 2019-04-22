@@ -39,5 +39,21 @@ namespace TransIT.API.Controllers
         {
             return base.Get(offset, amount);
         }
+
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public override async Task<IActionResult> Create([FromBody] VehicleDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<Vehicle>(obj);
+                entity.VehicleType = null;
+
+                entity = await _vehicleService.CreateAsync(entity);
+                if (entity != null)
+                    return CreatedAtAction(nameof(Create), _mapper.Map<IssueDTO>(entity));
+            }
+            return BadRequest();
+        }
     }
 }
