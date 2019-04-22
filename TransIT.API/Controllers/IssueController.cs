@@ -31,7 +31,7 @@ namespace TransIT.API.Controllers
             {
                 IEnumerable<IssueDTO> res = null;
 
-                switch (User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value)
+                switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
                 {
                     case ROLE.CUSTOMER:
                         res = await GetForCustomer(offset, amount);
