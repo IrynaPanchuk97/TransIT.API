@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using TransIT.API.Extensions;
 using TransIT.BLL.Security.Hashers;
 using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
@@ -111,6 +113,13 @@ namespace TransIT.BLL.Services.ImplementedServices
                 throw e;
             }
         }
+
+        public virtual async Task<IEnumerable<User>> GetAssignees(uint offset, uint amount) =>
+            (await _repository.GetAllAsync())
+            .AsQueryable()
+            .Where(x => x.Role.Name == ROLE.WORKER)
+            .Skip((int)offset)
+            .Take((int)amount);
 
         private Task<IEnumerable<Role>> GetRolesByName(string name) =>
             _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);

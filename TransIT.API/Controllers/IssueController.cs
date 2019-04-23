@@ -31,7 +31,7 @@ namespace TransIT.API.Controllers
             {
                 IEnumerable<IssueDTO> res = null;
 
-                switch (User.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role")?.Value)
+                switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
                 {
                     case ROLE.CUSTOMER:
                         res = await GetForCustomer(offset, amount);
@@ -62,6 +62,20 @@ namespace TransIT.API.Controllers
                 entity = await _issueService.CreateAsync(entity);
                 if (entity != null)
                     return CreatedAtAction(nameof(Create), _mapper.Map<IssueDTO>(entity));
+            }
+            return BadRequest();
+        }
+        
+        [HttpPut("{id}")]
+        public virtual async Task<IActionResult> Update(int id, [FromBody] IssueDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<Issue>(obj);
+                entity.Id = id;
+                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (await _issueService.UpdateAsync(entity) != null)
+                    return NoContent();
             }
             return BadRequest();
         }

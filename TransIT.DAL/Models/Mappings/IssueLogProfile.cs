@@ -18,19 +18,16 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(i => i.IssueId, opt => opt.MapFrom(x => x.Issue.Id))
                 .ForMember(i => i.Issue, opt => opt.Ignore())
                 .ForMember(i => i.SupplierId, opt => opt.Condition((dto, model) => dto.Supplier != null))
-                .ForMember(i => i.SupplierId, opt => opt.Condition((dto, model) => dto.Supplier.Id != 0))
                 .ForMember(i => i.SupplierId, opt => opt.MapFrom(x => x.Supplier.Id))
+                .ForMember(i => i.Supplier, opt => opt.Ignore())
                 .ForMember(i => i.NewStateId, opt => opt.MapFrom(x => x.NewState.Id))
                 .ForMember(i => i.OldStateId, opt => opt.Ignore())
                 .ForMember(i => i.ActionTypeId, opt => opt.MapFrom(x => x.ActionType.Id))
-                .ForMember(i => i.Supplier, opt => opt.Ignore())
                 .ForMember(i => i.NewState, opt => opt.Ignore())
                 .ForMember(i => i.OldState, opt => opt.Ignore())
                 .ForMember(i => i.ActionType, opt => opt.Ignore());
 
-            CreateMap<IssueLog, IssueLogDTO>()
-                .ForMember(i => i.Supplier, opt => opt.Condition(x => x.Supplier != null && x.SupplierId != 0))
-                .ForMember(i => i.Supplier, opt => opt.MapFrom(x => x.Supplier));
+            CreateMap<IssueLog, IssueLogDTO>();
         }
     }
 }
