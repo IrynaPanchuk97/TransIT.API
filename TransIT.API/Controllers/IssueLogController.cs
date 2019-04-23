@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +32,38 @@ namespace TransIT.API.Controllers
                         _mapper.Map<IssueLogDTO>(x)));
             }
 
+            return BadRequest();
+        }
+        
+        [HttpPost]
+        public override async Task<IActionResult> Create([FromBody] IssueLogDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = await _issueLogService.CreateAsync(
+                    _mapper.Map<IssueLog>(obj));
+                if (entity != null)
+                {
+                    entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    return CreatedAtAction(
+                        nameof(Create),
+                        _mapper.Map<IssueDTO>(entity));
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("{id}")]
+        public override async Task<IActionResult> Update(int id, [FromBody] IssueLogDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<IssueLog>(obj);
+                entity.Id = id;
+                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (await _issueLogService.UpdateAsync(entity) != null)
+                    return NoContent();
+            }
             return BadRequest();
         }
     }

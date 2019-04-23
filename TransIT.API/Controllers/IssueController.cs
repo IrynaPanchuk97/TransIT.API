@@ -65,6 +65,20 @@ namespace TransIT.API.Controllers
             }
             return BadRequest();
         }
+        
+        [HttpPut("{id}")]
+        public virtual async Task<IActionResult> Update(int id, [FromBody] IssueDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<Issue>(obj);
+                entity.Id = id;
+                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (await _issueService.UpdateAsync(entity) != null)
+                    return NoContent();
+            }
+            return BadRequest();
+        }
 
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)
         {
