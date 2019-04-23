@@ -16,7 +16,6 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(i => i.Create, opt => opt.Ignore())
                 .ForMember(i => i.Document, opt => opt.Ignore())
                 .ForMember(i => i.IssueId, opt => opt.MapFrom(x => x.Issue.Id))
-                .ForMember(i => i.Issue, opt => opt.Ignore())
                 .ForMember(i => i.SupplierId, opt => opt.Condition((dto, model) => dto.Supplier != null))
                 .ForMember(i => i.SupplierId, opt => opt.MapFrom(x => x.Supplier.Id))
                 .ForMember(i => i.Supplier, opt => opt.Ignore())

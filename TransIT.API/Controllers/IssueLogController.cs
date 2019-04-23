@@ -47,7 +47,7 @@ namespace TransIT.API.Controllers
                     entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     return CreatedAtAction(
                         nameof(Create),
-                        _mapper.Map<IssueDTO>(entity));
+                        _mapper.Map<IssueLogDTO>(entity));
                 }
             }
             return BadRequest();

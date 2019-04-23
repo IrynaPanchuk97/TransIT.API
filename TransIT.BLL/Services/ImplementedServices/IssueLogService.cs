@@ -58,9 +58,11 @@ namespace TransIT.BLL.Services.ImplementedServices
         {
             try
             {
+                var assignedUserId = model.Issue.AssignedTo;
                 model.Issue = await _issueRepository.GetByIdAsync((int)model.IssueId);
                 model.OldStateId = model.Issue.StateId;
                 model.Issue.StateId = model.NewStateId;
+                model.Issue.AssignedTo = assignedUserId;
                 model.Issue.State = null;
                 return await base.CreateAsync(model);
             }

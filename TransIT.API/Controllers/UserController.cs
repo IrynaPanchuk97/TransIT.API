@@ -54,14 +54,14 @@ namespace TransIT.API.Controllers
 
         [HttpGet("/search")]
         [Authorize(Roles = "ADMIN")]
-        public virtual Task<IActionResult> Get([FromQuery] string search)
+        public override Task<IActionResult> Get([FromQuery] string search)
         {
             return base.Get(search);
         }
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public virtual Task<IActionResult> Create([FromBody] UserDTO obj)
+        public override Task<IActionResult> Create([FromBody] UserDTO obj)
         {
             return base.Create(obj);
         }
