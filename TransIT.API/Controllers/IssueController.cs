@@ -69,7 +69,7 @@ namespace TransIT.API.Controllers
         }
         
         [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Update(int id, [FromBody] IssueDTO obj)
+        public override async Task<IActionResult> Update(int id, [FromBody] IssueDTO obj)
         {
             if (ModelState.IsValid)
             {

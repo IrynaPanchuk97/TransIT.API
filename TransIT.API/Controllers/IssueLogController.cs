@@ -15,13 +15,14 @@ namespace TransIT.API.Controllers
     public class IssueLogController : DataController<IssueLog, IssueLogDTO>
     {
         private readonly IIssueLogService _issueLogService;
+        private const string IssueLogByIssueUrl = "~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
         
         public IssueLogController(IMapper mapper, IIssueLogService issueLogService) : base(mapper, issueLogService)
         {
             _issueLogService = issueLogService;
         }
 
-        [HttpGet("~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog))]
+        [HttpGet(IssueLogByIssueUrl)]
         public virtual async Task<IActionResult> GetByIssue(int issueId)
         {
             if (ModelState.IsValid)
@@ -31,7 +32,6 @@ namespace TransIT.API.Controllers
                     return Json(res.Select(x =>
                         _mapper.Map<IssueLogDTO>(x)));
             }
-
             return BadRequest();
         }
         
@@ -40,15 +40,13 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var entity = await _issueLogService.CreateAsync(
-                    _mapper.Map<IssueLog>(obj));
+                var entity = _mapper.Map<IssueLog>(obj);
+                entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                entity = await _issueLogService.CreateAsync(entity);
                 if (entity != null)
-                {
-                    entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     return CreatedAtAction(
                         nameof(Create),
                         _mapper.Map<IssueLogDTO>(entity));
-                }
             }
             return BadRequest();
         }
