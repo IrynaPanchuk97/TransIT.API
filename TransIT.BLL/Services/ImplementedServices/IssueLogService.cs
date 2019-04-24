@@ -63,13 +63,7 @@ namespace TransIT.BLL.Services.ImplementedServices
                 model.OldStateId = model.Issue.StateId;
                 model.Issue.StateId = model.NewStateId;
                 model.Issue.AssignedTo = assignedUserId;
-                model.Issue.State = null;
                 return await base.CreateAsync(model);
-            }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(CreateAsync), e.Entries);
-                return null;
             }
             catch (Exception e)
             {
