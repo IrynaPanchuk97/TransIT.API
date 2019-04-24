@@ -12,7 +12,6 @@ namespace TransIT.DAL.Models.Mappings
             CreateMap<IssueDTO, Issue>()
                 .ForMember(i => i.AssignedTo, opt => opt.MapFrom(x => x.AssignedTo.Id))
                 .ForMember(i => i.AssignedToNavigation, opt => opt.Ignore())
-//                .ForMember(i => i.Deadline, opt => opt.MapFrom(x => x.Deadline))
                 .ForMember(i => i.ModId, opt => opt.Ignore())
                 .ForMember(i => i.CreateId, opt => opt.Ignore())
                 .ForMember(i => i.Mod, opt => opt.Ignore())
