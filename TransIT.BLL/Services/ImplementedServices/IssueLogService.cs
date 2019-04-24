@@ -58,16 +58,12 @@ namespace TransIT.BLL.Services.ImplementedServices
         {
             try
             {
+                var assignedUserId = model.Issue.AssignedTo;
                 model.Issue = await _issueRepository.GetByIdAsync((int)model.IssueId);
                 model.OldStateId = model.Issue.StateId;
                 model.Issue.StateId = model.NewStateId;
-                model.Issue.State = null;
+                model.Issue.AssignedTo = assignedUserId;
                 return await base.CreateAsync(model);
-            }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(CreateAsync), e.Entries);
-                return null;
             }
             catch (Exception e)
             {
