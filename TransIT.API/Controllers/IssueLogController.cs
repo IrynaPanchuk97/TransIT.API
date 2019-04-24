@@ -47,6 +47,7 @@ namespace TransIT.API.Controllers
                     return CreatedAtAction(
                         nameof(Create),
                         _mapper.Map<IssueLogDTO>(entity));
+                }
             }
             return BadRequest();
         }
