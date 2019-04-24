@@ -19,11 +19,11 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(i => i.Create, opt => opt.Ignore())
                 .ForMember(i => i.Bill, opt => opt.Ignore())
                 .ForMember(i => i.IssueLog, opt => opt.Ignore())
-                .ForMember(i => i.StateId, opt => opt.MapFrom(x => x.State.Id))
+                .ForMember(i => i.StateId, opt => opt.MapFrom(d => d.State.Id))
                 .ForMember(i => i.State, opt => opt.Ignore())
-                .ForMember(i => i.VehicleId, opt => opt.MapFrom(d => d.Vehicle == null ? 0 : d.Vehicle.Id))
-                .ForMember(i => i.MalfunctionId, opt => opt.MapFrom(d => d.Malfunction == null ? 0 : d.Malfunction.Id))
-                .ForMember(i => i.AssignedTo, opt => opt.MapFrom(i => i.AssignedTo.Id));
+                .ForMember(i => i.VehicleId, opt => opt.MapFrom(d => d.Vehicle.Id))
+                .ForMember(i => i.MalfunctionId, opt => opt.MapFrom(d => d.Malfunction.Id))
+                .ForMember(i => i.AssignedTo, opt => opt.MapFrom(d => d.AssignedTo.Id));
             CreateMap<Issue, IssueDTO>();
 
         }
