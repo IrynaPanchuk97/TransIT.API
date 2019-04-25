@@ -42,11 +42,6 @@ namespace TransIT.BLL.Services.ImplementedServices
             {
                 return await _repository.GetAllAsync(i => i.IssueId == issueId);
             }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(GetRangeByIssueIdAsync), e.Entries);
-                return null;
-            }
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(GetRangeByIssueIdAsync));
@@ -58,16 +53,13 @@ namespace TransIT.BLL.Services.ImplementedServices
         {
             try
             {
+                var oldIssue = model.Issue;
                 model.Issue = await _issueRepository.GetByIdAsync((int)model.IssueId);
                 model.OldStateId = model.Issue.StateId;
                 model.Issue.StateId = model.NewStateId;
-                model.Issue.State = null;
+                model.Issue.Deadline = oldIssue.Deadline;
+                model.Issue.AssignedTo = oldIssue.AssignedTo;
                 return await base.CreateAsync(model);
-            }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(CreateAsync), e.Entries);
-                return null;
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -14,13 +15,14 @@ namespace TransIT.API.Controllers
     public class IssueLogController : DataController<IssueLog, IssueLogDTO>
     {
         private readonly IIssueLogService _issueLogService;
+        private const string IssueLogByIssueUrl = "~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
         
         public IssueLogController(IMapper mapper, IIssueLogService issueLogService) : base(mapper, issueLogService)
         {
             _issueLogService = issueLogService;
         }
 
-        [HttpGet("~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog))]
+        [HttpGet(IssueLogByIssueUrl)]
         public virtual async Task<IActionResult> GetByIssue(int issueId)
         {
             if (ModelState.IsValid)
@@ -28,9 +30,38 @@ namespace TransIT.API.Controllers
                 var res = await _issueLogService.GetRangeByIssueIdAsync(issueId);
                 if (res != null)
                     return Json(res.Select(x =>
-                        _mapper.Map<IssueLogDTO>(res)));
+                        _mapper.Map<IssueLogDTO>(x)));
             }
+            return BadRequest();
+        }
+        
+        [HttpPost]
+        public override async Task<IActionResult> Create([FromBody] IssueLogDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<IssueLog>(obj);
+                entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                entity = await _issueLogService.CreateAsync(entity);
+                if (entity != null)
+                    return CreatedAtAction(
+                        nameof(Create),
+                        _mapper.Map<IssueLogDTO>(entity));
+            }
+            return BadRequest();
+        }
 
+        [HttpPut("{id}")]
+        public override async Task<IActionResult> Update(int id, [FromBody] IssueLogDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<IssueLog>(obj);
+                entity.Id = id;
+                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (await _issueLogService.UpdateAsync(entity) != null)
+                    return NoContent();
+            }
             return BadRequest();
         }
     }
