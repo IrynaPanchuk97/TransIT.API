@@ -131,8 +131,7 @@ namespace TransIT.BLL.Services
                 if (sqlExc?.Number == 547)
                 {
                     _logger.LogDebug(sqlExc, $"Number of sql exception: {sqlExc.Number.ToString()}");
-                    throw new ConstraintException(
-                        "There are constrained entities, delete them firstly.", sqlExc);
+                    throw new ConstraintException("There are constrained entities, delete them firstly.", sqlExc);
                 }
                 _logger.LogError(e, nameof(DeleteAsync), e.Entries);
             }
