@@ -53,9 +53,9 @@ namespace TransIT.DAL.Repositories
             return  Entities.Update(entity).Entity;
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetRangeAsync(uint index, uint amount)
+        public virtual Task<IEnumerable<TEntity>> GetRangeAsync(uint index, uint amount)
         {
-           return await ComplexEntities.Skip((int)index).Take((int)amount).ToListAsync();
+           return Task.FromResult<IEnumerable<TEntity>>(ComplexEntities.Skip((int)index).Take((int)amount));
         }
 
         public virtual TEntity UpdateWithIgnoreProperty<TProperty>(

@@ -100,9 +100,13 @@ namespace TransIT.API.Controllers
             {
                 await _dataService.DeleteAsync(id);
             }
-            catch (ConstraintException e)
+            catch(UnauthorizedAccessException ex)
             {
-                return Conflict(e.Message);
+                return Forbid(ex.Message);
+            }
+            catch (ConstraintException ex)
+            {
+                return Conflict(ex.Message);
             }
             return NoContent();
         }
