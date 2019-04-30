@@ -1,10 +1,10 @@
-using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -17,7 +17,11 @@ namespace TransIT.API.Controllers
         private readonly IIssueLogService _issueLogService;
         private const string IssueLogByIssueUrl = "~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
         
-        public IssueLogController(IMapper mapper, IIssueLogService issueLogService) : base(mapper, issueLogService)
+        public IssueLogController(
+            IMapper mapper,
+            IIssueLogService issueLogService,
+            IODCrudService<IssueLog> odService
+            ) : base(mapper, issueLogService, odService)
         {
             _issueLogService = issueLogService;
         }

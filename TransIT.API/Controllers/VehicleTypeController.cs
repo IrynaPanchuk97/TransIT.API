@@ -6,7 +6,6 @@ using TransIT.BLL.Services;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 
-
 namespace TransIT.API.Controllers
 {
     [Authorize(Roles = "ADMIN")]
@@ -14,7 +13,11 @@ namespace TransIT.API.Controllers
     {
         private readonly IVehicleTypeService _vehicleTypeService;
 
-        public VehicleTypeController(IMapper mapper, IVehicleTypeService vehicleTypeService) : base(mapper, vehicleTypeService)
+        public VehicleTypeController(
+            IMapper mapper, 
+            IVehicleTypeService vehicleTypeService,
+            IODCrudService<VehicleType> odService
+            ) : base(mapper, vehicleTypeService, odService)
         {
             _vehicleTypeService = vehicleTypeService;
         }

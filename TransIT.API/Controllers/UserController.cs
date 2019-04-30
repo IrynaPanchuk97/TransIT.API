@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.Extensions;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -15,7 +16,11 @@ namespace TransIT.API.Controllers
     {
         private readonly IUserService _userService;
         
-        public UserController(IMapper mapper, IUserService userService) : base(mapper, userService)
+        public UserController(
+            IMapper mapper, 
+            IUserService userService,
+            IODCrudService<User> odService
+            ) : base(mapper, userService, odService)
         {
             _userService = userService;
         }

@@ -1,13 +1,14 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.Extensions;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -19,11 +20,34 @@ namespace TransIT.API.Controllers
     {
         private readonly IIssueService _issueService;
         
-        public IssueController(IMapper mapper, IIssueService issueService) : base(mapper, issueService)
+        public IssueController(
+            IMapper mapper, 
+            IIssueService issueService,
+            IODCrudService<Issue> odService
+            ) : base(mapper, issueService, odService)
         {
             _issueService = issueService;
         }
 
+        [HttpGet]
+        [EnableQuery]
+        public async Task<IActionResult> Get(ODataQueryOptions<Issue> query)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await GetQueriedAsync(query);
+
+                if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
+                {
+                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    res = res.Where(x => x.CreateId == userId);
+                }
+
+                return Json(EntityToDto(res));
+            }
+            return BadRequest();
+        }
+        
         [HttpGet]
         public override async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
