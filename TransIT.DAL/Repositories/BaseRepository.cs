@@ -8,7 +8,8 @@ using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IEntity
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>, IODRepository<TEntity>
+        where TEntity : class, IEntity
     {
         private readonly DbContext _context;
         protected DbSet<TEntity> _entities;
@@ -70,5 +71,6 @@ namespace TransIT.DAL.Repositories
 
         protected virtual IQueryable<TEntity> ComplexEntities => Entities;
 
+        public IQueryable<TEntity> GetQueryable() => ComplexEntities;
     }
 }

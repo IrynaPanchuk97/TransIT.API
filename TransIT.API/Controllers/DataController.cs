@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OData;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
 
@@ -18,13 +22,33 @@ namespace TransIT.API.Controllers
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
+        protected const string ODataTemplateUri = "~api/v1/odata/[controller]";
+        
         private readonly ICrudService<TEntity> _dataService;
+        protected readonly IODCrudService<TEntity> _odService;
         protected readonly IMapper _mapper;
         
-        public DataController(IMapper mapper, ICrudService<TEntity> dataService)
+        public DataController(
+            IMapper mapper,
+            ICrudService<TEntity> dataService,
+            IODCrudService<TEntity> odService)
         {
             _mapper = mapper;
             _dataService = dataService;
+            _odService = odService;
+        }
+
+        [HttpGet(ODataTemplateUri)]
+        [EnableQuery]
+        public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await _odService.GetQueriedAsync(query);
+                if (res != null)
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+            }
+            return BadRequest();
         }
 
         [HttpGet]
@@ -34,8 +58,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.GetRangeAsync(offset, amount);
                 if (res != null) 
-                    return Json(res.Select(x =>
-                        _mapper.Map<TEntityDTO>(x)));
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }
@@ -59,8 +82,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.SearchAsync(search);
                 if (res != null) 
-                    return Json(res.Select(x => 
-                        _mapper.Map<TEntityDTO>(x)));
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -13,7 +14,11 @@ namespace TransIT.API.Controllers
     {
         private readonly IActionTypeService _actionTypeService;
 
-        public ActionTypeController(IMapper mapper, IActionTypeService actionType) : base(mapper, actionType)
+        public ActionTypeController(
+            IMapper mapper,
+            IActionTypeService actionType,
+            IODCrudService<ActionType> odService
+            ) : base(mapper, actionType, odService)
         {
             _actionTypeService = actionType;
         }
