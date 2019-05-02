@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Query;
@@ -18,17 +19,21 @@ namespace TransIT.BLL.Services
             _odRepository = odRepository;
         }
 
-        public virtual Task<IQueryable<TEntity>> GetQueriedAsync() =>
-            Task.FromResult(_odRepository.GetQueryable());
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync() =>
+            Task.FromResult(
+                _odRepository.GetQueryable().AsEnumerable()
+                );
 
-        public virtual Task<IQueryable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
         {
             try
             {
                 return Task.FromResult(
                     (options ?? throw new ArgumentNullException())
                         .ApplyTo(_odRepository.GetQueryable())
-                        .Cast<TEntity>());
+                        .Cast<TEntity>()
+                        .AsEnumerable()
+                    );
             }
             catch (ODataException)
             {

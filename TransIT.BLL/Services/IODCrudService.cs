@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Query;
@@ -7,7 +8,7 @@ namespace TransIT.BLL.Services
 {
     public interface IODCrudService<TEntity> where TEntity : class, IEntity, new()
     {
-        Task<IQueryable<TEntity>> GetQueriedAsync();
-        Task<IQueryable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options);
+        Task<IEnumerable<TEntity>> GetQueriedAsync();
+        Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options);
     }
 }

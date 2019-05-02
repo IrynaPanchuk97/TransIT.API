@@ -29,7 +29,7 @@ namespace TransIT.API.Controllers
             _issueService = issueService;
         }
 
-        [HttpGet]
+        [HttpGet(ODataTemplateUri)]
         [EnableQuery]
         public async Task<IActionResult> Get(ODataQueryOptions<Issue> query)
         {
