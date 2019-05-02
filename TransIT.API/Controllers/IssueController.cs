@@ -35,7 +35,7 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await GetQueriedAsync(query);
+                var res = await _odService.GetQueriedAsync(query);
 
                 if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
                 {

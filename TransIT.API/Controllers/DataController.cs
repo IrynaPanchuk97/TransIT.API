@@ -44,25 +44,11 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await GetQueriedAsync(query);
+                var res = await _odService.GetQueriedAsync(query);
                 if (res != null)
                     return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
-        }
-
-        protected virtual async Task<IQueryable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> query)
-        {
-            try
-            {
-                return query.ApplyTo(
-                    await _odService.GetQueriedAsync() ?? throw new NullReferenceException()
-                ).Cast<TEntity>();
-            }
-            catch (ODataException)
-            {
-                return null;
-            }
         }
 
         [HttpGet]
