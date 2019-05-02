@@ -42,8 +42,7 @@ namespace TransIT.API.Controllers
                     var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     res = res.Where(x => x.CreateId == userId);
                 }
-
-                return Json(EntityToDto(res));
+                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
             }
             return BadRequest();
         }
