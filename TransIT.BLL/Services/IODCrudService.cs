@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNet.OData.Query;
 using TransIT.DAL.Models.Entities.Abstractions;
 

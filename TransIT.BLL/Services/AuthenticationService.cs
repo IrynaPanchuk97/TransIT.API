@@ -44,7 +44,7 @@ namespace TransIT.BLL.Services
                     .GetAllAsync(u => u.Login == credentials.Login))
                     .SingleOrDefault();
 
-                if (user != null && _hasher.CheckMatch(credentials.Password, user.Password))
+                if (user != null && (bool)user.IsActive && _hasher.CheckMatch(credentials.Password, user.Password))
                 {
                     var role = await _unitOfWork.RoleRepository.GetByIdAsync((int) user.RoleId);
                     var token = _jwtFactory.GenerateToken(user.Id, user.Login, role?.Name);
