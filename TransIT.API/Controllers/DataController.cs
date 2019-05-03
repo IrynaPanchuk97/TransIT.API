@@ -22,7 +22,7 @@ namespace TransIT.API.Controllers
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
-        protected const string ODataTemplateUri = "~api/v1/odata/[controller]";
+        protected const string ODataTemplateUri = "~/odata/[controller]";
         
         private readonly ICrudService<TEntity> _dataService;
         protected readonly IODCrudService<TEntity> _odService;
@@ -39,8 +39,7 @@ namespace TransIT.API.Controllers
         }
 
         [HttpGet(ODataTemplateUri)]
-        [EnableQuery]
-        public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
+        public virtual async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
         {
             if (ModelState.IsValid)
             {

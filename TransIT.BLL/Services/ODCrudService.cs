@@ -37,7 +37,7 @@ namespace TransIT.BLL.Services
             }
             catch (ODataException)
             {
-                return null;
+                return null; //return Task.FromResult(null);
             }
         }
     }
