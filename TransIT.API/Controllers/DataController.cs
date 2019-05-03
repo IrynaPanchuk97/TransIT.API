@@ -81,7 +81,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.SearchAsync(search);
                 if (res != null) 
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                   return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }
@@ -131,5 +131,8 @@ namespace TransIT.API.Controllers
             }
             return NoContent();
         }
+        
+        protected IEnumerable<TEntityDTO> EntityToDto(IEnumerable<TEntity> sequence) =>
+            sequence.Select(entity => _mapper.Map<TEntityDTO>(entity));
     }
 }

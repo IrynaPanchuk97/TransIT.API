@@ -12,6 +12,7 @@ namespace TransIT.BLL.Services
         where TEntity : class, IEntity, new()
     {
         protected readonly IODRepository<TEntity> _odRepository;
+
         public ODCrudService(IODRepository<TEntity> odRepository)
         {
             _odRepository = odRepository;
