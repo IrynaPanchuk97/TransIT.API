@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Repositories;
@@ -84,7 +82,7 @@ namespace TransIT.BLL.Services
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(CreateAsync));
-                throw e;
+                throw;
             }
         }
 
@@ -109,7 +107,7 @@ namespace TransIT.BLL.Services
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(UpdateAsync));
-                throw e;
+                throw;
             }
         }
 
@@ -118,6 +116,7 @@ namespace TransIT.BLL.Services
         /// </summary>
         /// <param name="id">Id of model to be deleted</param>
         /// <returns>Nothing</returns>
+        /// <exception cref="ConstraintException">Throws when foreign key violation detected</exception>
         public virtual async Task DeleteAsync(int id)
         {
             try
@@ -129,18 +128,17 @@ namespace TransIT.BLL.Services
             catch (DbUpdateException e)
             {
                 var sqlExc = e.GetBaseException() as SqlException;
-                if (sqlExc != null && sqlExc.Number == 547)
+                if (sqlExc?.Number == 547)
                 {
                     _logger.LogDebug(sqlExc, $"Number of sql exception: {sqlExc.Number.ToString()}");
-                    throw new ConstraintException(
-                        "There are constrained entities, delete them firstly.", sqlExc);
+                    throw new ConstraintException("There are constrained entities, delete them firstly.", sqlExc);
                 }
                 _logger.LogError(e, nameof(DeleteAsync), e.Entries);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(DeleteAsync));
-                throw e;
+                throw;
             }
         }
 

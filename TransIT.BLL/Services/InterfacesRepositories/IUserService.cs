@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 
 namespace TransIT.BLL.Services.InterfacesRepositories
@@ -9,5 +10,6 @@ namespace TransIT.BLL.Services.InterfacesRepositories
     public interface IUserService : ICrudService<User>
     {
         Task<User> UpdateAsync(User model, bool modifyPassword = false);
+        Task<IEnumerable<User>> GetAssignees(uint offset, uint amount);
     }
 }

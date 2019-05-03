@@ -8,7 +8,8 @@ using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, IEntity
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>, IODRepository<TEntity>
+        where TEntity : class, IEntity
     {
         private readonly DbContext _context;
         protected DbSet<TEntity> _entities;
@@ -53,9 +54,9 @@ namespace TransIT.DAL.Repositories
             return  Entities.Update(entity).Entity;
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetRangeAsync(uint index, uint amount)
+        public virtual Task<IEnumerable<TEntity>> GetRangeAsync(uint index, uint amount)
         {
-           return await ComplexEntities.Skip((int)index).Take((int)amount).ToListAsync();
+           return Task.FromResult<IEnumerable<TEntity>>(ComplexEntities.Skip((int)index).Take((int)amount));
         }
 
         public virtual TEntity UpdateWithIgnoreProperty<TProperty>(
@@ -70,5 +71,6 @@ namespace TransIT.DAL.Repositories
 
         protected virtual IQueryable<TEntity> ComplexEntities => Entities;
 
+        public IQueryable<TEntity> GetQueryable() => ComplexEntities;
     }
 }

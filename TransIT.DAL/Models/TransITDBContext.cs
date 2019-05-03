@@ -210,8 +210,7 @@ namespace TransIT.DAL.Models
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Summary)
-                    .HasColumnName("SUMMARY")
-                    .HasColumnType("text");
+                    .HasColumnName("SUMMARY");
 
                 entity.Property(e => e.VehicleId).HasColumnName("VEHICLE_ID");
 
@@ -265,8 +264,7 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.Description)
-                    .HasColumnName("DESCRIPTION")
-                    .HasColumnType("text");
+                    .HasColumnName("DESCRIPTION");
 
                 entity.Property(e => e.Expenses)
                     .HasColumnName("EXPENSES")

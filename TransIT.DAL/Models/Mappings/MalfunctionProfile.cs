@@ -15,7 +15,8 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(m => m.Create, opt => opt.Ignore())
                 .ForMember(m => m.ModDate, opt => opt.Ignore())
                 .ForMember(m => m.CreateDate, opt => opt.Ignore())
-                .ForMember(m => m.MalfunctionSubgroupId, opt => opt.Ignore());
+                .ForMember(m => m.MalfunctionSubgroupId, opt => opt.MapFrom(x => x.MalfunctionSubgroup.Id))
+                .ForMember(m => m.MalfunctionSubgroup, opt => opt.Ignore());
             CreateMap<Malfunction, MalfunctionDTO>();
         }
     }

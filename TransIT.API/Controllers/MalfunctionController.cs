@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -13,7 +14,11 @@ namespace TransIT.API.Controllers
     {
         private readonly IMalfunctionService _malfunctionService;
 
-        public MalfunctionController(IMapper mapper, IMalfunctionService malfunctionService) : base(mapper, malfunctionService)
+        public MalfunctionController(
+            IMapper mapper, 
+            IMalfunctionService malfunctionService,
+            IODCrudService<Malfunction> odService
+            ) : base(mapper, malfunctionService, odService)
         {
             _malfunctionService = malfunctionService;
         }

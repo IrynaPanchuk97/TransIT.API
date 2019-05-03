@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.Entities;
@@ -33,6 +36,35 @@ namespace TransIT.BLL.Services.ImplementedServices
         {
             var issues = await _repository.GetAllAsync(i => i.CreateId == userId);
             return issues.AsQueryable().Skip((int)offset).Take((int)amount);
+        }
+
+        public async Task DeleteByUserAsync(int issueId, int userId)
+        {
+            try
+            {
+                var issueToDelete = await GetAsync(issueId);
+                if (issueToDelete?.CreateId != userId)
+                    throw new UnauthorizedAccessException("Current user doesn't have access to delete this issue");
+
+                _repository.Remove(issueToDelete);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                var sqlExc = e.GetBaseException() as SqlException;
+                if (sqlExc?.Number == 547)
+                {
+                    _logger.LogDebug(sqlExc, $"Number of sql exception: {sqlExc.Number.ToString()}");
+                    throw new ConstraintException("There are constrained entities, delete them firstly.", sqlExc);
+                }
+                _logger.LogError(e, nameof(DeleteAsync), e.Entries);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(DeleteAsync));
+                throw;
+            }
+
         }
 
         protected override Task<IEnumerable<Issue>> SearchExpressionAsync(IEnumerable<string> strs) =>

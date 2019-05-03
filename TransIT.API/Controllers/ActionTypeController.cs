@@ -2,41 +2,46 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
     public class ActionTypeController : DataController<ActionType, ActionTypeDTO>
     {
         private readonly IActionTypeService _actionTypeService;
 
-        public ActionTypeController(IMapper mapper, IActionTypeService actionType) : base(mapper, actionType)
+        public ActionTypeController(
+            IMapper mapper,
+            IActionTypeService actionType,
+            IODCrudService<ActionType> odService
+            ) : base(mapper, actionType, odService)
         {
             _actionTypeService = actionType;
         }
-
-        [HttpGet("{id}")]
-        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get(int id)
+        
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Create([FromBody] ActionTypeDTO obj)
         {
-            return base.Get(id);
+            return base.Create(obj);
         }
 
-        [HttpGet("/search")]
-        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get([FromQuery] string search)
+        [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Update(int id, [FromBody] ActionTypeDTO obj)
         {
-            return base.Get(search);
+            return base.Update(id, obj);
         }
 
-        [HttpGet]
-        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Delete(int id)
         {
-            return base.Get(offset, amount);
+            return base.Delete(id);
         }
     }
 }

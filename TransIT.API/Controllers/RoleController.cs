@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -13,7 +14,11 @@ namespace TransIT.API.Controllers
     {
         private readonly IRoleService _roleService;
         
-        public RoleController(IMapper mapper, IRoleService roleService) : base(mapper, roleService)
+        public RoleController(
+            IMapper mapper, 
+            IRoleService roleService,
+            IODCrudService<Role> odService
+            ) : base(mapper, roleService, odService)
         {
             _roleService = roleService;
         }

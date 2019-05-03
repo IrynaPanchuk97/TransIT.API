@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
@@ -14,7 +15,11 @@ namespace TransIT.API.Controllers
     {
         private readonly IVehicleService _vehicleService;
 
-        public VehicleController(IMapper mapper, IVehicleService vehicleService) : base(mapper, vehicleService)
+        public VehicleController(
+            IMapper mapper, 
+            IVehicleService vehicleService,
+            IODCrudService<Vehicle> odService
+            ) : base(mapper, vehicleService, odService)
         {
             _vehicleService = vehicleService;
         }

@@ -17,6 +17,8 @@ namespace TransIT.BLL.Services.ImplementedServices
     /// <see cref="IIssueLogService"/>
     public class IssueLogService : CrudService<IssueLog>, IIssueLogService
     {
+        private IIssueRepository _issueRepository;
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -27,7 +29,12 @@ namespace TransIT.BLL.Services.ImplementedServices
         public IssueLogService(
             IUnitOfWork unitOfWork,
             ILogger<CrudService<IssueLog>> logger,
-            IIssueLogRepository repository) : base(unitOfWork, logger, repository) { }
+            IIssueRepository issueRepository,
+            IIssueLogRepository repository
+        ) : base(unitOfWork, logger, repository)
+        {
+            _issueRepository = issueRepository;
+        }
 
         public async Task<IEnumerable<IssueLog>> GetRangeByIssueIdAsync(int issueId)
         {
@@ -35,14 +42,28 @@ namespace TransIT.BLL.Services.ImplementedServices
             {
                 return await _repository.GetAllAsync(i => i.IssueId == issueId);
             }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(GetRangeByIssueIdAsync), e.Entries);
-                return null;
-            }
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(GetRangeByIssueIdAsync));
+                throw e;
+            }
+        }
+        
+        public override async Task<IssueLog> CreateAsync(IssueLog model)
+        {
+            try
+            {
+                var oldIssue = model.Issue;
+                model.Issue = await _issueRepository.GetByIdAsync((int)model.IssueId);
+                model.OldStateId = model.Issue.StateId;
+                model.Issue.StateId = model.NewStateId;
+                model.Issue.Deadline = oldIssue.Deadline;
+                model.Issue.AssignedTo = oldIssue.AssignedTo;
+                return await base.CreateAsync(model);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(CreateAsync));
                 throw e;
             }
         }
