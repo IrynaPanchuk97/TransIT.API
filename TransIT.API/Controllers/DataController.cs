@@ -131,8 +131,5 @@ namespace TransIT.API.Controllers
             }
             return NoContent();
         }
-        
-        protected IEnumerable<TEntityDTO> EntityToDto(IEnumerable<TEntity> sequence) =>
-            sequence.Select(entity => _mapper.Map<TEntityDTO>(entity));
     }
 }
