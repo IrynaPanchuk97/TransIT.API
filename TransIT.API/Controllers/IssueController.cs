@@ -29,21 +29,19 @@ namespace TransIT.API.Controllers
             _issueService = issueService;
         }
 
-        [HttpGet]
-        [EnableQuery]
+        [HttpGet(ODataTemplateUri)]
         public async Task<IActionResult> Get(ODataQueryOptions<Issue> query)
         {
             if (ModelState.IsValid)
             {
-                var res = await GetQueriedAsync(query);
+                var res = await _odService.GetQueriedAsync(query);
 
                 if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
                 {
                     var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
                     res = res.Where(x => x.CreateId == userId);
                 }
-
-                return Json(EntityToDto(res));
+                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
             }
             return BadRequest();
         }

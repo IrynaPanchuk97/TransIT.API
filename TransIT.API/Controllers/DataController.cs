@@ -22,7 +22,7 @@ namespace TransIT.API.Controllers
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
-        protected const string ODataTemplateUri = "~/odata/[controller]";
+        protected const string ODataTemplateUri = "~api/v1/odata/[controller]";
         
         private readonly ICrudService<TEntity> _dataService;
         protected readonly IODCrudService<TEntity> _odService;
@@ -44,25 +44,11 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await GetQueriedAsync(query);
+                var res = await _odService.GetQueriedAsync(query);
                 if (res != null)
-                    return Json(EntityToDto(res));
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
-        }
-
-        protected virtual async Task<IQueryable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> query)
-        {
-            try
-            {
-                return query.ApplyTo(
-                    await _odService.GetQueriedAsync() ?? throw new NullReferenceException()
-                ).Cast<TEntity>();
-            }
-            catch (ODataException)
-            {
-                return null;
-            }
         }
 
         [HttpGet]
@@ -72,7 +58,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.GetRangeAsync(offset, amount);
                 if (res != null) 
-                    return Json(EntityToDto(res));
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }
@@ -96,7 +82,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.SearchAsync(search);
                 if (res != null) 
-                    return Json(EntityToDto(res));
+                   return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }
