@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.OData;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Repositories;
-using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.BLL.Services
 {
@@ -12,13 +12,31 @@ namespace TransIT.BLL.Services
         where TEntity : class, IEntity, new()
     {
         protected readonly IODRepository<TEntity> _odRepository;
-        
         public ODCrudService(IODRepository<TEntity> odRepository)
         {
             _odRepository = odRepository;
         }
 
-        public virtual Task<IQueryable<TEntity>> GetQueriedAsync() =>
-            Task.FromResult(_odRepository.GetQueryable());
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync() =>
+            Task.FromResult(
+                _odRepository.GetQueryable().AsEnumerable()
+                );
+
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
+        {
+            try
+            {
+                return Task.FromResult(
+                    options
+                        .ApplyTo(_odRepository.GetQueryable())
+                        .Cast<TEntity>()
+                        .AsEnumerable()
+                    );
+            }
+            catch (ODataException)
+            {
+                return null;
+            }
+        }
     }
 }
