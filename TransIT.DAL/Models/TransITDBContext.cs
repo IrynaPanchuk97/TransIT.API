@@ -613,6 +613,10 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.FirstName)
                     .HasColumnName("FIRST_NAME")
                     .HasMaxLength(50);
+                
+                entity.Property(e => e.IsActive)
+                    .HasColumnName("IS_ACTIVE")
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.LastName)
                     .HasColumnName("LAST_NAME")

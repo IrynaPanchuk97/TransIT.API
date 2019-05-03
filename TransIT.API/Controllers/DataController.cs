@@ -39,7 +39,6 @@ namespace TransIT.API.Controllers
         }
 
         [HttpGet(ODataTemplateUri)]
-        [EnableQuery]
         public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
         {
             if (ModelState.IsValid)

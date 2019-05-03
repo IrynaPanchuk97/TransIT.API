@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace TransIT.BLL.Services
     {
         protected readonly IODRepository<TEntity> _odRepository;
 
-    public ODCrudService(IODRepository<TEntity> odRepository)
+        public ODCrudService(IODRepository<TEntity> odRepository)
         {
             _odRepository = odRepository;
         }
@@ -29,7 +28,7 @@ namespace TransIT.BLL.Services
             try
             {
                 return Task.FromResult(
-                    (options ?? throw new ArgumentNullException())
+                    options
                         .ApplyTo(_odRepository.GetQueryable())
                         .Cast<TEntity>()
                         .AsEnumerable()
