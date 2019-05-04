@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Query;
-using Microsoft.OData;
 using TransIT.DAL.Models.Entities.Abstractions;
+using TransIT.DAL.Models.ViewModels;
 using TransIT.DAL.Repositories;
 
 namespace TransIT.BLL.Services
@@ -24,21 +23,14 @@ namespace TransIT.BLL.Services
                 _odRepository.GetQueryable().AsEnumerable()
                 );
 
-        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter)
         {
-            try
-            {
-                return Task.FromResult(
-                    (options ?? throw new ArgumentNullException())
-                        .ApplyTo(_odRepository.GetQueryable())
-                        .Cast<TEntity>()
-                        .AsEnumerable()
-                    );
-            }
-            catch (ODataException)
-            {
-                return null; //return Task.FromResult(null);
-            }
+            // TODO: Provide expression builder, which determines properties on runtime
+            var exp = Expression.Empty();
+            return Task.FromResult(
+                _odRepository.GetQueryable()
+                .Provider.CreateQuery<TEntity>(exp)
+                .AsEnumerable());
         }
     }
 }

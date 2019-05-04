@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OData;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
+using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -36,6 +34,28 @@ namespace TransIT.API.Controllers
             _mapper = mapper;
             _dataService = dataService;
             _odService = odService;
+        }
+
+        [HttpPost]
+        public IActionResult Filter([FromForm] DataTableRequestViewModel dataFilter)
+        {
+            foreach (var column in dataFilter.Columns)
+            {
+
+            }
+            return Json(new DataTableResponseViewModel
+            {
+                Draw = dataFilter.Draw,
+                Data = new[]
+                {
+                    new [] { "Vasyl", "Vasylenko" },
+                    new [] { "Ivan", "Ivanenko" },
+                    new [] { "Petro", "Petrenko" }
+                },
+                RecordsTotal = 3,
+                RecordsFiltered = 3,
+                Error = string.Empty
+            });
         }
 
         [HttpGet(ODataTemplateUri)]
@@ -81,7 +101,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.SearchAsync(search);
                 if (res != null) 
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                   return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }

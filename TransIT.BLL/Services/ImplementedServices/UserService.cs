@@ -89,11 +89,11 @@ namespace TransIT.BLL.Services.ImplementedServices
             }
         }
 
-        public virtual async Task<User> UpdateAsync(User model, bool modifyPassword = false)
+        public virtual async Task<User> UpdateAsync(User model)
         {
             try
             {
-                if (!modifyPassword)
+                if (string.IsNullOrEmpty(model.Password))
                 {
                     var res = _repository.UpdateWithIgnoreProperty(model, u => u.Password);
                     await _unitOfWork.SaveAsync();
