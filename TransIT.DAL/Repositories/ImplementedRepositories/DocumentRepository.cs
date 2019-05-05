@@ -15,6 +15,6 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         protected override IQueryable<Document> ComplexEntities => Entities.
            Include(t => t.Create).
            Include(z => z.IssueLog).          
-           Include(a => a.Mod);
+           Include(a => a.Mod).OrderByDescending(u => u.ModDate).OrderByDescending(x => x.CreateDate);
     }
 }

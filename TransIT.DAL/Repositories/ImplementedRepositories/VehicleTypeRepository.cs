@@ -14,6 +14,6 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
 
         protected override IQueryable<VehicleType> ComplexEntities => Entities.
                    Include(a => a.Create).
-                   Include(b => b.Mod);
+                   Include(b => b.Mod).OrderByDescending(u => u.ModDate).OrderByDescending(x => x.CreateDate);
     }
 }
