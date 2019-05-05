@@ -89,7 +89,7 @@ namespace TransIT.BLL.Services.ImplementedServices
             }
         }
 
-        public virtual async Task<User> UpdateAsync(User model)
+        public new virtual async Task<User> UpdateAsync(User model)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace TransIT.BLL.Services.ImplementedServices
                     await _unitOfWork.SaveAsync();
                     return res;
                 }
-
+                model.Password = _hasher.HashPassword(model.Password);
                 return await base.UpdateAsync(model);
             }
             catch (DbUpdateException e)
