@@ -3,7 +3,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.Extensions;
@@ -11,6 +10,7 @@ using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -22,28 +22,28 @@ namespace TransIT.API.Controllers
         public IssueController(
             IMapper mapper, 
             IIssueService issueService,
-            IODCrudService<Issue> odService
+            IFilterService<Issue> odService
             ) : base(mapper, issueService, odService)
         {
             _issueService = issueService;
         }
 
-        [HttpGet(ODataTemplateUri)]
-        public override async Task<IActionResult> Get(ODataQueryOptions<Issue> query)
-        {
-            if (ModelState.IsValid)
-            {
-                var res = await _odService.GetQueriedAsync(query);
-
-                if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
-                {
-                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                    res = res.Where(x => x.CreateId == userId);
-                }
-                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
-            }
-            return BadRequest();
-        }
+//        [HttpPost(DataTableTemplateUri)]
+//        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+//        {
+//            if (ModelState.IsValid)
+//            {
+//                var res = await _odService.GetQueriedAsync(model);
+//
+//                if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
+//                {
+//                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+//                    res = res.Where(x => x.CreateId == userId);
+//                }
+//                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
+//            }
+//            return BadRequest();
+//        }
         
         [HttpGet]
         public override async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)

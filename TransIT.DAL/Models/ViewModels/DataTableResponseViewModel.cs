@@ -2,10 +2,10 @@
 {
     public class DataTableResponseViewModel
     {
-        public int Draw { get; set; }
-        public long RecordsTotal { get; set; }
-        public int RecordsFiltered { get; set; }
-        public object[][] Data { get; set; }
+        public ulong Draw { get; set; }
+        public ulong RecordsTotal { get; set; }
+        public ulong RecordsFiltered { get; set; }
+        public object[] Data { get; set; }
         public string Error { get; set; }
     }
 }

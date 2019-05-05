@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
-using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -16,58 +14,20 @@ namespace TransIT.API.Controllers
     [EnableCors("CorsPolicy")]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    public abstract class DataController<TEntity, TEntityDTO> : Controller
+    public abstract class DataController<TEntity, TEntityDTO> : FilterController<TEntity, TEntityDTO>
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
-        protected const string ODataTemplateUri = "~/api/v1/odata/[controller]";
-        
         private readonly ICrudService<TEntity> _dataService;
-        protected readonly IODCrudService<TEntity> _odService;
         protected readonly IMapper _mapper;
         
         public DataController(
             IMapper mapper,
             ICrudService<TEntity> dataService,
-            IODCrudService<TEntity> odService)
+            IFilterService<TEntity> filterService) : base(filterService, mapper)
         {
             _mapper = mapper;
             _dataService = dataService;
-            _odService = odService;
-        }
-
-        [HttpPost]
-        public IActionResult Filter([FromForm] DataTableRequestViewModel dataFilter)
-        {
-            foreach (var column in dataFilter.Columns)
-            {
-
-            }
-            return Json(new DataTableResponseViewModel
-            {
-                Draw = dataFilter.Draw,
-                Data = new[]
-                {
-                    new [] { "Vasyl", "Vasylenko" },
-                    new [] { "Ivan", "Ivanenko" },
-                    new [] { "Petro", "Petrenko" }
-                },
-                RecordsTotal = 3,
-                RecordsFiltered = 3,
-                Error = string.Empty
-            });
-        }
-
-        [HttpGet(ODataTemplateUri)]
-        public virtual async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
-        {
-            if (ModelState.IsValid)
-            {
-                var res = await _odService.GetQueriedAsync(query);
-                if (res != null)
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
-            }
-            return BadRequest();
         }
 
         [HttpGet]

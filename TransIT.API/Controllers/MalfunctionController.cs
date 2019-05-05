@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public MalfunctionController(
             IMapper mapper, 
             IMalfunctionService malfunctionService,
-            IODCrudService<Malfunction> odService
+            IFilterService<Malfunction> odService
             ) : base(mapper, malfunctionService, odService)
         {
             _malfunctionService = malfunctionService;

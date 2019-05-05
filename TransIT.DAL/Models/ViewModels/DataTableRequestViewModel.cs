@@ -2,6 +2,9 @@
 {
     public class DataTableRequestViewModel
     {
+        public const string DataTableAscending = "asc";
+        public const string DataTableDescending = "desc";
+        
         public int Draw { get; set; }
         public int Start { get; set; }
         public int Length { get; set; }
@@ -25,7 +28,7 @@
         {
             public string Name { get; set; }
             public string Title { get; set; }
-            public object Data { get; set; }
+            public string Data { get; set; }
             public bool Searchable { get; set; }
             public bool Orderable { get; set; }
             public SearchType Search { get; set; }

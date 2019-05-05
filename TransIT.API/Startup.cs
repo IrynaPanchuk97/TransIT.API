@@ -5,13 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TransIT.API.Extensions;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
-using TransIT.DAL.Repositories.ImplementedRepositories;
-using TransIT.DAL.Repositories.InterfacesRepositories;
-using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.API
 {
@@ -40,7 +36,6 @@ namespace TransIT.API
             services.ConfigureCors();
             services.ConfigureModelRepositories();
             services.ConfigureDataAccessServices();
-            services.AddOData();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -63,11 +58,7 @@ namespace TransIT.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
-            app.UseMvc(routerBuilder =>
-            {
-                routerBuilder.EnableDependencyInjection();
-                routerBuilder.Count().OrderBy().Filter().MaxTop(1000);
-            });
+            app.UseMvc();
         }
     }
 }

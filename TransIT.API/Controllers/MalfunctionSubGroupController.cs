@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public MalfunctionSubGroupController(
             IMapper mapper, 
             IMalfunctionSubgroupService malfunctionSubgroupService,
-            IODCrudService<MalfunctionSubgroup> odService
+            IFilterService<MalfunctionSubgroup> odService
             ) : base(mapper, malfunctionSubgroupService, odService)
         {
             _malfunctionSubgroupService = malfunctionSubgroupService;
