@@ -15,6 +15,6 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         protected override IQueryable<MalfunctionSubgroup> ComplexEntities => Entities
                    .Include(t => t.Create)
                    .Include(z => z.Mod)
-                   .Include(a => a.MalfunctionGroup).OrderByDescending(u => u.ModDate).OrderByDescending(x => x.CreateDate);
+                   .Include(a => a.MalfunctionGroup).OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);
     }
 }

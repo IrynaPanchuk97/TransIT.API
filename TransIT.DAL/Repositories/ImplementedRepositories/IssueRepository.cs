@@ -20,7 +20,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
                     .ThenInclude(s => s.MalfunctionGroup)
             .Include(i => i.Mod)
             .Include(i => i.State)
-            .Include(i => i.Vehicle).OrderByDescending(u => u.ModDate).OrderByDescending(x => x.CreateDate);        
+            .Include(i => i.Vehicle).OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);        
 
     }
 }

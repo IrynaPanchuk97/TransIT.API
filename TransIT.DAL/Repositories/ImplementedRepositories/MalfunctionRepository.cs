@@ -16,6 +16,6 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
                     .Include(m => m.Create)
                     .Include(m => m.Mod)
                     .Include(m => m.MalfunctionSubgroup)
-                        .ThenInclude(s => s.MalfunctionGroup).OrderByDescending(u => u.ModDate).OrderByDescending(x => x.CreateDate);
+                        .ThenInclude(s => s.MalfunctionGroup).OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);
     }
 }
