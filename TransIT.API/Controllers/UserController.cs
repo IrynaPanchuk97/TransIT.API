@@ -8,6 +8,7 @@ using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -27,14 +28,27 @@ namespace TransIT.API.Controllers
         
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public override async Task<IActionResult> Update(int id, [FromBody] UserDTO obj)
+        public override Task<IActionResult> Update(int id, [FromBody] UserDTO obj)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    var entity = _mapper.Map<User>(obj);
+            //    entity.Id = id;
+            //    if (await _userService.UpdateAsync(entity) != null)
+            //        return NoContent();
+            //}
+            //return BadRequest();
+            return base.Update(id, obj);
+        }
+
+        [HttpPut("{id}/password")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> ChangePassword(int id, [FromBody] ChangePasswordViewModel changePassword)
         {
             if (ModelState.IsValid)
             {
-                var entity = _mapper.Map<User>(obj);
-                entity.Id = id;
-                if (await _userService.UpdateAsync(entity) != null)
-                    return NoContent();
+                var res = await _userService.UpdatePasswordAsync(id, changePassword);
+                if (res != null) return NoContent();
             }
             return BadRequest();
         }
