@@ -22,7 +22,7 @@ namespace TransIT.API.Controllers
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
-        protected const string ODataTemplateUri = "~api/v1/odata/[controller]";
+        protected const string ODataTemplateUri = "~/api/v1/odata/[controller]";
         
         private readonly ICrudService<TEntity> _dataService;
         protected readonly IODCrudService<TEntity> _odService;
