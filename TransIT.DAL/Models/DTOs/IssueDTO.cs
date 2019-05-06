@@ -4,7 +4,7 @@ namespace TransIT.DAL.Models.DTOs
 {
     public class IssueDTO
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Summary { get; set; }
         public int? Warranty { get; set; }
         public DateTime? Deadline { get; set; }

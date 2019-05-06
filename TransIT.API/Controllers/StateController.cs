@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public StateController(
             IMapper mapper,
             IStateService stateService,
-            IFilterService<State> odService
+            IODCrudService<State> odService
             ) : base(mapper, stateService, odService)
         {
             _stateService = stateService;

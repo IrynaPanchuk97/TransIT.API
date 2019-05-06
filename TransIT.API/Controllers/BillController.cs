@@ -15,7 +15,7 @@ namespace TransIT.API.Controllers
         public BillController(
         IMapper mapper, 
         IBillService billService,
-        IFilterService<Bill> odService
+        IODCrudService<Bill> odService
         ) : base(mapper, billService, odService)
         {
             _billService = billService;

@@ -16,7 +16,7 @@ namespace TransIT.API.Controllers
         public VehicleTypeController(
             IMapper mapper, 
             IVehicleTypeService vehicleTypeService,
-            IFilterService<VehicleType> odService
+            IODCrudService<VehicleType> odService
             ) : base(mapper, vehicleTypeService, odService)
         {
             _vehicleTypeService = vehicleTypeService;

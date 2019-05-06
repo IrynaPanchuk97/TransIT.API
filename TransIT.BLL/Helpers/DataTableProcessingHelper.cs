@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using System.Linq.Expressions;
-using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.BLL.Helpers
 {
@@ -33,57 +31,5 @@ namespace TransIT.BLL.Helpers
 
         private static string MakeFromUpper(string str) =>
             str.First().ToString().ToUpper() + str.Substring(1);
-        
-        public static Expression OrderByTable<TEntity>(
-            Expression expression,
-            DataTableRequestViewModel dataFilter)
-        {
-            DataTableRequestViewModel.ColumnType column;
-            var elementType = new Type[0]; // new [] { data.ElementType, typeof(string) };
-            foreach (var orderType in dataFilter.Order)
-            {
-                column = dataFilter.Columns[orderType.Column];
-                if (column.Orderable)
-                    expression = ComposeOrderByExpression<TEntity>(
-                        expression,
-                        orderType,
-                        elementType,
-                        column.Data);
-            }
-
-            return expression;
-        }
-        
-        public static MethodCallExpression ComposeOrderByExpression<TEntity>(
-            Expression baseExpression,
-            DataTableRequestViewModel.OrderType orderType,
-            Type[] elementType,
-            string columnName) =>
-            Expression.Call(
-                typeof(IQueryable<TEntity>),
-                DetermineOrderByMethodDirection(orderType),
-                elementType,
-                baseExpression,
-                CreateExpressionForNestedTypes(typeof(TEntity), columnName)
-            );
-
-        public static string DetermineOrderByMethodDirection(DataTableRequestViewModel.OrderType orderType) =>
-            orderType.Dir == DataTableRequestViewModel.DataTableAscending
-                ? "OrderBy"
-                : orderType.Dir == DataTableRequestViewModel.DataTableDescending
-                    ? "OrderByDescending"
-                    : throw new ArgumentException(
-                        $"{nameof(DataTableRequestViewModel)}.Order[].{orderType.Dir} is incorrect");
-        
-        public static LambdaExpression CreateExpressionForNestedTypes(Type type, string propertyName) 
-        {
-            var param = Expression.Parameter(type, "x");
-            Expression body = param;
-            
-            foreach (var member in propertyName.Split('.')) 
-                body = Expression.PropertyOrField(body, member);
-            
-            return Expression.Lambda(body, param);
-        }
     }
 }

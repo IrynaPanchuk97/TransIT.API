@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public ActionTypeController(
             IMapper mapper,
             IActionTypeService actionType,
-            IFilterService<ActionType> odService
+            IODCrudService<ActionType> odService
             ) : base(mapper, actionType, odService)
         {
             _actionTypeService = actionType;

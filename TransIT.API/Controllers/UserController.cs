@@ -19,7 +19,7 @@ namespace TransIT.API.Controllers
         public UserController(
             IMapper mapper, 
             IUserService userService,
-            IFilterService<User> odService
+            IODCrudService<User> odService
             ) : base(mapper, userService, odService)
         {
             _userService = userService;
