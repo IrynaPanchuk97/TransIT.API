@@ -30,14 +30,6 @@ namespace TransIT.API.Controllers
         [Authorize(Roles = "ADMIN")]
         public override Task<IActionResult> Update(int id, [FromBody] UserDTO obj)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var entity = _mapper.Map<User>(obj);
-            //    entity.Id = id;
-            //    if (await _userService.UpdateAsync(entity) != null)
-            //        return NoContent();
-            //}
-            //return BadRequest();
             return base.Update(id, obj);
         }
 

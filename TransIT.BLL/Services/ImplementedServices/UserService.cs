@@ -139,9 +139,6 @@ namespace TransIT.BLL.Services.ImplementedServices
             .Where(x => x.Role.Name == ROLE.WORKER)
             .Skip((int)offset)
             .Take((int)amount);
-
-        private Task<IEnumerable<Role>> GetRolesByName(string name) =>
-            _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
         
         protected override Task<IEnumerable<User>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.UserRepository.GetAllAsync(entity =>
