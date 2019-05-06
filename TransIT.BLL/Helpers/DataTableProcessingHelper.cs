@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace TransIT.BLL.Helpers
 {
@@ -7,29 +8,54 @@ namespace TransIT.BLL.Helpers
     {
         public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc)
         {
-            orderByProperty = MakeFromUpper(orderByProperty);
-            string command = desc ? "OrderByDescending" : "OrderBy";
-            var type = source.ElementType;
-            var parameter = Expression.Parameter(type, "p");
-            Expression propertyAccess = parameter;
-            var propertyPath = orderByProperty
-                .Split('.')
-                .Select(MakeFromUpper)
-                .ToArray();
-            var property = type.GetProperty(propertyPath[0]);
-            propertyAccess = Expression.PropertyOrField(propertyAccess, MakeFromUpper(propertyPath[0]));
-            for (var i = 1; i < propertyPath.Length; ++i)
-            {
-                propertyAccess = Expression.PropertyOrField(propertyAccess, MakeFromUpper(propertyPath[i]));
-                property = property.PropertyType.GetProperty(propertyPath[i]);
-            }
-            var orderByExpression = Expression.Lambda(propertyAccess, parameter);
-            var resultExpression = Expression.Call(typeof(Queryable), command, new [] { type, property.PropertyType },
-                source.Expression, Expression.Quote(orderByExpression));
-            return source.Provider.CreateQuery<TEntity>(resultExpression);
+            var parameter = Expression.Parameter(source.ElementType, "p");
+            var propertyPath = SplitWithUpper(orderByProperty);
+            var propertyAccess = GetAccessProperty(parameter, propertyPath);
+            var property = GetPropertyByPath(
+                propertyPath.Skip(1).ToArray(),
+                source.ElementType.GetProperty(propertyPath.First())
+                );
+
+            return source.Provider.CreateQuery<TEntity>(
+                Expression.Call(typeof(Queryable),
+                    desc ? "OrderByDescending" : "OrderBy",
+                    new[] { source.ElementType, property.PropertyType },
+                    source.Expression,
+                    Expression.Quote(
+                        Expression.Lambda(propertyAccess, parameter)
+                        )
+                    )
+                );
         }
 
-        private static string MakeFromUpper(string str) =>
-            str.First().ToString().ToUpper() + str.Substring(1);
+        private static Expression GetAccessProperty(Expression propertyAccess, string[] propertyPath)
+        {
+            propertyPath.ToList().ForEach(name => 
+                propertyAccess = Expression.PropertyOrField(propertyAccess, name)
+                );
+            return propertyAccess;
+        }
+
+        private static PropertyInfo GetPropertyByPath(string[] propertyPath, PropertyInfo property)
+        {
+            propertyPath.ToList().ForEach(name =>
+                property = property.PropertyType.GetProperty(name)
+                );
+            return property;
+        }
+        
+        private static string[] SplitWithUpper(string str) =>
+            str
+                .Split('.')
+                .Select(FromUpper)
+                .ToArray();
+        
+        private static string FromUpper(string str) =>
+            str
+                .First()
+                .ToString()
+                .ToUpper() 
+            + str
+                .Substring(1);
     }
 }
