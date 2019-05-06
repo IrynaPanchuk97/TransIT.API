@@ -9,7 +9,7 @@ namespace TransIT.BLL.Services.InterfacesRepositories
     /// </summary>
     public interface IUserService : ICrudService<User>
     {
-        Task<User> UpdateAsync(User model, bool modifyPassword = false);
+        Task<User> UpdateAsync(User model);
         Task<IEnumerable<User>> GetAssignees(uint offset, uint amount);
     }
 }

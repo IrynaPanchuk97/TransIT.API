@@ -33,7 +33,7 @@ namespace TransIT.API.Controllers
             {
                 var entity = _mapper.Map<User>(obj);
                 entity.Id = id;
-                if (await _userService.UpdateAsync(entity, false) != null)
+                if (await _userService.UpdateAsync(entity) != null)
                     return NoContent();
             }
             return BadRequest();
