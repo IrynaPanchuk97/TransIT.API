@@ -22,28 +22,28 @@ namespace TransIT.API.Controllers
         public IssueController(
             IMapper mapper, 
             IIssueService issueService,
-            IFilterService<Issue> odService
+            IODCrudService<Issue> odService
             ) : base(mapper, issueService, odService)
         {
             _issueService = issueService;
         }
 
-//        [HttpPost(DataTableTemplateUri)]
-//        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
-//        {
-//            if (ModelState.IsValid)
-//            {
-//                var res = await _odService.GetQueriedAsync(model);
-//
-//                if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
-//                {
-//                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-//                    res = res.Where(x => x.CreateId == userId);
-//                }
-//                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
-//            }
-//            return BadRequest();
-//        }
+        [HttpPost(DataTableTemplateUri)]
+        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var res = await _filterService.GetQueriedAsync(model);
+
+                if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
+                {
+                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                    res = res.Where(x => x.CreateId == userId);
+                }
+                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
+            }
+            return BadRequest();
+        }
         
         [HttpGet]
         public override async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)

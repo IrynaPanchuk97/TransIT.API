@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.OData;
 using TransIT.BLL.Helpers;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Models.ViewModels;
@@ -12,7 +11,7 @@ using TransIT.DAL.Repositories;
 
 namespace TransIT.BLL.Services
 {
-    public class FilterService<TEntity> : IFilterService<TEntity>
+    public class FilterService<TEntity> : IODCrudService<TEntity>
         where TEntity : class, IEntity, new()
     {        
         protected readonly IQueryRepository<TEntity> _queryRepository;
@@ -33,7 +32,7 @@ namespace TransIT.BLL.Services
                 _queryRepository.GetQueryable()
                 );
 
-        public async Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter)
+        public virtual async Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter)
         {
             if (!dataFilter.Columns.Any())
                 throw new ArgumentException(
@@ -43,6 +42,22 @@ namespace TransIT.BLL.Services
                     $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Order)} is empty.");
             
              return ProcessQuery(dataFilter, await DetermineDataSource(dataFilter));
+        }
+        
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
+        {
+            try
+            {
+                return Task.FromResult<IEnumerable<TEntity>>(
+                    options
+                        .ApplyTo(_queryRepository.GetQueryable())
+                        .Cast<TEntity>()
+                );
+            }
+            catch (ODataException)
+            {
+                return null;
+            }
         }
 
         private async Task<IQueryable<TEntity>> DetermineDataSource(DataTableRequestViewModel dataFilter) =>

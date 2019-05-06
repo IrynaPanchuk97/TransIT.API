@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public RoleController(
             IMapper mapper, 
             IRoleService roleService,
-            IFilterService<Role> odService
+            IODCrudService<Role> odService
             ) : base(mapper, roleService, odService)
         {
             _roleService = roleService;

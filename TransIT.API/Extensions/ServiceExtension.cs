@@ -70,20 +70,20 @@ namespace TransIT.API.Extensions
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IStateService, StateService>();
             
-            services.AddScoped<IFilterService<User>, FilterService<User>>();
-            services.AddScoped<IFilterService<ActionType>, FilterService<ActionType>>();
-            services.AddScoped<IFilterService<Vehicle>, FilterService<Vehicle>>();
-            services.AddScoped<IFilterService<VehicleType>, FilterService<VehicleType>>();
-            services.AddScoped<IFilterService<Malfunction>, FilterService<Malfunction>>();
-            services.AddScoped<IFilterService<MalfunctionGroup>, FilterService<MalfunctionGroup>>();
-            services.AddScoped<IFilterService<MalfunctionSubgroup>, FilterService<MalfunctionSubgroup>>();
-            services.AddScoped<IFilterService<Bill>, FilterService<Bill>>();
-            services.AddScoped<IFilterService<Document>, FilterService<Document>>();
-            services.AddScoped<IFilterService<Issue>, FilterService<Issue>>();
-            services.AddScoped<IFilterService<IssueLog>, FilterService<IssueLog>>();
-            services.AddScoped<IFilterService<Supplier>, FilterService<Supplier>>();
-            services.AddScoped<IFilterService<Role>, FilterService<Role>>();
-            services.AddScoped<IFilterService<State>, FilterService<State>>();
+            services.AddScoped<IODCrudService<User>, FilterService<User>>();
+            services.AddScoped<IODCrudService<ActionType>, FilterService<ActionType>>();
+            services.AddScoped<IODCrudService<Vehicle>, FilterService<Vehicle>>();
+            services.AddScoped<IODCrudService<VehicleType>, FilterService<VehicleType>>();
+            services.AddScoped<IODCrudService<Malfunction>, FilterService<Malfunction>>();
+            services.AddScoped<IODCrudService<MalfunctionGroup>, FilterService<MalfunctionGroup>>();
+            services.AddScoped<IODCrudService<MalfunctionSubgroup>, FilterService<MalfunctionSubgroup>>();
+            services.AddScoped<IODCrudService<Bill>, FilterService<Bill>>();
+            services.AddScoped<IODCrudService<Document>, FilterService<Document>>();
+            services.AddScoped<IODCrudService<Issue>, FilterService<Issue>>();
+            services.AddScoped<IODCrudService<IssueLog>, FilterService<IssueLog>>();
+            services.AddScoped<IODCrudService<Supplier>, FilterService<Supplier>>();
+            services.AddScoped<IODCrudService<Role>, FilterService<Role>>();
+            services.AddScoped<IODCrudService<State>, FilterService<State>>();
         }
 
         public static void ConfigureModelRepositories(this IServiceCollection services)
