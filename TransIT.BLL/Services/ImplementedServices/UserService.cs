@@ -9,6 +9,7 @@ using TransIT.BLL.Security.Hashers;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.ViewModels;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
 
@@ -89,18 +90,13 @@ namespace TransIT.BLL.Services.ImplementedServices
             }
         }
 
-        public virtual async Task<User> UpdateAsync(User model)
+        public override async Task<User> UpdateAsync(User model)
         {
             try
             {
-                if (string.IsNullOrEmpty(model.Password))
-                {
-                    var res = _repository.UpdateWithIgnoreProperty(model, u => u.Password);
-                    await _unitOfWork.SaveAsync();
-                    return res;
-                }
-
-                return await base.UpdateAsync(model);
+                var res = _repository.UpdateWithIgnoreProperty(model, u => u.Password);
+                await _unitOfWork.SaveAsync();
+                return res;
             }
             catch (DbUpdateException e)
             {
@@ -114,15 +110,35 @@ namespace TransIT.BLL.Services.ImplementedServices
             }
         }
 
+        public virtual async Task<User> UpdatePasswordAsync(int id, ChangePasswordViewModel changePassword)
+        {
+            try
+            {
+                var user = await _repository.GetByIdAsync(id);
+                user.Password = _hasher.HashPassword(changePassword.Password);
+
+                var res = _repository.Update(user);
+                await _unitOfWork.SaveAsync();
+                return res;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(UpdatePasswordAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdatePasswordAsync));
+                throw e;
+            }
+        }
+
         public virtual async Task<IEnumerable<User>> GetAssignees(uint offset, uint amount) =>
             (await _repository.GetAllAsync())
             .AsQueryable()
             .Where(x => x.Role.Name == ROLE.WORKER)
             .Skip((int)offset)
             .Take((int)amount);
-
-        private Task<IEnumerable<Role>> GetRolesByName(string name) =>
-            _unitOfWork.RoleRepository.GetAllAsync(r => r.Name == name);
         
         protected override Task<IEnumerable<User>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.UserRepository.GetAllAsync(entity =>

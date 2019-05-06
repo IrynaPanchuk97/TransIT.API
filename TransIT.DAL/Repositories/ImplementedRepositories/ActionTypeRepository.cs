@@ -9,11 +9,11 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
     {
         public ActionTypeRepository(DbContext context)
                : base(context)
-        {            
+        {
         }
 
         protected override IQueryable<ActionType> ComplexEntities => Entities.
            Include(t => t.Create).
-           Include(w => w.Mod);
+           Include(w => w.Mod).OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);
     }
 }
