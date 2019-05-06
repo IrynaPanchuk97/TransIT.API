@@ -57,7 +57,7 @@ namespace TransIT.API.Controllers
             {
                 var res = await _dataService.GetRangeAsync(offset, amount);
                 if (res != null) 
-                   return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
             }
             return BadRequest();
         }
