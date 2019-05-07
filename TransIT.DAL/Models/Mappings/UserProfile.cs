@@ -17,6 +17,7 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(u => u.CreateDate, opt => opt.Ignore())
                 .ForMember(u => u.RoleId, opt => opt.MapFrom(x => x.Role.Id))
                 .ForMember(u => u.Role, opt => opt.Ignore())
+                .ForMember(u => u.Password, opt => opt.Ignore())
 
                 .ForMember(u => u.IssueAssignedToNavigation, opt => opt.Ignore())
 

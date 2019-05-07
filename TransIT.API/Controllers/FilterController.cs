@@ -63,13 +63,15 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-                var amount = _filterService.TotalRecordsAmount;
+                var totalAmount = _filterService.TotalRecordsAmount;
                 return Json(new DataTableResponseViewModel
                 {
                     Draw = (ulong) model.Draw,
                     Data = res,
-                    RecordsTotal = amount,
-                    RecordsFiltered = string.IsNullOrEmpty(model.Search.Value) ? amount : (ulong) res.Length,
+                    RecordsTotal = totalAmount,
+                    RecordsFiltered = string.IsNullOrEmpty(model.Search.Value)
+                        ? totalAmount
+                        : (ulong) res.Length,
                     Error = errorMessage
                 });
             }
