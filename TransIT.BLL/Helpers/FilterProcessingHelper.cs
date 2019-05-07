@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace TransIT.BLL.Helpers
 {
-    public static class DataTableProcessingHelper
+    public static class FilterProcessingHelper
     {
         public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc)
         {
