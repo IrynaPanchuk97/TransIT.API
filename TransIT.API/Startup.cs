@@ -9,9 +9,6 @@ using Microsoft.AspNet.OData.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
-using TransIT.DAL.Repositories.ImplementedRepositories;
-using TransIT.DAL.Repositories.InterfacesRepositories;
-using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.API
 {

@@ -3,8 +3,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNet.OData;
-using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.Extensions;
@@ -12,6 +10,7 @@ using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -29,12 +28,12 @@ namespace TransIT.API.Controllers
             _issueService = issueService;
         }
 
-        [HttpGet(ODataTemplateUri)]
-        public async Task<IActionResult> Get(ODataQueryOptions<Issue> query)
+        [HttpPost(DataTableTemplateUri)]
+        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var res = await _odService.GetQueriedAsync(query);
+                var res = await _filterService.GetQueriedAsync(model);
 
                 if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
                 {
