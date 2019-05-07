@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -12,8 +14,8 @@ namespace TransIT.BLL.Helpers
             var propertyPath = SplitWithUpper(orderByProperty);
             var propertyAccess = GetAccessProperty(parameter, propertyPath);
             var property = GetPropertyByPath(
-                propertyPath.Skip(1).ToArray(),
-                source.ElementType.GetProperty(propertyPath.First())
+                source.ElementType.GetProperty(propertyPath.First()),
+                propertyPath.Skip(1)
                 );
 
             return source.Provider.CreateQuery<TEntity>(
@@ -28,19 +30,25 @@ namespace TransIT.BLL.Helpers
                 );
         }
 
-        private static Expression GetAccessProperty(Expression propertyAccess, string[] propertyPath)
-        {
-            propertyPath.ToList().ForEach(name => 
-                propertyAccess = Expression.PropertyOrField(propertyAccess, name)
-                );
-            return propertyAccess;
-        }
+        private static Expression GetAccessProperty(Expression propertyAccess, IEnumerable<string> propertyPath) =>
+            ChangeAndReturn(
+                propertyAccess,
+                propertyPath,
+                (name, prop) => Expression.PropertyOrField(prop, name)
+            );
 
-        private static PropertyInfo GetPropertyByPath(string[] propertyPath, PropertyInfo property)
+        private static PropertyInfo GetPropertyByPath(PropertyInfo property, IEnumerable<string> propertyPath) =>
+            ChangeAndReturn(
+                property,
+                propertyPath, 
+                (name, prop) => prop.PropertyType.GetProperty(name)
+                );
+
+        private static T ChangeAndReturn<T>(T property, IEnumerable<string> propertyPath, Func<string, T, T> changer)
         {
             propertyPath.ToList().ForEach(name =>
-                property = property.PropertyType.GetProperty(name)
-                );
+                property = changer(name, property)
+            );
             return property;
         }
         
