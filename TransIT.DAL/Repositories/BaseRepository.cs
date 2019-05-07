@@ -8,7 +8,7 @@ using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity>, IODRepository<TEntity>
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>, IQueryRepository<TEntity>
         where TEntity : class, IEntity
     {
         private readonly DbContext _context;
