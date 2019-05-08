@@ -40,7 +40,7 @@ namespace TransIT.BLL.Helpers
                 propertyAccess,
                 propertyPath,
                 (name, prop) => Expression.PropertyOrField(prop, name)
-            );
+                );
 
         private static PropertyInfo GetPropertyByPath(PropertyInfo property, IEnumerable<string> propertyPath) =>
             ChangeAndReturn(
