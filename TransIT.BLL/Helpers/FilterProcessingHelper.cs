@@ -59,16 +59,11 @@ namespace TransIT.BLL.Helpers
         }
         
         private static string[] CapitalizeSentence(string str) =>
-            str
-                .Split('.')
+            str.Split('.')
                 .Select(Capitalize)
                 .ToArray();
         
         private static string Capitalize(string str) =>
-            str.First()
-                .ToString()
-                .ToUpper() 
-            + 
-            str.Substring(1);
+            $"{str.First().ToString().ToUpper()}{str.Substring(1)}";
     }
 }
