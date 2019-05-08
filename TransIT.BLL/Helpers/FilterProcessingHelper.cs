@@ -12,11 +12,6 @@ namespace TransIT.BLL.Helpers
         {
             var parameter = Expression.Parameter(source.ElementType, "p");
             var propertyPath = CapitalizeSentence(orderByProperty);
-            
-            if (!propertyPath.All(x =>
-                propertyPath.All(y => y != x)))
-                throw new ArgumentException(nameof(propertyPath));
-            
             var propertyAccess = GetAccessProperty(parameter, propertyPath);
             var property = GetPropertyByPath(
                 source.ElementType.GetProperty(propertyPath.First()),
