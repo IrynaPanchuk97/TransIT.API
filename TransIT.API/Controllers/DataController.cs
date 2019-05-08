@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
@@ -71,12 +72,17 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var entity = await _dataService.CreateAsync(
-                    _mapper.Map<TEntity>(obj));
-                if (entity != null)
+                var entity = _mapper.Map<TEntity>(obj);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                entity.ModId = userId;
+                entity.CreateId = userId;
+
+                var createdEntity = await _dataService.CreateAsync(entity);
+                if (createdEntity != null)
                     return CreatedAtAction(
                         nameof(Create),
-                        _mapper.Map<TEntityDTO>(entity));
+                        _mapper.Map<TEntityDTO>(createdEntity));
             }
             return BadRequest();
         }
@@ -87,7 +93,11 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var entity = _mapper.Map<TEntity>(obj);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
                 entity.Id = id;
+                entity.ModId = userId;
+
                 if (await _dataService.UpdateAsync(entity) != null)
                     return NoContent();
             }
