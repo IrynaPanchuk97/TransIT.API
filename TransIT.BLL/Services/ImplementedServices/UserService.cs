@@ -80,27 +80,10 @@ namespace TransIT.BLL.Services.ImplementedServices
             }
         }
 
-        public virtual async Task<User> UpdatePasswordAsync(int id, ChangePasswordViewModel changePassword)
+        public virtual async Task<User> UpdatePasswordAsync(User user, string newPassword)
         {
-            try
-            {
-                var user = await _repository.GetByIdAsync(id);
-                user.Password = _hasher.HashPassword(changePassword.Password);
-
-                var res = _repository.Update(user);
-                await _unitOfWork.SaveAsync();
-                return res;
-            }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(UpdatePasswordAsync), e.Entries);
-                return null;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(UpdatePasswordAsync));
-                throw e;
-            }
+            user.Password = _hasher.HashPassword(newPassword);
+            return await UpdateAsync(user);
         }
 
         public virtual async Task<IEnumerable<User>> GetAssignees(uint offset, uint amount) =>

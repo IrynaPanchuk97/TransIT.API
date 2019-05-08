@@ -20,14 +20,12 @@ namespace TransIT.API.Controllers
         where TEntityDTO : class
     {
         private readonly ICrudService<TEntity> _dataService;
-        protected readonly IMapper _mapper;
         
         public DataController(
             IMapper mapper,
             ICrudService<TEntity> dataService,
             IODCrudService<TEntity> filterService) : base(filterService, mapper)
         {
-            _mapper = mapper;
             _dataService = dataService;
         }
 
@@ -60,9 +58,9 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await _dataService.SearchAsync(search);
-                if (res != null) 
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                var result = await _dataService.SearchAsync(search);
+                if (result != null) 
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(result));
             }
             return BadRequest();
         }
@@ -80,9 +78,7 @@ namespace TransIT.API.Controllers
 
                 var createdEntity = await _dataService.CreateAsync(entity);
                 if (createdEntity != null)
-                    return CreatedAtAction(
-                        nameof(Create),
-                        _mapper.Map<TEntityDTO>(createdEntity));
+                    return CreatedAtAction(nameof(Create), _mapper.Map<TEntityDTO>(createdEntity));
             }
             return BadRequest();
         }
@@ -98,7 +94,8 @@ namespace TransIT.API.Controllers
                 entity.Id = id;
                 entity.ModId = userId;
 
-                if (await _dataService.UpdateAsync(entity) != null)
+                var result = await _dataService.UpdateAsync(entity);
+                if (result != null)
                     return NoContent();
             }
             return BadRequest();

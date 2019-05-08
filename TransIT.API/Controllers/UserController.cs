@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -40,8 +41,13 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await _userService.UpdatePasswordAsync(id, changePassword);
-                if (res != null) return NoContent();
+                var user = await _userService.GetAsync(id);
+                var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                user.ModId = adminId;
+
+                var result = await _userService.UpdatePasswordAsync(user, changePassword.Password);
+                if (result != null) return NoContent();
             }
             return BadRequest();
         }

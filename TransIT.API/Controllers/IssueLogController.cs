@@ -38,35 +38,5 @@ namespace TransIT.API.Controllers
             }
             return BadRequest();
         }
-        
-        [HttpPost]
-        public override async Task<IActionResult> Create([FromBody] IssueLogDTO obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = _mapper.Map<IssueLog>(obj);
-                entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                entity = await _issueLogService.CreateAsync(entity);
-                if (entity != null)
-                    return CreatedAtAction(
-                        nameof(Create),
-                        _mapper.Map<IssueLogDTO>(entity));
-            }
-            return BadRequest();
-        }
-
-        [HttpPut("{id}")]
-        public override async Task<IActionResult> Update(int id, [FromBody] IssueLogDTO obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = _mapper.Map<IssueLog>(obj);
-                entity.Id = id;
-                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                if (await _issueLogService.UpdateAsync(entity) != null)
-                    return NoContent();
-            }
-            return BadRequest();
-        }
     }
 }
