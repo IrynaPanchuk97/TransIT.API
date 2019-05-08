@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TransIT.DAL.Models.Entities;
 
-namespace TransIT.BLL.Services.InterfacesRepositories
+namespace TransIT.BLL.Services.Interfaces
 {
     /// <summary>
     /// Bill type model CRUD

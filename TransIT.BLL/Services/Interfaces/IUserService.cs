@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
 
-namespace TransIT.BLL.Services.InterfacesRepositories
+namespace TransIT.BLL.Services.Interfaces
 {
     /// <summary>
     /// User model CRUD
