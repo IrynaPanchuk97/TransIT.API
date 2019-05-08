@@ -11,7 +11,12 @@ namespace TransIT.BLL.Helpers
         public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc)
         {
             var parameter = Expression.Parameter(source.ElementType, "p");
-            var propertyPath = SplitWithUpper(orderByProperty);
+            var propertyPath = CapitalizeSentence(orderByProperty);
+            
+            if (!propertyPath.All(x =>
+                propertyPath.All(y => y != x)))
+                throw new ArgumentException(nameof(propertyPath));
+            
             var propertyAccess = GetAccessProperty(parameter, propertyPath);
             var property = GetPropertyByPath(
                 source.ElementType.GetProperty(propertyPath.First()),
@@ -46,24 +51,24 @@ namespace TransIT.BLL.Helpers
 
         private static T ChangeAndReturn<T>(T property, IEnumerable<string> propertyPath, Func<string, T, T> changer)
         {
-            propertyPath.ToList().ForEach(name =>
-                property = changer(name, property)
-            );
+            propertyPath.ToList()
+                .ForEach(name =>
+                    property = changer(name, property)
+                    );
             return property;
         }
         
-        private static string[] SplitWithUpper(string str) =>
+        private static string[] CapitalizeSentence(string str) =>
             str
                 .Split('.')
-                .Select(FromUpper)
+                .Select(Capitalize)
                 .ToArray();
         
-        private static string FromUpper(string str) =>
-            str
-                .First()
+        private static string Capitalize(string str) =>
+            str.First()
                 .ToString()
                 .ToUpper() 
-            + str
-                .Substring(1);
+            + 
+            str.Substring(1);
     }
 }
