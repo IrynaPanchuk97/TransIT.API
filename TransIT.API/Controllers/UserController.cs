@@ -30,6 +30,7 @@ namespace TransIT.API.Controllers
         [Authorize(Roles = "ADMIN")]
         public override Task<IActionResult> Update(int id, [FromBody] UserDTO obj)
         {
+            obj.Password = null;
             return base.Update(id, obj);
         }
 
