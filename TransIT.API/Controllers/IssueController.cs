@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -29,19 +30,42 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost(DataTableTemplateUri)]
+        [Consumes("application/x-www-form-urlencoded")]
         public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var res = await _filterService.GetQueriedAsync(model);
-
-                if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
+                var errorMessage = string.Empty;
+                IssueDTO[] res = null;
+                try
                 {
-                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                    res = res.Where(x => x.CreateId == userId);
+                    var data = await _filterService.GetQueriedAsync(model);
+                    
+                    if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
+                    {
+                        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                        data = data.Where(x => x.CreateId == userId);
+                    }
+                    res = _mapper.Map<IEnumerable<IssueDTO>>(data).ToArray();
                 }
-                return Json(_mapper.Map<IEnumerable<IssueDTO>>(res));
+                catch (ArgumentException ex)
+                {
+                    errorMessage = ex.Message;
+                }
+
+                var totalAmount = _filterService.TotalRecordsAmount;
+                return Json(new DataTableResponseViewModel
+                {
+                    Draw = (ulong) model.Draw,
+                    Data = res,
+                    RecordsTotal = totalAmount,
+                    RecordsFiltered = string.IsNullOrEmpty(model.Search.Value)
+                        ? totalAmount
+                        : (ulong) res.Length,
+                    Error = errorMessage
+                });
             }
+
             return BadRequest();
         }
         

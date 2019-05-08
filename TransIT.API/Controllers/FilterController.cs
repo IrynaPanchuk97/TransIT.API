@@ -51,32 +51,47 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var errorMessage = string.Empty;
-                TEntityDTO[] res = null;
+                IEnumerable<TEntityDTO> res;
                 try
                 {
-                    res = _mapper.Map<IEnumerable<TEntityDTO>>(
-                        await _filterService.GetQueriedAsync(model)
-                        ).ToArray();
+                    res = await GetMappedEntitiesByModel(model);
                 }
                 catch (ArgumentException ex)
                 {
+                    res = null;
                     errorMessage = ex.Message;
                 }
 
-                var totalAmount = _filterService.TotalRecordsAmount;
-                return Json(new DataTableResponseViewModel
-                {
-                    Draw = (ulong) model.Draw,
-                    Data = res,
-                    RecordsTotal = totalAmount,
-                    RecordsFiltered = string.IsNullOrEmpty(model.Search.Value)
-                        ? totalAmount
-                        : (ulong) res.Length,
-                    Error = errorMessage
-                });
+                return Json(
+                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                    );
             }
 
             return BadRequest();
         }
+
+        private async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
+            _mapper.Map<IEnumerable<TEntityDTO>>(
+                    await _filterService.GetQueriedAsync(model)
+                );
+
+        private DataTableResponseViewModel ComposeDataTableResponseViewModel(
+            IEnumerable<TEntityDTO> res,
+            DataTableRequestViewModel model,   
+            string errorMessage)
+        {
+            var totalAmount = _filterService.TotalRecordsAmount;
+            return new DataTableResponseViewModel
+            {
+                Draw = (ulong) model.Draw,
+                Data = res?.ToArray(),
+                RecordsTotal = totalAmount,
+                RecordsFiltered = string.IsNullOrEmpty(model.Search.Value)
+                    ? totalAmount
+                    : (ulong) res?.Count(),
+                Error = errorMessage
+            };
+        }
+
     }
 }
