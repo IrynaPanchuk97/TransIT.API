@@ -1,15 +1,14 @@
 using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using TransIT.BLL.Helpers;
 using TransIT.BLL.Helpers.Abstractions;
-using AuthenticationService = TransIT.BLL.Services.AuthenticationService;
-using IAuthenticationService = TransIT.BLL.Services.Abstractions.IAuthenticationService;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using TransIT.BLL.Services.ImplementedServices;
+using TransIT.BLL.Services.Interfaces;
 
 namespace TransIT.API.Extensions
 {

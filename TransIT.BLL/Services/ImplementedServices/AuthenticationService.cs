@@ -6,13 +6,13 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using TransIT.BLL.Helpers.Abstractions;
 using TransIT.BLL.Security.Hashers;
-using TransIT.BLL.Services.Abstractions;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
 using TransIT.DAL.UnitOfWork;
 
-namespace TransIT.BLL.Services
+namespace TransIT.BLL.Services.ImplementedServices
 {
     /// <summary>
     /// Authentication service
