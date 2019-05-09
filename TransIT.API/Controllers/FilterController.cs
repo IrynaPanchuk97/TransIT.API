@@ -70,12 +70,12 @@ namespace TransIT.API.Controllers
             return BadRequest();
         }
 
-        private async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
+        protected async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
             _mapper.Map<IEnumerable<TEntityDTO>>(
                     await _filterService.GetQueriedAsync(model)
                 );
 
-        private DataTableResponseViewModel ComposeDataTableResponseViewModel(
+        protected DataTableResponseViewModel ComposeDataTableResponseViewModel(
             IEnumerable<TEntityDTO> res,
             DataTableRequestViewModel model,   
             string errorMessage)
@@ -92,6 +92,5 @@ namespace TransIT.API.Controllers
                 Error = errorMessage
             };
         }
-
     }
 }
