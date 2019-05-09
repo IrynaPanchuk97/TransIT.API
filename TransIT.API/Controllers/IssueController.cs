@@ -74,7 +74,10 @@ namespace TransIT.API.Controllers
                         res = await GetForCustomer(offset, amount);
                         break;
                     case ROLE.ENGINEER:
-                        res = await GetForEngineer(offset, amount);
+                        res = await GetIssues(offset, amount);
+                        break;
+                    case ROLE.ANALYST:
+                        res = await GetIssues(offset, amount);
                         break;
                 }
 
@@ -100,7 +103,7 @@ namespace TransIT.API.Controllers
             return null;
         }
 
-        private async Task<IEnumerable<IssueDTO>> GetForEngineer(uint offset, uint amount)
+        private async Task<IEnumerable<IssueDTO>> GetIssues(uint offset, uint amount)
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
             if (res != null)
