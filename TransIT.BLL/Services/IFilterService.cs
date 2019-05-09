@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNet.OData.Query;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Models.ViewModels;
@@ -16,5 +17,8 @@ namespace TransIT.BLL.Services
         ulong TotalRecordsAmount { get; }
         Task<IEnumerable<TEntity>> GetQueriedAsync();
         Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter);
+        Task<IEnumerable<TEntity>> GetQueriedAsync(
+            DataTableRequestViewModel dataFilter,
+            IQueryable<TEntity> dataSource);
     }
 }

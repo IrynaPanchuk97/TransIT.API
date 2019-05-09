@@ -32,7 +32,12 @@ namespace TransIT.BLL.Services
                 _queryRepository.GetQueryable()
                 );
 
-        public virtual async Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter)
+        public virtual async Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter) => 
+            await GetQueriedAsync(dataFilter, await DetermineDataSource(dataFilter));
+        
+        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(
+            DataTableRequestViewModel dataFilter,
+            IQueryable<TEntity> dataSource)
         {
             if (!dataFilter.Columns.Any())
                 throw new ArgumentException(
@@ -41,7 +46,7 @@ namespace TransIT.BLL.Services
                 throw new ArgumentException(
                     $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Order)} is empty.");
             
-             return ProcessQuery(dataFilter, await DetermineDataSource(dataFilter));
+            return Task.FromResult<IEnumerable<TEntity>>(ProcessQuery(dataFilter, dataSource));
         }
         
         public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)

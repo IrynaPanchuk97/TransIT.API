@@ -62,9 +62,9 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-                return Json(
-                    ComposeDataTableResponseViewModel(res, model, errorMessage)
-                    );
+//                return Json(
+//                    GetComposedData(model)
+//                    );
             }
 
             return BadRequest();
@@ -75,7 +75,7 @@ namespace TransIT.API.Controllers
                     await _filterService.GetQueriedAsync(model)
                 );
 
-        private DataTableResponseViewModel ComposeDataTableResponseViewModel(
+        protected DataTableResponseViewModel ComposeDataTableResponseViewModel(
             IEnumerable<TEntityDTO> res,
             DataTableRequestViewModel model,   
             string errorMessage)

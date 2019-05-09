@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using TransIT.BLL.Services;
 using TransIT.BLL.Services.InterfacesRepositories;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -16,6 +19,8 @@ namespace TransIT.API.Controllers
     {
         private readonly IIssueLogService _issueLogService;
         private const string IssueLogByIssueUrl = "~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
+        private const string DataTableTemplateIssueLogByIssueUrl = "~/api/v1/datatable" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
+
         
         public IssueLogController(
             IMapper mapper,
@@ -39,6 +44,44 @@ namespace TransIT.API.Controllers
             return BadRequest();
         }
         
+        [HttpPost(DataTableTemplateIssueLogByIssueUrl)]
+        [Consumes("application/x-www-form-urlencoded")]
+        public virtual async Task<IActionResult> Filter(
+            [FromQuery] int issueId,
+            [FromForm] DataTableRequestViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var errorMessage = string.Empty;
+                IEnumerable<IssueLogDTO> res;
+                try
+                {
+                    res = await GetMappedEntities(issueId, model);
+                }
+                catch (ArgumentException ex)
+                {
+                    res = null;
+                    errorMessage = ex.Message;
+                }
+
+                return Json(
+                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                );
+            }
+
+            return BadRequest();
+        }
+
+        private async Task<IEnumerable<IssueLogDTO>> GetMappedEntities(int issueId, DataTableRequestViewModel model) =>
+            _mapper.Map<IEnumerable<IssueLogDTO>>(
+                await _filterService.GetQueriedAsync(
+                    model,
+                    (await _filterService.GetQueriedAsync())
+                    .Where(x => x.IssueId == issueId)
+                    .AsQueryable()
+                    )
+                );
+
         [HttpPost]
         public override async Task<IActionResult> Create([FromBody] IssueLogDTO obj)
         {
