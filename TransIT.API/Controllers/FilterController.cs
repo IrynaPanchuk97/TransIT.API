@@ -38,14 +38,15 @@ namespace TransIT.API.Controllers
             {
                 var res = await _filterService.GetQueriedAsync(query);
                 if (res != null)
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                    return Json(
+                        _mapper.Map<IEnumerable<TEntityDTO>>(res)
+                        );
             }
             return BadRequest();
         }
         
         [HttpPost(DataTableTemplateUri)]
-        [Consumes("application/x-www-form-urlencoded")]
-        public virtual async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+        public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -61,17 +62,17 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-//                return Json(
-//                    GetComposedData(model)
-//                    );
+                return Json(
+                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                    );
             }
 
             return BadRequest();
         }
 
-        private async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
+        protected async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
             _mapper.Map<IEnumerable<TEntityDTO>>(
-                    await _filterService.GetQueriedAsync(model)
+                await _filterService.GetQueriedAsync(model)
                 );
 
         protected DataTableResponseViewModel ComposeDataTableResponseViewModel(
@@ -91,6 +92,5 @@ namespace TransIT.API.Controllers
                 Error = errorMessage
             };
         }
-
     }
 }
