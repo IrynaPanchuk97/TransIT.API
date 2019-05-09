@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;

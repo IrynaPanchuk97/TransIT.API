@@ -1,11 +1,12 @@
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.Extensions;
 using TransIT.BLL.Services;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
@@ -30,6 +31,7 @@ namespace TransIT.API.Controllers
         [Authorize(Roles = "ADMIN")]
         public override Task<IActionResult> Update(int id, [FromBody] UserDTO obj)
         {
+            obj.Password = null;
             return base.Update(id, obj);
         }
 
@@ -39,8 +41,13 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await _userService.UpdatePasswordAsync(id, changePassword);
-                if (res != null) return NoContent();
+                var user = await _userService.GetAsync(id);
+                var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                user.ModId = adminId;
+
+                var result = await _userService.UpdatePasswordAsync(user, changePassword.Password);
+                if (result != null) return NoContent();
             }
             return BadRequest();
         }

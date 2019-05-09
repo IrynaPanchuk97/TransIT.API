@@ -30,7 +30,6 @@ namespace TransIT.API.Controllers
             _filterService = filterService;
             _mapper = mapper;
         }
-
         
         [HttpGet(ODataTemplateUri)]
         public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)

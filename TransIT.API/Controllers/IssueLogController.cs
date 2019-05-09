@@ -7,7 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.BLL.Services;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
@@ -21,7 +21,6 @@ namespace TransIT.API.Controllers
         private const string IssueLogByIssueUrl = "~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
         private const string DataTableTemplateIssueLogByIssueUrl = "~/api/v1/datatable" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
 
-        
         public IssueLogController(
             IMapper mapper,
             IIssueLogService issueLogService,
@@ -64,9 +63,9 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-                return Json(
-                    ComposeDataTableResponseViewModel(res, model, errorMessage)
-                );
+//                return Json(
+//                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+//                );
             }
 
             return BadRequest();

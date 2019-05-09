@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.ImplementedServices;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.Mappings;
 using TransIT.DAL.Repositories;

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.Extensions;
 using TransIT.BLL.Services;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
@@ -95,36 +95,8 @@ namespace TransIT.API.Controllers
         [HttpPost]
         public override async Task<IActionResult> Create([FromBody] IssueDTO obj)
         {
-            if (ModelState.IsValid)
-            {
-                obj.State = null;
-
-                var entity = _mapper.Map<Issue>(obj);
-                entity.Vehicle = null;
-                entity.Malfunction = null;
-
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                entity.CreateId = userId;
-
-                entity = await _issueService.CreateAsync(entity);
-                if (entity != null)
-                    return CreatedAtAction(nameof(Create), _mapper.Map<IssueDTO>(entity));
-            }
-            return BadRequest();
-        }
-        
-        [HttpPut("{id}")]
-        public override async Task<IActionResult> Update(int id, [FromBody] IssueDTO obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = _mapper.Map<Issue>(obj);
-                entity.Id = id;
-                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                if (await _issueService.UpdateAsync(entity) != null)
-                    return NoContent();
-            }
-            return BadRequest();
+            obj.State = null;
+            return await base.Create(obj);
         }
 
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)

@@ -7,5 +7,7 @@ namespace TransIT.DAL.Models.Entities.Abstractions
     public interface IEntity
     {
         int Id { get; set; }
+        int? CreateId { get; set; }
+        int? ModId { get; set; }
     }
 }

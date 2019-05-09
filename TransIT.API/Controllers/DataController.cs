@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
@@ -19,14 +20,12 @@ namespace TransIT.API.Controllers
         where TEntityDTO : class
     {
         private readonly ICrudService<TEntity> _dataService;
-        protected readonly IMapper _mapper;
         
         public DataController(
             IMapper mapper,
             ICrudService<TEntity> dataService,
             IODCrudService<TEntity> filterService) : base(filterService, mapper)
         {
-            _mapper = mapper;
             _dataService = dataService;
         }
 
@@ -59,9 +58,9 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var res = await _dataService.SearchAsync(search);
-                if (res != null) 
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                var result = await _dataService.SearchAsync(search);
+                if (result != null) 
+                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(result));
             }
             return BadRequest();
         }
@@ -71,12 +70,15 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var entity = await _dataService.CreateAsync(
-                    _mapper.Map<TEntity>(obj));
-                if (entity != null)
-                    return CreatedAtAction(
-                        nameof(Create),
-                        _mapper.Map<TEntityDTO>(entity));
+                var entity = _mapper.Map<TEntity>(obj);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+                entity.ModId = userId;
+                entity.CreateId = userId;
+
+                var createdEntity = await _dataService.CreateAsync(entity);
+                if (createdEntity != null)
+                    return CreatedAtAction(nameof(Create), _mapper.Map<TEntityDTO>(createdEntity));
             }
             return BadRequest();
         }
@@ -87,8 +89,13 @@ namespace TransIT.API.Controllers
             if (ModelState.IsValid)
             {
                 var entity = _mapper.Map<TEntity>(obj);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
                 entity.Id = id;
-                if (await _dataService.UpdateAsync(entity) != null)
+                entity.ModId = userId;
+
+                var result = await _dataService.UpdateAsync(entity);
+                if (result != null)
                     return NoContent();
             }
             return BadRequest();

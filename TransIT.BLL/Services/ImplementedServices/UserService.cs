@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.API.Extensions;
 using TransIT.BLL.Security.Hashers;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
@@ -48,20 +48,6 @@ namespace TransIT.BLL.Services.ImplementedServices
         }
 
         /// <summary>
-        /// Gets user by id and ensures that role is assigned
-        /// </summary>
-        /// <param name="id">Id of user</param>
-        /// <returns>User with id</returns>
-        public async override Task<User> GetAsync(int id)
-        {
-            var user = await base.GetAsync(id);
-            if (user.Role == null)
-                user.Role = await _unitOfWork.RoleRepository
-                    .GetByIdAsync((int)user.RoleId);
-            return user;
-        }
-
-        /// <summary>
         /// Creates user if login and password not empty and does not exist in DB
         /// hashes password and set zero to id
         /// </summary>
@@ -70,24 +56,8 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// <returns>Is successful</returns>
         public override async Task<User> CreateAsync(User user)
         {
-            try
-            {
-                user.Id = 0;
-                user.RoleId = (await _roleRepository.GetByIdAsync((int)user.RoleId)).Id;
-                user.Role = null;
-                user.Password = _hasher.HashPassword(user.Password);
-                return await base.CreateAsync(user);
-            }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(CreateAsync), e.Entries);
-                return null;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(CreateAsync));
-                throw e;
-            }
+            user.Password = _hasher.HashPassword(user.Password);
+            return await base.CreateAsync(user);
         }
 
         public override async Task<User> UpdateAsync(User model)
@@ -110,27 +80,10 @@ namespace TransIT.BLL.Services.ImplementedServices
             }
         }
 
-        public virtual async Task<User> UpdatePasswordAsync(int id, ChangePasswordViewModel changePassword)
+        public virtual async Task<User> UpdatePasswordAsync(User user, string newPassword)
         {
-            try
-            {
-                var user = await _repository.GetByIdAsync(id);
-                user.Password = _hasher.HashPassword(changePassword.Password);
-
-                var res = _repository.Update(user);
-                await _unitOfWork.SaveAsync();
-                return res;
-            }
-            catch (DbUpdateException e)
-            {
-                _logger.LogError(e, nameof(UpdatePasswordAsync), e.Entries);
-                return null;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e, nameof(UpdatePasswordAsync));
-                throw e;
-            }
+            user.Password = _hasher.HashPassword(newPassword);
+            return await UpdateAsync(user);
         }
 
         public virtual async Task<IEnumerable<User>> GetAssignees(uint offset, uint amount) =>

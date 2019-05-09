@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 
-namespace TransIT.BLL.Services.InterfacesRepositories
+namespace TransIT.BLL.Services.Interfaces
 {
     /// <summary>
     /// Action type model CRUD

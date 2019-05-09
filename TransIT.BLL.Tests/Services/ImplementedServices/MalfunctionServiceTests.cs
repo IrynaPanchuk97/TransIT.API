@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TransIT.BLL.Services.ImplementedServices;
-using TransIT.BLL.Services.InterfacesRepositories;
+using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 
