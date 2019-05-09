@@ -30,8 +30,7 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost(DataTableTemplateUri)]
-        [Consumes("application/x-www-form-urlencoded")]
-        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+        public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -53,17 +52,9 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-                var totalAmount = _filterService.TotalRecordsAmount;
-                return Json(new DataTableResponseViewModel
-                {
-                    Draw = (ulong) model.Draw,
-                    Data = res,
-                    RecordsTotal = totalAmount,
-                    RecordsFiltered = string.IsNullOrEmpty(model.Search.Value)
-                        ? totalAmount
-                        : (ulong) res.Length,
-                    Error = errorMessage
-                });
+                return Json(
+                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                    );
             }
 
             return BadRequest();
@@ -93,10 +84,10 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost]
-        public override async Task<IActionResult> Create([FromBody] IssueDTO obj)
+        public override Task<IActionResult> Create([FromBody] IssueDTO obj)
         {
             obj.State = null;
-            return await base.Create(obj);
+            return base.Create(obj);
         }
 
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)
@@ -104,7 +95,7 @@ namespace TransIT.API.Controllers
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var res = await _issueService.GetRegisteredIssuesAsync(offset, amount, userId);
             if (res != null)
-                return res.Select(x => _mapper.Map<IssueDTO>(x));
+                return _mapper.Map<IEnumerable<IssueDTO>>(res);
             return null;
         }
 
@@ -112,7 +103,7 @@ namespace TransIT.API.Controllers
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
             if (res != null)
-                return res.Select(x => _mapper.Map<IssueDTO>(x));
+                return _mapper.Map<IEnumerable<IssueDTO>>(res);
             return null;
         }
     }
