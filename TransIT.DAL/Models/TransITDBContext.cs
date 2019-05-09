@@ -514,6 +514,20 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.TransName)
                     .HasColumnName("TRANS_NAME")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
+                entity.Property(e => e.ModDate)
+                    .HasColumnName("MOD_DATE")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModId).HasColumnName("MOD_ID");
             });
 
             modelBuilder.Entity<Supplier>(entity =>

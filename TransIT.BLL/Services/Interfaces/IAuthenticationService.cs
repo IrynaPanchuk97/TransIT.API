@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.ViewModels;
 
-namespace TransIT.BLL.Services.Abstractions
+namespace TransIT.BLL.Services.Interfaces
 {
     /// <summary>
     /// Behavior of authentication
