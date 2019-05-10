@@ -73,14 +73,11 @@ namespace TransIT.API.Controllers
                     case ROLE.CUSTOMER:
                         res = await GetForCustomer(offset, amount);
                         break;
-                    case ROLE.ENGINEER:
-                        res = await GetIssues(offset, amount);
-                        break;
+                    case ROLE.ENGINEER:                        
                     case ROLE.ANALYST:
                         res = await GetIssues(offset, amount);
                         break;
                 }
-
                 if (res != null)
                     return Json(res);
             }
