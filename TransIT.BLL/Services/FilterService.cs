@@ -104,6 +104,6 @@ namespace TransIT.BLL.Services
             data.OrderBy(
                 dataFilter.Columns[dataFilter.Order[0].Column].Data,
                 dataFilter.Order[0].Dir == DataTableRequestViewModel.DataTableDescending
-            );
+                );
     }
 }

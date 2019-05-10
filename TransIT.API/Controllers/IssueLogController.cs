@@ -46,7 +46,7 @@ namespace TransIT.API.Controllers
         
         [HttpPost(DataTableTemplateIssueLogByIssueUrl)]
         public virtual async Task<IActionResult> Filter(
-            [FromQuery] int issueId,
+            int issueId,
             DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
