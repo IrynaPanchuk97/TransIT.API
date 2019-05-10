@@ -37,7 +37,7 @@ namespace TransIT.DAL.Models
             #region Seeding
 
             modelBuilder.SeedRoles();
-            modelBuilder.SeedStates();            
+            modelBuilder.SeedStates();
 
             #endregion
 
@@ -205,12 +205,15 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
+                entity.Property(e => e.Number).HasColumnName("NUMBER");
+
+                entity.Property(e => e.Priority).HasColumnName("PRIORITY");
+
                 entity.Property(e => e.StateId)
                     .HasColumnName("STATE_ID")
                     .HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.Summary)
-                    .HasColumnName("SUMMARY");
+                entity.Property(e => e.Summary).HasColumnName("SUMMARY");
 
                 entity.Property(e => e.VehicleId).HasColumnName("VEHICLE_ID");
 
@@ -263,8 +266,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
-                entity.Property(e => e.Description)
-                    .HasColumnName("DESCRIPTION");
+                entity.Property(e => e.Description).HasColumnName("DESCRIPTION");
 
                 entity.Property(e => e.Expenses)
                     .HasColumnName("EXPENSES")
@@ -359,6 +361,7 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.MalfunctionSubgroup)
                     .WithMany(p => p.Malfunction)
                     .HasForeignKey(d => d.MalfunctionSubgroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MALFUNCTION_SUBGROUP_MALFUNCTION_SUBGROUP");
 
                 entity.HasOne(d => d.Mod)
@@ -436,6 +439,7 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.MalfunctionGroup)
                     .WithMany(p => p.MalfunctionSubgroup)
                     .HasForeignKey(d => d.MalfunctionGroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MALFUNCTION_SUBGROUP_MALFUNCTION_GROUP");
 
                 entity.HasOne(d => d.Mod)
@@ -453,7 +457,7 @@ namespace TransIT.DAL.Models
                     .IsUnique();
 
                 entity.HasIndex(e => e.TransName)
-                    .HasName("UQ__ROLE__DF65CE2719872B43")
+                    .HasName("UQ_ROLE_TRANS_NAME")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -478,7 +482,6 @@ namespace TransIT.DAL.Models
                     .HasMaxLength(50);
 
                 entity.Property(e => e.TransName)
-                    .IsRequired()
                     .HasColumnName("TRANS_NAME")
                     .HasMaxLength(50);
 
@@ -498,22 +501,14 @@ namespace TransIT.DAL.Models
                 entity.ToTable("STATE");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__STATE__D9C1FA004DDE9B3B")
+                    .HasName("UQ_STATE_NAME")
                     .IsUnique();
 
                 entity.HasIndex(e => e.TransName)
-                    .HasName("UQ__STATE__DF65CE27E730D668")
+                    .HasName("UQ_STATE_TRANS_NAME")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Name)
-                    .HasColumnName("NAME")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.TransName)
-                    .HasColumnName("TRANS_NAME")
-                    .HasMaxLength(50);
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
@@ -528,6 +523,14 @@ namespace TransIT.DAL.Models
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.ModId).HasColumnName("MOD_ID");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("NAME")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.TransName)
+                    .HasColumnName("TRANS_NAME")
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Supplier>(entity =>
@@ -627,7 +630,7 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.FirstName)
                     .HasColumnName("FIRST_NAME")
                     .HasMaxLength(50);
-                
+
                 entity.Property(e => e.IsActive)
                     .HasColumnName("IS_ACTIVE")
                     .HasDefaultValueSql("((1))");
@@ -661,7 +664,7 @@ namespace TransIT.DAL.Models
                     .HasColumnName("PHONE_NUMBER")
                     .HasMaxLength(15);
 
-                entity.Property(e => e.RoleId).HasColumnName("ROLE_ID").IsRequired();
+                entity.Property(e => e.RoleId).HasColumnName("ROLE_ID");
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.InverseCreate)
@@ -676,6 +679,7 @@ namespace TransIT.DAL.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.User)
                     .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_USER_ROLE");
             });
 
@@ -683,23 +687,15 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("VEHICLE");
 
-                entity.HasIndex(e => e.InventoryId)
-                    .HasName("UQ__VEHICLE__65E4F1E6C39150D1")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.RegNum)
-                    .HasName("UQ__VEHICLE__0189DFA30AFC74AE")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.Vincode)
-                    .HasName("UQ__VEHICLE__5C84FBD285375A1F")
-                    .IsUnique();
-
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Brand)
                     .HasColumnName("BRAND")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.CommissioningDate)
+                    .HasColumnName("COMMISSIONING_DATE")
+                    .HasColumnType("datetime");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
@@ -732,6 +728,10 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.Vincode)
                     .HasColumnName("VINCODE")
                     .HasMaxLength(20);
+
+                entity.Property(e => e.WarrantyEndDate)
+                    .HasColumnName("WARRANTY_END_DATE")
+                    .HasColumnType("datetime");
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.VehicleCreate)
@@ -788,8 +788,8 @@ namespace TransIT.DAL.Models
                     .HasForeignKey(d => d.ModId)
                     .HasConstraintName("FK_MOD_VEHICLE_TYPE_ROLE");
             });
-            
             #endregion
         }
     }
 }
+
