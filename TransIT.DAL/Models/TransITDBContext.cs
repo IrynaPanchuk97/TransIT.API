@@ -14,6 +14,8 @@ namespace TransIT.DAL.Models
 
         public virtual DbSet<ActionType> ActionType { get; set; }
         public virtual DbSet<Bill> Bill { get; set; }
+        public virtual DbSet<Country> Country { get; set; }
+        public virtual DbSet<Currency> Currency { get; set; }
         public virtual DbSet<Document> Document { get; set; }
         public virtual DbSet<Issue> Issue { get; set; }
         public virtual DbSet<IssueLog> IssueLog { get; set; }
@@ -131,6 +133,46 @@ namespace TransIT.DAL.Models
                     .WithMany(p => p.BillMod)
                     .HasForeignKey(d => d.ModId)
                     .HasConstraintName("FK_MOD_BILL_USER");
+            });
+
+            modelBuilder.Entity<Country>(entity =>
+            {
+                entity.ToTable("COUNTRY");
+
+                entity.HasIndex(e => e.Name)
+                    .HasName("UQ__COUNTRY__D9C1FA005DF647A0")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasColumnName("NAME")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Currency>(entity =>
+            {
+                entity.ToTable("CURRENCY");
+
+                entity.HasIndex(e => e.ShortName)
+                    .HasName("UQ__CURRENCY__2711634FCFE1E852")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.FullName)
+                    .IsRequired()
+                    .HasColumnName("full_name")
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShortName)
+                    .IsRequired()
+                    .HasColumnName("short_name")
+                    .HasMaxLength(5)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Document>(entity =>
@@ -543,12 +585,31 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.Code)
+                    .HasColumnName("CODE")
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Country).HasColumnName("COUNTRY");
+
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
+                entity.Property(e => e.Currency).HasColumnName("CURRENCY");
+
+                entity.Property(e => e.Edrpou)
+                    .HasColumnName("EDRPOU")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FullName)
+                    .HasColumnName("FULL_NAME")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
@@ -562,10 +623,20 @@ namespace TransIT.DAL.Models
                     .HasColumnName("NAME")
                     .HasMaxLength(50);
 
+                entity.HasOne(d => d.CountryNavigation)
+                    .WithMany(p => p.Supplier)
+                    .HasForeignKey(d => d.Country)
+                    .HasConstraintName("FK_Country");
+
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.SupplierCreate)
                     .HasForeignKey(d => d.CreateId)
                     .HasConstraintName("FK_CREATE_SUPPLIER_USER");
+
+                entity.HasOne(d => d.CurrencyNavigation)
+                    .WithMany(p => p.Supplier)
+                    .HasForeignKey(d => d.Currency)
+                    .HasConstraintName("FK_Currency");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.SupplierMod)
