@@ -7,6 +7,8 @@ namespace TransIT.DAL.UnitOfWork
     public interface IUnitOfWork 
     {
         IActionTypeRepository ActionTypeRepository { get; }
+        ICurrencyRepository CurrencyRepository { get; }
+        ICountryRepository CountryRepository { get; }
         IBillRepository BillRepository { get; }
         IDocumentRepository DocumentRepository { get; }
         IIssueRepository IssueRepository { get; }

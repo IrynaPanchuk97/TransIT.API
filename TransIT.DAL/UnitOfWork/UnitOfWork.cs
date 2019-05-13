@@ -9,7 +9,9 @@ namespace TransIT.DAL.UnitOfWork
     {
         private readonly DbContext _context;
 
-        public IActionTypeRepository ActionTypeRepository { get; }
+        public  IActionTypeRepository ActionTypeRepository { get; }
+        public  ICountryRepository CountryRepository { get; }
+        public  ICurrencyRepository CurrencyRepository { get; }
         public  IBillRepository BillRepository { get; }
         public  IDocumentRepository DocumentRepository { get; }
         public  IIssueRepository IssueRepository { get; }
@@ -29,6 +31,8 @@ namespace TransIT.DAL.UnitOfWork
         public UnitOfWork(DbContext context,
             IActionTypeRepository actionTypeRepository,
             IBillRepository billRepository,
+            ICurrencyRepository currencyRepository,
+            ICountryRepository countryRepository,
             IDocumentRepository documentRepository,
             IIssueRepository issueRepository,
             IIssueLogRepository issueLogRepository,
@@ -46,6 +50,8 @@ namespace TransIT.DAL.UnitOfWork
             _context = context;
             ActionTypeRepository = actionTypeRepository;
             BillRepository = billRepository;
+            CountryRepository = countryRepository;
+            CurrencyRepository = currencyRepository;
             DocumentRepository = documentRepository;
             IssueRepository = issueRepository;
             IssueLogRepository = issueLogRepository;

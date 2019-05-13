@@ -291,6 +291,11 @@ CREATE TABLE SUPPLIER
   MOD_DATE    DATETIME DEFAULT (GETDATE()),
   CREATE_ID   INT,
   MOD_ID      INT,
+  CODE varchar(10),
+  FULL_NAME varchar(100),
+  COUNTRY int,
+  CURRENCY int,
+  EDRPOU varchar(50),
   CONSTRAINT FK_CREATE_SUPPLIER_USER
     FOREIGN KEY (CREATE_ID)
       REFERENCES [USER] (ID)
@@ -589,4 +594,27 @@ GO
 ALTER TABLE ISSUE
   ADD CONSTRAINT DF_ISSUE_STATE
     DEFAULT (1) FOR STATE_ID;
+GO
+
+create table CURRENCY(
+	ID INT NOT NULL IDENTITY PRIMARY KEY,
+	short_name varchar(5) not null UNIQUE,
+	full_name varchar(25) not null
+);
+GO
+
+create table COUNTRY(
+	ID INT NOT NULL IDENTITY PRIMARY KEY,
+	NAME varchar(50) not null UNIQUE
+);
+GO
+
+alter table supplier
+	add constraint FK_Currency
+	FOREIGN KEY (CURRENCY) REFERENCES CURRENCY(ID);
+GO
+
+alter table supplier
+	add constraint FK_Country
+	FOREIGN KEY (COUNTRY) REFERENCES COUNTRY(ID);
 GO
