@@ -14,7 +14,7 @@ using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ENGINEER,CUSTOMER,ANALYST")]
+    [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
     public class IssueLogController : DataController<IssueLog, IssueLogDTO>
     {
         private readonly IIssueLogService _issueLogService;
