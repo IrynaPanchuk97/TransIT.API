@@ -30,8 +30,7 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost(DataTableTemplateUri)]
-        [Consumes("application/x-www-form-urlencoded")]
-        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+        public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {

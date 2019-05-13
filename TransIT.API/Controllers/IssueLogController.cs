@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
@@ -16,7 +19,8 @@ namespace TransIT.API.Controllers
     {
         private readonly IIssueLogService _issueLogService;
         private const string IssueLogByIssueUrl = "~/api/v1/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
-        
+        private const string DataTableTemplateIssueLogByIssueUrl = "~/api/v1/datatable/" + nameof(Issue) + "/{issueId}/" + nameof(IssueLog); 
+
         public IssueLogController(
             IMapper mapper,
             IIssueLogService issueLogService,
@@ -33,8 +37,73 @@ namespace TransIT.API.Controllers
             {
                 var res = await _issueLogService.GetRangeByIssueIdAsync(issueId);
                 if (res != null)
-                    return Json(res.Select(x =>
-                        _mapper.Map<IssueLogDTO>(x)));
+                    return Json(
+                        _mapper.Map<IEnumerable<IssueLogDTO>>(res)
+                        );
+            }
+            return BadRequest();
+        }
+        
+        [HttpPost(DataTableTemplateIssueLogByIssueUrl)]
+        public virtual async Task<IActionResult> Filter(
+            int issueId,
+            DataTableRequestViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var errorMessage = string.Empty;
+                IEnumerable<IssueLogDTO> res;
+                try
+                {
+                    res = await GetMappedEntitiesByIssueId(issueId, model);
+                }
+                catch (ArgumentException ex)
+                {
+                    res = null;
+                    errorMessage = ex.Message;
+                }
+
+                return Json(
+                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                );
+            }
+            return BadRequest();
+        }
+
+        private async Task<IEnumerable<IssueLogDTO>> GetMappedEntitiesByIssueId(int issueId, DataTableRequestViewModel model) =>
+            _mapper.Map<IEnumerable<IssueLogDTO>>(
+                await _filterService.GetQueriedWithWhereAsync(
+                    model, 
+                    x => x.Issue.Id == issueId
+                    )
+                );
+
+        [HttpPost]
+        public override async Task<IActionResult> Create([FromBody] IssueLogDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<IssueLog>(obj);
+                entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                entity = await _issueLogService.CreateAsync(entity);
+                if (entity != null)
+                    return CreatedAtAction(
+                        nameof(Create),
+                        _mapper.Map<IssueLogDTO>(entity));
+            }
+            return BadRequest();
+        }
+
+        [HttpPut("{id}")]
+        public override async Task<IActionResult> Update(int id, [FromBody] IssueLogDTO obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _mapper.Map<IssueLog>(obj);
+                entity.Id = id;
+                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (await _issueLogService.UpdateAsync(entity) != null)
+                    return NoContent();
             }
             return BadRequest();
         }

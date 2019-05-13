@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.OData;
@@ -32,17 +33,37 @@ namespace TransIT.BLL.Services
                 _queryRepository.GetQueryable()
                 );
 
-        public virtual async Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter)
+        public virtual async Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter) => 
+            await GetQueriedAsync(dataFilter, await DetermineDataSource(dataFilter));
+
+        public virtual async Task<IEnumerable<TEntity>> GetQueriedWithWhereAsync(
+            DataTableRequestViewModel dataFilter,
+            Expression<Func<TEntity, bool>> whereExpression)
         {
-            if (!dataFilter.Columns.Any())
-                throw new ArgumentException(
-                    $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Columns)} is empty.");
-            if (!dataFilter.Order.Any())
-                throw new ArgumentException(
-                    $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Order)} is empty.");
-            
-             return ProcessQuery(dataFilter, await DetermineDataSource(dataFilter));
+            _ = ThrowIfIncorrectArguments(dataFilter);
+            return ProcessQuery(
+                dataFilter,
+                await DetermineDataSource(dataFilter),
+                whereExpression
+                );
         }
+
+        protected virtual Task<IQueryable<TEntity>> GetQueriedAsync(
+            DataTableRequestViewModel dataFilter,
+            IQueryable<TEntity> dataSource)
+        {
+            _ = ThrowIfIncorrectArguments(dataFilter);
+            return Task.FromResult(ProcessQuery(dataFilter, dataSource));
+        }
+        
+        private bool ThrowIfIncorrectArguments(DataTableRequestViewModel dataFilter) =>
+            !dataFilter.Columns.Any()
+                ? throw new ArgumentException(
+                    $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Columns)} is empty.")
+                : !dataFilter.Order.Any()
+                    ? throw new ArgumentException(
+                        $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Order)} is empty.")
+                    : true;
         
         public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
         {
@@ -66,12 +87,23 @@ namespace TransIT.BLL.Services
                 : (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable();
 
         private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data) =>
-            data.OrderBy(
-                    dataFilter.Columns[dataFilter.Order[0].Column].Data,
-                    dataFilter.Order[0].Dir == DataTableRequestViewModel.DataTableDescending
-                )
-                .Cast<TEntity>()
+            TableOrderBy(dataFilter, data)
                 .Skip(dataFilter.Start)
                 .Take(dataFilter.Length);
+        
+        private IQueryable<TEntity> ProcessQuery(
+            DataTableRequestViewModel dataFilter,
+            IQueryable<TEntity> data,
+            Expression<Func<TEntity, bool>> whereExpression) =>
+            TableOrderBy(dataFilter, data)
+                .Where(whereExpression)
+                .Skip(dataFilter.Start)
+                .Take(dataFilter.Length);
+
+        private IQueryable<TEntity> TableOrderBy(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data) =>
+            data.OrderBy(
+                dataFilter.Columns[dataFilter.Order[0].Column].Data,
+                dataFilter.Order[0].Dir == DataTableRequestViewModel.DataTableDescending
+                );
     }
 }
