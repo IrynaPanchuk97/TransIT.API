@@ -38,14 +38,11 @@ namespace TransIT.API.Controllers
                 IssueDTO[] res = null;
                 try
                 {
-                    var data = await _filterService.GetQueriedAsync(model);
-                    
-                    if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
-                    {
-                        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                        data = data.Where(x => x.CreateId == userId);
-                    }
-                    res = _mapper.Map<IEnumerable<IssueDTO>>(data).ToArray();
+                    res = _mapper.Map<IEnumerable<IssueDTO>>(
+                        User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER
+                            ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == GetUserId())
+                            : await _filterService.GetQueriedAsync(model)
+                        ).ToArray();
                 }
                 catch (ArgumentException ex)
                 {
