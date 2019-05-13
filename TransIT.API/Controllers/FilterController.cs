@@ -30,7 +30,6 @@ namespace TransIT.API.Controllers
             _filterService = filterService;
             _mapper = mapper;
         }
-
         
         [HttpGet(ODataTemplateUri)]
         public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
@@ -39,14 +38,15 @@ namespace TransIT.API.Controllers
             {
                 var res = await _filterService.GetQueriedAsync(query);
                 if (res != null)
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
+                    return Json(
+                        _mapper.Map<IEnumerable<TEntityDTO>>(res)
+                        );
             }
             return BadRequest();
         }
         
         [HttpPost(DataTableTemplateUri)]
-        [Consumes("application/x-www-form-urlencoded")]
-        public virtual async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+        public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace TransIT.API.Controllers
 
         protected async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
             _mapper.Map<IEnumerable<TEntityDTO>>(
-                    await _filterService.GetQueriedAsync(model)
+                await _filterService.GetQueriedAsync(model)
                 );
 
         protected DataTableResponseViewModel ComposeDataTableResponseViewModel(

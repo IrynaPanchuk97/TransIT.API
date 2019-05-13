@@ -30,8 +30,7 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost(DataTableTemplateUri)]
-        [Consumes("application/x-www-form-urlencoded")]
-        public override async Task<IActionResult> Filter([FromForm] DataTableRequestViewModel model)
+        public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -73,11 +72,11 @@ namespace TransIT.API.Controllers
                     case ROLE.CUSTOMER:
                         res = await GetForCustomer(offset, amount);
                         break;
-                    case ROLE.ENGINEER:
-                        res = await GetForEngineer(offset, amount);
+                    case ROLE.ENGINEER:                        
+                    case ROLE.ANALYST:
+                        res = await GetIssues(offset, amount);
                         break;
                 }
-
                 if (res != null)
                     return Json(res);
             }
@@ -100,7 +99,7 @@ namespace TransIT.API.Controllers
             return null;
         }
 
-        private async Task<IEnumerable<IssueDTO>> GetForEngineer(uint offset, uint amount)
+        private async Task<IEnumerable<IssueDTO>> GetIssues(uint offset, uint amount)
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
             if (res != null)
