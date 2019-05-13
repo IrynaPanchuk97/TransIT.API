@@ -12,5 +12,7 @@ namespace TransIT.DAL.Models.DTOs
         public string RegNum { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
+        public DateTime? WarrantyEndDate { get; set; }
+        public DateTime? CommissioningDate { get; set; }
     }
 }

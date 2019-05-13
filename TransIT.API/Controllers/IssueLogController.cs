@@ -63,9 +63,9 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-                return Json(
-                    ComposeDataTableResponseViewModel(res, model, errorMessage)
-                );
+                var dtResponse = ComposeDataTableResponseViewModel(res, model, errorMessage);
+                dtResponse.RecordsFiltered = (ulong) dtResponse.Data.LongLength;
+                return Json(dtResponse);
             }
             return BadRequest();
         }
@@ -74,7 +74,7 @@ namespace TransIT.API.Controllers
             _mapper.Map<IEnumerable<IssueLogDTO>>(
                 await _filterService.GetQueriedWithWhereAsync(
                     model, 
-                    x => x.Issue.Id == issueId
+                    x => x.IssueId == issueId
                     )
                 );
 

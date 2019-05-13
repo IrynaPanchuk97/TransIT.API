@@ -38,14 +38,11 @@ namespace TransIT.API.Controllers
                 IssueDTO[] res = null;
                 try
                 {
-                    var data = await _filterService.GetQueriedAsync(model);
-                    
-                    if (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER)
-                    {
-                        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                        data = data.Where(x => x.CreateId == userId);
-                    }
-                    res = _mapper.Map<IEnumerable<IssueDTO>>(data).ToArray();
+                    res = _mapper.Map<IEnumerable<IssueDTO>>(
+                        User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER
+                            ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == GetUserId())
+                            : await _filterService.GetQueriedAsync(model)
+                        ).ToArray();
                 }
                 catch (ArgumentException ex)
                 {
@@ -72,11 +69,11 @@ namespace TransIT.API.Controllers
                     case ROLE.CUSTOMER:
                         res = await GetForCustomer(offset, amount);
                         break;
-                    case ROLE.ENGINEER:
-                        res = await GetForEngineer(offset, amount);
+                    case ROLE.ENGINEER:                        
+                    case ROLE.ANALYST:
+                        res = await GetIssues(offset, amount);
                         break;
                 }
-
                 if (res != null)
                     return Json(res);
             }
@@ -99,7 +96,7 @@ namespace TransIT.API.Controllers
             return null;
         }
 
-        private async Task<IEnumerable<IssueDTO>> GetForEngineer(uint offset, uint amount)
+        private async Task<IEnumerable<IssueDTO>> GetIssues(uint offset, uint amount)
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
             if (res != null)
