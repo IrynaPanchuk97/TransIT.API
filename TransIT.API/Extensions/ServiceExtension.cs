@@ -33,6 +33,8 @@ namespace TransIT.API.Extensions
                 c.AddProfile(new IssueLogProfile());
                 c.AddProfile(new DocumentProfile());
                 c.AddProfile(new SupplierProfile());
+                c.AddProfile(new CurrencyProfile());
+                c.AddProfile(new CountryProfile());
             }).CreateMapper());
         }
 
@@ -52,7 +54,9 @@ namespace TransIT.API.Extensions
             services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IStateService, StateService>();
-            
+            services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddScoped<ICountryService, CountryService>();
+
             services.AddScoped<ICrudService<User>, UserService>();
             services.AddScoped<ICrudService<ActionType>, ActionTypeService>();
             services.AddScoped<ICrudService<Vehicle>, VehicleService>();
@@ -67,7 +71,9 @@ namespace TransIT.API.Extensions
             services.AddScoped<ICrudService<Supplier>, SupplierService>();
             services.AddScoped<ICrudService<Role>, RoleService>();
             services.AddScoped<ICrudService<State>, StateService>();
-        
+            services.AddScoped<ICrudService<Currency>, CurrencyService>();
+            services.AddScoped<ICrudService<Country>, CountryService>();
+
             services.AddScoped<IODCrudService<User>, FilterService<User>>();
             services.AddScoped<IODCrudService<ActionType>, FilterService<ActionType>>();
             services.AddScoped<IODCrudService<Vehicle>, FilterService<Vehicle>>();
@@ -82,6 +88,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IODCrudService<Supplier>, FilterService<Supplier>>();
             services.AddScoped<IODCrudService<Role>, FilterService<Role>>();
             services.AddScoped<IODCrudService<State>, FilterService<State>>();
+            services.AddScoped<IODCrudService<Currency>, FilterService<Currency>>();
+            services.AddScoped<IODCrudService<Country>, FilterService<Country>>();
         }
 
         public static void ConfigureModelRepositories(this IServiceCollection services)
@@ -101,7 +109,9 @@ namespace TransIT.API.Extensions
             services.AddScoped<IQueryRepository<User>, UserRepository>();
             services.AddScoped<IQueryRepository<Vehicle>, VehicleRepository>();
             services.AddScoped<IQueryRepository<VehicleType>, VehicleTypeRepository>();
-            
+            services.AddScoped<IQueryRepository<Currency>, CurrencyRepository>();
+            services.AddScoped<IQueryRepository<Country>, CountryRepository>();
+
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IDocumentRepository, DocumentRepository>();
@@ -117,6 +127,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
+            services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
