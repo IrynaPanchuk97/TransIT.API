@@ -8,7 +8,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN, ANALYST")]
+    [Authorize(Roles = "ADMIN,ANALYST")]
     public class VehicleTypeController : DataController<VehicleType, VehicleTypeDTO>
     {
         private readonly IVehicleTypeService _vehicleTypeService;
@@ -23,21 +23,21 @@ namespace TransIT.API.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "ADMIN,ANALYST")]
+        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get(int id)
         {
             return base.Get(id);
         }
 
         [HttpGet("/search")]
-        [Authorize(Roles = "ADMIN,ANALYST")]
+        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] string search)
         {
             return base.Get(search);
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN,ANALYST")]
+        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
         public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
             return base.Get(offset, amount);
