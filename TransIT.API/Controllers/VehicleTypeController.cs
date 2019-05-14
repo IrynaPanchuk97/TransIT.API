@@ -8,7 +8,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN,ANALYST")]
     public class VehicleTypeController : DataController<VehicleType, VehicleTypeDTO>
     {
         private readonly IVehicleTypeService _vehicleTypeService;
