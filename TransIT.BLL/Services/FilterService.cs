@@ -73,7 +73,7 @@ namespace TransIT.BLL.Services
                     options
                         .ApplyTo(_queryRepository.GetQueryable())
                         .Cast<TEntity>()
-                );
+                    );
             }
             catch (ODataException)
             {
@@ -87,23 +87,57 @@ namespace TransIT.BLL.Services
                 : (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable();
 
         private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data) =>
-            TableOrderBy(dataFilter, data)
+            TableOrderBy(
+                    dataFilter,
+                    dataFilter.Filters == null || dataFilter.Length == 0
+                        ? data
+                        : ProcessQueryFilter(dataFilter.Filters, data)
+                    )
                 .Skip(dataFilter.Start)
                 .Take(dataFilter.Length);
-        
+
+        private IQueryable<TEntity> ProcessQueryFilter(
+            IEnumerable<DataTableRequestViewModel.FilterType> filters,
+            IQueryable<TEntity> data)
+        {
+            filters.ToList().ForEach(filter =>
+                data = TableWhereEqual(filter, data)
+                );
+            return data;
+        }
+
         private IQueryable<TEntity> ProcessQuery(
             DataTableRequestViewModel dataFilter,
             IQueryable<TEntity> data,
             Expression<Func<TEntity, bool>> whereExpression) =>
-            TableOrderBy(dataFilter, data)
-                .Where(whereExpression)
-                .Skip(dataFilter.Start)
-                .Take(dataFilter.Length);
+            ProcessQuery(dataFilter, data)
+                .Where(whereExpression);
 
-        private IQueryable<TEntity> TableOrderBy(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data) =>
-            data.OrderBy(
+        private IQueryable<TEntity> TableOrderBy(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
+        {
+            if (dataFilter.Order == null
+                || dataFilter.Columns == null
+                || dataFilter.Order.Length == 0
+                || dataFilter.Columns.Length == 0) return data;
+            
+            data = data.OrderBy(
                 dataFilter.Columns[dataFilter.Order[0].Column].Data,
                 dataFilter.Order[0].Dir == DataTableRequestViewModel.DataTableDescending
                 );
+            for (var i = 1; i < dataFilter.Order.Length; ++i)
+                data = data.ThenBy(
+                    dataFilter.Columns[dataFilter.Order[i].Column].Data,
+                    dataFilter.Order[i].Dir == DataTableRequestViewModel.DataTableDescending
+                    );
+            return data;
+        }
+
+        private IQueryable<TEntity> TableWhereEqual(DataTableRequestViewModel.FilterType filter, IQueryable<TEntity> data)
+        {
+            var value = FilterProcessingHelper.DetectStringType(filter.Value);
+            return value == null
+                ? data
+                : data.Where(filter.EntityPropertyPath, value, filter.Operator);
+        }
     }
 }
