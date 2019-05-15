@@ -88,7 +88,7 @@ namespace TransIT.API.Controllers
                 RecordsTotal = totalAmount,
                 RecordsFiltered =
                     string.IsNullOrEmpty(model.Search.Value)
-                    || model.Filters == null
+                    && model.Filters == null
                     || !model.Filters.Any()
                         ? totalAmount
                         : (ulong) res?.Count(),
