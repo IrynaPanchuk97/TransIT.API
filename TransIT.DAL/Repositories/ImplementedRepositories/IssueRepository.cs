@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 
@@ -10,6 +11,14 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         public IssueRepository(DbContext context)
                : base(context)
         {
+        }
+
+        public override async Task<Issue> AddAsync(Issue issue)
+        {
+            int previousMax = Entities.DefaultIfEmpty().Max(i => i.Number) ?? 0;
+            issue.Number = previousMax + 1;
+
+            return await base.AddAsync(issue);
         }
 
         protected override IQueryable<Issue> ComplexEntities => Entities
