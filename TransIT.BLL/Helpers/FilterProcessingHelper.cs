@@ -5,10 +5,141 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 namespace TransIT.BLL.Helpers
-{
+{   
     public static class FilterProcessingHelper
     {
-        public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc)
+        public static IQueryable<TEntity> Where<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue,
+            string binaryOperator)
+        {
+            switch (binaryOperator)
+            {
+                case "==":
+                    return source.WhereEqual(leftProperty, constantValue);
+                case "!=":
+                    return source.WhereNotEqual(leftProperty, constantValue);
+                case ">":
+                    return source.WhereGreater(leftProperty, constantValue);
+                case "<":
+                    return source.WhereLess(leftProperty, constantValue); 
+                case ">=":
+                    return source.WhereGreaterOrEqual(leftProperty, constantValue); 
+                case "<=":
+                    return source.WhereLessOrEqual(leftProperty, constantValue);
+                default:
+                    return source;
+            }
+        }
+        
+        public static object DetectStringType(string stringValue) =>
+            stringValue == "null"
+                ? null
+                : DateTime.TryParse(stringValue, out var date)
+                    ? date
+                    : int.TryParse(stringValue, out var num)
+                        ? num
+                        : bool.TryParse(stringValue, out var boolean)
+                            ? boolean
+                            : stringValue as object;
+
+        public static IQueryable<TEntity> WhereGreater<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue) =>
+            ApplyOperatorInLambda(source, leftProperty, constantValue, Expression.GreaterThan);
+
+        public static IQueryable<TEntity> WhereLess<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue) =>
+            ApplyOperatorInLambda(source, leftProperty, constantValue, Expression.LessThan);
+        
+        public static IQueryable<TEntity> WhereGreaterOrEqual<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue) =>
+            ApplyOperatorInLambda(source, leftProperty, constantValue, Expression.GreaterThanOrEqual);
+        
+        public static IQueryable<TEntity> WhereLessOrEqual<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue) =>
+            ApplyOperatorInLambda(source, leftProperty, constantValue, Expression.LessThanOrEqual);
+
+        public static IQueryable<TEntity> WhereEqual<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue) =>
+            ApplyOperatorInLambda(source, leftProperty, constantValue, Expression.Equal);
+        
+        public static IQueryable<TEntity> WhereNotEqual<TEntity>(
+            this IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue) =>
+            ApplyOperatorInLambda(source, leftProperty, constantValue, Expression.NotEqual);
+        
+        public static IQueryable<TEntity> ApplyOperatorInLambda<TEntity>(
+            IQueryable<TEntity> source,
+            string leftProperty,
+            object constantValue,
+            Func<Expression, Expression, Expression> action)
+        {
+            var parameter = Expression.Parameter(source.ElementType, "p");
+            var firstPropertyAccess = GetAccessProperty(
+                parameter,
+                CapitalizeSentence(leftProperty)
+            );
+            var secondPropertyAccess = (Expression)
+                Expression.Constant(
+                    constantValue,
+                    constantValue.GetType()
+                    );
+            secondPropertyAccess = Expression.Convert(secondPropertyAccess, firstPropertyAccess.Type);
+            
+            return source.Provider.CreateQuery<TEntity>(
+                BuildWhereExpression(
+                    source,
+                    Expression.Lambda(
+                        action(firstPropertyAccess, secondPropertyAccess),
+                        parameter
+                        )
+                    )
+                );
+        }        
+
+        public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc) =>
+            source.Provider.CreateQuery<TEntity>(
+                BuildOrderByExpression(
+                    source,
+                    orderByProperty, 
+                    desc ? "OrderByDescending" : "OrderBy"
+                    )
+                );
+        
+        public static IQueryable<TEntity> ThenBy<TEntity>(this IQueryable<TEntity> source, string orderByProperty, bool desc) =>
+            source.Provider.CreateQuery<TEntity>(
+                BuildOrderByExpression(
+                    source,
+                    orderByProperty, 
+                    desc ? "ThenByDescending" : "ThenBy"
+                    )
+                );
+
+        private static MethodCallExpression BuildWhereExpression<TEntity>(IQueryable<TEntity> source, Expression lambda) =>
+            Expression.Call(
+                typeof(Queryable),
+                "Where",
+                new[] {source.ElementType},
+                source.Expression,
+                Expression.Quote(lambda)
+            );
+        
+        private static MethodCallExpression BuildOrderByExpression<TEntity>(
+            IQueryable<TEntity> source,
+            string orderByProperty,
+            string method)
         {
             var parameter = Expression.Parameter(source.ElementType, "p");
             var propertyPath = CapitalizeSentence(orderByProperty);
@@ -16,28 +147,27 @@ namespace TransIT.BLL.Helpers
             var property = GetPropertyByPath(
                 source.ElementType.GetProperty(propertyPath.First()),
                 propertyPath.Skip(1)
-                );
+            );
 
-            return source.Provider.CreateQuery<TEntity>(
-                Expression.Call(typeof(Queryable),
-                    desc ? "OrderByDescending" : "OrderBy",
-                    new[] { source.ElementType, property.PropertyType },
-                    source.Expression,
-                    Expression.Quote(
-                        Expression.Lambda(propertyAccess, parameter)
-                        )
-                    )
-                );
+            return Expression.Call(
+                typeof(Queryable),
+                method,
+                new[] {source.ElementType, property.PropertyType},
+                source.Expression,
+                Expression.Quote(
+                    Expression.Lambda(propertyAccess, parameter)
+                )
+            );
         }
 
-        private static Expression GetAccessProperty(Expression propertyAccess, IEnumerable<string> propertyPath) =>
+        public static Expression GetAccessProperty(Expression propertyAccess, IEnumerable<string> propertyPath) =>
             ChangeAndReturn(
                 propertyAccess,
                 propertyPath,
                 (name, prop) => Expression.PropertyOrField(prop, name)
                 );
 
-        private static PropertyInfo GetPropertyByPath(PropertyInfo property, IEnumerable<string> propertyPath) =>
+        public static PropertyInfo GetPropertyByPath(PropertyInfo property, IEnumerable<string> propertyPath) =>
             ChangeAndReturn(
                 property,
                 propertyPath, 
@@ -53,7 +183,7 @@ namespace TransIT.BLL.Helpers
             return property;
         }
         
-        private static string[] CapitalizeSentence(string str) =>
+        public static string[] CapitalizeSentence(string str) =>
             str.Split('.')
                 .Select(Capitalize)
                 .ToArray();
