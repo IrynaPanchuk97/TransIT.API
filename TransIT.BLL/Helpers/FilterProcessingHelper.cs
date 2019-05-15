@@ -97,7 +97,7 @@ namespace TransIT.BLL.Helpers
                     constantValue.GetType()
                     );
             secondPropertyAccess = Expression.Convert(secondPropertyAccess, firstPropertyAccess.Type);
-            
+
             return source.Provider.CreateQuery<TEntity>(
                 BuildWhereExpression(
                     source,
@@ -134,7 +134,7 @@ namespace TransIT.BLL.Helpers
                 new[] {source.ElementType},
                 source.Expression,
                 Expression.Quote(lambda)
-            );
+                );
         
         private static MethodCallExpression BuildOrderByExpression<TEntity>(
             IQueryable<TEntity> source,

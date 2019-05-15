@@ -117,8 +117,8 @@ namespace TransIT.BLL.Services
         {
             if (dataFilter.Order == null
                 || dataFilter.Columns == null
-                || dataFilter.Order.Any()
-                || dataFilter.Columns.Any()) return data;
+                || !dataFilter.Order.Any()
+                || !dataFilter.Columns.Any()) return data;
             
             data = data.OrderBy(
                 dataFilter.Columns[dataFilter.Order[0].Column].Data,
