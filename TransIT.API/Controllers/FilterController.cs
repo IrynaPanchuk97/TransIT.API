@@ -87,11 +87,11 @@ namespace TransIT.API.Controllers
                 Data = res?.ToArray(),
                 RecordsTotal = totalAmount,
                 RecordsFiltered =
-                    string.IsNullOrEmpty(model.Search.Value)
-                    && model.Filters == null
-                    || !model.Filters.Any()
-                        ? totalAmount
-                        : (ulong) res?.Count(),
+                    model.Filters != null
+                    && model.Filters.Any()
+                    || !string.IsNullOrEmpty(model.Search.Value)
+                        ? (ulong) res?.Count()
+                        : totalAmount,
                 Error = errorMessage
             };
         }
