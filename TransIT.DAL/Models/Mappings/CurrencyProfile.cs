@@ -9,6 +9,7 @@ namespace TransIT.DAL.Models.Mappings
         public CurrencyProfile()
         {
             CreateMap<CurrencyDTO, Currency>()
+                .ForMember(m => m.Supplier, opt => opt.Ignore())
                 .ForMember(m => m.ModId, opt => opt.Ignore())
                 .ForMember(m => m.CreateId, opt => opt.Ignore());
             CreateMap<Currency, CurrencyDTO>();

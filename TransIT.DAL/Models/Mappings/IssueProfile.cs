@@ -24,10 +24,10 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(i => i.Vehicle, opt => opt.Ignore())
                 .ForMember(i => i.IssueLog, opt => opt.Ignore())
                 .ForMember(i => i.Malfunction, opt => opt.Ignore())
-                .ForMember(i => i.AssignedToNavigation, opt => opt.Ignore());
+                .ForMember(i => i.AssignedTo, opt => opt.Ignore());
 
             CreateMap<Issue, IssueDTO>()
-                .ForMember(i => i.AssignedTo, opt => opt.MapFrom(x => x.AssignedToNavigation));
+                .ForMember(i => i.AssignedTo, opt => opt.MapFrom(x => x.AssignedTo));
         }
     }
 }

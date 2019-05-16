@@ -37,6 +37,10 @@ namespace TransIT.DAL.Models.Entities
             VehicleMod = new HashSet<Vehicle>();
             VehicleTypeCreate = new HashSet<VehicleType>();
             VehicleTypeMod = new HashSet<VehicleType>();
+            CountryCreate = new HashSet<Country>();
+            CountryMod = new HashSet<Country>();
+            CurrencyCreate = new HashSet<Currency>();
+            CurrencyMod = new HashSet<Currency>();
         }
 
         public int Id { get; set; }
@@ -65,6 +69,10 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<Document> DocumentMod { get; set; }
         public virtual ICollection<User> InverseCreate { get; set; }
         public virtual ICollection<User> InverseMod { get; set; }
+        public virtual ICollection<Country> CountryCreate { get; set; }
+        public virtual ICollection<Country> CountryMod { get; set; }
+        public virtual ICollection<Currency> CurrencyCreate { get; set; }
+        public virtual ICollection<Currency> CurrencyMod { get; set; }
         public virtual ICollection<Issue> IssueAssignedToNavigation { get; set; }
         public virtual ICollection<Issue> IssueCreate { get; set; }
         public virtual ICollection<IssueLog> IssueLogCreate { get; set; }
