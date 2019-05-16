@@ -140,16 +140,40 @@ namespace TransIT.DAL.Models
                 entity.ToTable("COUNTRY");
 
                 entity.HasIndex(e => e.Name)
-                    .HasName("UQ__COUNTRY__D9C1FA005DF647A0")
+                    .HasName("UQ__COUNTRY__D9C1FA008FF4E681")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
+                entity.Property(e => e.ModDate)
+                    .HasColumnName("MOD_DATE")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModId).HasColumnName("MOD_ID");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("NAME")
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Create)
+                    .WithMany(p => p.CountryCreate)
+                    .HasForeignKey(d => d.CreateId)
+                    .HasConstraintName("FK_CREATE_COUNTRY_USER");
+
+                entity.HasOne(d => d.Mod)
+                    .WithMany(p => p.CountryMod)
+                    .HasForeignKey(d => d.ModId)
+                    .HasConstraintName("FK_MOD_COUNTRY_USER");
             });
 
             modelBuilder.Entity<Currency>(entity =>
@@ -157,22 +181,46 @@ namespace TransIT.DAL.Models
                 entity.ToTable("CURRENCY");
 
                 entity.HasIndex(e => e.ShortName)
-                    .HasName("UQ__CURRENCY__2711634FCFE1E852")
+                    .HasName("UQ__CURRENCY__F4E7E33EEBE730B7")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CreateDate)
+                    .HasColumnName("CREATE_DATE")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
                 entity.Property(e => e.FullName)
                     .IsRequired()
-                    .HasColumnName("full_name")
+                    .HasColumnName("FULL_NAME")
                     .HasMaxLength(25)
                     .IsUnicode(false);
 
+                entity.Property(e => e.ModDate)
+                    .HasColumnName("MOD_DATE")
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModId).HasColumnName("MOD_ID");
+
                 entity.Property(e => e.ShortName)
                     .IsRequired()
-                    .HasColumnName("short_name")
+                    .HasColumnName("SHORT_NAME")
                     .HasMaxLength(5)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Create)
+                    .WithMany(p => p.CurrencyCreate)
+                    .HasForeignKey(d => d.CreateId)
+                    .HasConstraintName("FK_CREATE_CURRENCY_USER");
+
+                entity.HasOne(d => d.Mod)
+                    .WithMany(p => p.CurrencyMod)
+                    .HasForeignKey(d => d.ModId)
+                    .HasConstraintName("FK_MOD_CURRENCY_USER");
             });
 
             modelBuilder.Entity<Document>(entity =>
@@ -225,7 +273,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.AssignedTo).HasColumnName("ASSIGNED_TO");
+                entity.Property(e => e.AssignedToId).HasColumnName("ASSIGNED_TO");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
@@ -261,9 +309,9 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.Warranty).HasColumnName("WARRANTY");
 
-                entity.HasOne(d => d.AssignedToNavigation)
+                entity.HasOne(d => d.AssignedTo)
                     .WithMany(p => p.IssueAssignedToNavigation)
-                    .HasForeignKey(d => d.AssignedTo);
+                    .HasForeignKey(d => d.AssignedToId);
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.IssueCreate)
@@ -590,7 +638,7 @@ namespace TransIT.DAL.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Country).HasColumnName("COUNTRY");
+                entity.Property(e => e.CountryId).HasColumnName("COUNTRY");
 
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
@@ -599,7 +647,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
-                entity.Property(e => e.Currency).HasColumnName("CURRENCY");
+                entity.Property(e => e.CurrencyId).HasColumnName("CURRENCY");
 
                 entity.Property(e => e.Edrpou)
                     .HasColumnName("EDRPOU")
@@ -623,9 +671,9 @@ namespace TransIT.DAL.Models
                     .HasColumnName("NAME")
                     .HasMaxLength(50);
 
-                entity.HasOne(d => d.CountryNavigation)
+                entity.HasOne(d => d.Country)
                     .WithMany(p => p.Supplier)
-                    .HasForeignKey(d => d.Country)
+                    .HasForeignKey(d => d.CountryId)
                     .HasConstraintName("FK_Country");
 
                 entity.HasOne(d => d.Create)
@@ -633,9 +681,9 @@ namespace TransIT.DAL.Models
                     .HasForeignKey(d => d.CreateId)
                     .HasConstraintName("FK_CREATE_SUPPLIER_USER");
 
-                entity.HasOne(d => d.CurrencyNavigation)
+                entity.HasOne(d => d.Currency)
                     .WithMany(p => p.Supplier)
-                    .HasForeignKey(d => d.Currency)
+                    .HasForeignKey(d => d.CurrencyId)
                     .HasConstraintName("FK_Currency");
 
                 entity.HasOne(d => d.Mod)
