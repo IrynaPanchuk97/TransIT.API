@@ -11,6 +11,7 @@
         public SearchType Search { get; set; }
         public ColumnType[] Columns { get; set; }
         public OrderType[] Order { get; set; }
+        public FilterType[] Filters { get; set; }
 
         public class OrderType
         {
@@ -32,6 +33,13 @@
             public bool Searchable { get; set; }
             public bool Orderable { get; set; }
             public SearchType Search { get; set; }
+        }
+
+        public class FilterType
+        {
+            public string EntityPropertyPath { get; set; }
+            public string Value { get; set; }
+            public string Operator { get; set; } = "==";
         }
     }
 }
