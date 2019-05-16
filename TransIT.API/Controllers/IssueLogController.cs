@@ -63,7 +63,12 @@ namespace TransIT.API.Controllers
                     errorMessage = ex.Message;
                 }
 
-                var dtResponse = ComposeDataTableResponseViewModel(res, model, errorMessage);
+                var dtResponse = ComposeDataTableResponseViewModel(
+                    res,
+                    model,
+                    errorMessage,
+                    _filterService.TotalRecordsAmount()
+                    );
                 dtResponse.RecordsFiltered = (ulong) dtResponse.Data.LongLength;
                 return Json(dtResponse);
             }
