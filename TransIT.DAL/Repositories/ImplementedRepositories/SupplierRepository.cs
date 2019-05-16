@@ -12,11 +12,12 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         {
         }
 
-        protected override IQueryable<Supplier> ComplexEntities => Entities.
-                   Include(t => t.Create).
-                   Include(z => z.Mod).
-                   Include(c => c.Currency).
-                   Include(cc => cc.Country).
-                    OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);
+        protected override IQueryable<Supplier> ComplexEntities => Entities
+                   .Include(t => t.Create)
+                   .Include(z => z.Mod)
+                   .Include(c => c.Currency)
+                   .Include(c => c.Country)
+                   .OrderByDescending(u => u.ModDate)
+                   .ThenByDescending(x => x.CreateDate);
     }
 }

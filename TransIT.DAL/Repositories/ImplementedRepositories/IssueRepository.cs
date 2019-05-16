@@ -22,7 +22,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         }
 
         protected override IQueryable<Issue> ComplexEntities => Entities
-            .Include(i => i.AssignedToNavigation)
+            .Include(i => i.AssignedTo)
             .Include(i => i.Create)
             .Include(i => i.Malfunction)
                 .ThenInclude(m => m.MalfunctionSubgroup)
