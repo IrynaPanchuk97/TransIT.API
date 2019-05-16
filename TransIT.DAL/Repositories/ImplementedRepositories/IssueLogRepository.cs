@@ -20,7 +20,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
             .Include(x => x.Issue)
             .ThenInclude(x => x.Malfunction)
             .Include(x => x.Issue)
-            .ThenInclude(x => x.AssignedToNavigation)
+            .ThenInclude(x => x.AssignedTo)
             .Include(x => x.Issue)
             .ThenInclude(x => x.State)
             .Include(b => b.Mod)

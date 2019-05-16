@@ -58,7 +58,7 @@ namespace TransIT.BLL.Services.ImplementedServices
                 model.OldStateId = model.Issue.StateId;
                 model.Issue.StateId = model.NewStateId;
                 model.Issue.Deadline = oldIssue.Deadline;
-                model.Issue.AssignedTo = oldIssue.AssignedTo;
+                model.Issue.AssignedToId = oldIssue.AssignedToId;
                 return await base.CreateAsync(model);
             }
             catch (Exception e)

@@ -17,7 +17,7 @@ namespace TransIT.DAL.Models.Entities
         public int? Warranty { get; set; }
         public DateTime? Deadline { get; set; }
         public int? StateId { get; set; }
-        public int? AssignedTo { get; set; }
+        public int? AssignedToId { get; set; }
         public int VehicleId { get; set; }
         public int? MalfunctionId { get; set; }
         public DateTime? CreateDate { get; set; }
@@ -27,7 +27,7 @@ namespace TransIT.DAL.Models.Entities
         public int? Number { get; set; }
         public int Priority { get; set; }
 
-        public virtual User AssignedToNavigation { get; set; }
+        public virtual User AssignedTo { get; set; }
         public virtual User Create { get; set; }
         public virtual Malfunction Malfunction { get; set; }
         public virtual User Mod { get; set; }
