@@ -34,12 +34,13 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
+                var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
                 var errorMessage = string.Empty;
                 IssueDTO[] res = null;
                 try
                 {
                     res = _mapper.Map<IEnumerable<IssueDTO>>(
-                        User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER
+                        isCustomer
                             ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == GetUserId())
                             : await _filterService.GetQueriedAsync(model)
                         ).ToArray();
@@ -50,7 +51,14 @@ namespace TransIT.API.Controllers
                 }
 
                 return Json(
-                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                    ComposeDataTableResponseViewModel(
+                            res,
+                            model,
+                            errorMessage,
+                            isCustomer
+                                ? _filterService.TotalRecordsAmount(x => x.CreateId == GetUserId())
+                                : _filterService.TotalRecordsAmount()
+                            )
                     );
             }
 
@@ -102,6 +110,6 @@ namespace TransIT.API.Controllers
             if (res != null)
                 return _mapper.Map<IEnumerable<IssueDTO>>(res);
             return null;
-        }
+        }        
     }
 }
