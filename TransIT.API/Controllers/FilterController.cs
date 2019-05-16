@@ -63,7 +63,12 @@ namespace TransIT.API.Controllers
                 }
 
                 return Json(
-                    ComposeDataTableResponseViewModel(res, model, errorMessage)
+                    ComposeDataTableResponseViewModel(
+                        res,
+                        model,
+                        errorMessage,
+                        _filterService.TotalRecordsAmount()
+                        )
                     );
             }
 
@@ -75,13 +80,12 @@ namespace TransIT.API.Controllers
                 await _filterService.GetQueriedAsync(model)
                 );
 
-        protected DataTableResponseViewModel ComposeDataTableResponseViewModel(
+        protected virtual DataTableResponseViewModel ComposeDataTableResponseViewModel(
             IEnumerable<TEntityDTO> res,
             DataTableRequestViewModel model,   
-            string errorMessage)
-        {
-            var totalAmount = _filterService.TotalRecordsAmount;
-            return new DataTableResponseViewModel
+            string errorMessage,
+            ulong totalAmount) =>
+            new DataTableResponseViewModel
             {
                 Draw = (ulong) model.Draw,
                 Data = res?.ToArray(),
@@ -94,6 +98,5 @@ namespace TransIT.API.Controllers
                         : totalAmount,
                 Error = errorMessage
             };
-        }
     }
 }

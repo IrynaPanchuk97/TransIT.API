@@ -15,7 +15,8 @@ namespace TransIT.BLL.Services
     
     public interface IFilterService<TEntity> where TEntity : class, IEntity, new()
     {
-        ulong TotalRecordsAmount { get; }
+        ulong TotalRecordsAmount();
+        ulong TotalRecordsAmount(Expression<Func<TEntity, bool>> expression);
         Task<IEnumerable<TEntity>> GetQueriedAsync();
         Task<IEnumerable<TEntity>> GetQueriedAsync(DataTableRequestViewModel dataFilter);
         Task<IEnumerable<TEntity>> GetQueriedWithWhereAsync(
