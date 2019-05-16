@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using TransIT.DAL.Repositories.ImplementedRepositories;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.DAL.UnitOfWork
@@ -26,32 +25,16 @@ namespace TransIT.DAL.UnitOfWork
         public  IVehicleRepository VehicleRepository { get; }
         public  IVehicleTypeRepository VehicleTypeRepository { get; }
         public  ITokenRepository TokenRepository { get; }
+        public IEmployeeRepository EmployeeRepository { get; }
+        public IPostRepository PostRepository { get; }
 
-
-        public UnitOfWork(DbContext context,
-            IActionTypeRepository actionTypeRepository,
-            IBillRepository billRepository,
-            ICurrencyRepository currencyRepository,
-            ICountryRepository countryRepository,
-            IDocumentRepository documentRepository,
-            IIssueRepository issueRepository,
-            IIssueLogRepository issueLogRepository,
-            IMalfunctionRepository malfunctionRepository,
-            IMalfunctionGroupRepository malfunctionGroupRepository,
-            IMalfunctionSubgroupRepository malfunctionSubgroupRepository,
-            IRoleRepository roleRepository,
-            IStateRepository stateRepository,
-            ISupplierRepository supplierRepository,
-            IUserRepository userRepository,
-            IVehicleRepository vehicleRepository,
-            IVehicleTypeRepository vehicleTypeRepository,
-            ITokenRepository tokenRepository)
+        public UnitOfWork(DbContext context, IActionTypeRepository actionTypeRepository, ICountryRepository countryRepository, ICurrencyRepository currencyRepository, IBillRepository billRepository, IDocumentRepository documentRepository, IIssueRepository issueRepository, IIssueLogRepository issueLogRepository, IMalfunctionRepository malfunctionRepository, IMalfunctionGroupRepository malfunctionGroupRepository, IMalfunctionSubgroupRepository malfunctionSubgroupRepository, IRoleRepository roleRepository, IUserRepository userRepository, IStateRepository stateRepository, ISupplierRepository supplierRepository, IVehicleRepository vehicleRepository, IVehicleTypeRepository vehicleTypeRepository, ITokenRepository tokenRepository, IEmployeeRepository employeeRepository, IPostRepository postRepository)
         {
             _context = context;
             ActionTypeRepository = actionTypeRepository;
-            BillRepository = billRepository;
             CountryRepository = countryRepository;
             CurrencyRepository = currencyRepository;
+            BillRepository = billRepository;
             DocumentRepository = documentRepository;
             IssueRepository = issueRepository;
             IssueLogRepository = issueLogRepository;
@@ -65,6 +48,8 @@ namespace TransIT.DAL.UnitOfWork
             VehicleRepository = vehicleRepository;
             VehicleTypeRepository = vehicleTypeRepository;
             TokenRepository = tokenRepository;
+            EmployeeRepository = employeeRepository;
+            PostRepository = postRepository;
         }
 
         public Task<int> SaveAsync()
