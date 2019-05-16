@@ -18,8 +18,6 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(u => u.RoleId, opt => opt.MapFrom(x => x.Role.Id))
                 .ForMember(u => u.Role, opt => opt.Ignore())
 
-                .ForMember(u => u.IssueAssignedToNavigation, opt => opt.Ignore())
-
                 .ForMember(u => u.BillMod, opt => opt.Ignore())
                 .ForMember(u => u.MalfunctionGroupMod, opt => opt.Ignore())
                 .ForMember(u => u.MalfunctionSubgroupMod, opt => opt.Ignore())
