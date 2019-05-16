@@ -86,9 +86,12 @@ namespace TransIT.API.Controllers
                 Draw = (ulong) model.Draw,
                 Data = res?.ToArray(),
                 RecordsTotal = totalAmount,
-                RecordsFiltered = string.IsNullOrEmpty(model.Search.Value)
-                    ? totalAmount
-                    : (ulong) res?.Count(),
+                RecordsFiltered =
+                    string.IsNullOrEmpty(model.Search.Value)
+                    || model.Filters == null
+                    || !model.Filters.Any()
+                        ? totalAmount
+                        : (ulong) res?.Count(),
                 Error = errorMessage
             };
         }
