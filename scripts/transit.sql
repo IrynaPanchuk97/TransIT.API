@@ -813,7 +813,9 @@ GO
 
 -- admin helloworld
 INSERT INTO [USER] (LOGIN, EMAIL, PASSWORD, ROLE_ID)
-VALUES ('admin', 'admin@admin', 'VXcrydRLS7cIYPVpBOGFxg==:hR1FzwJv0k8YPOHWpJqRqQ==', 1);
+SELECT 'admin', 'admin@admin', 'VXcrydRLS7cIYPVpBOGFxg==:hR1FzwJv0k8YPOHWpJqRqQ==', ROLE_ID
+FROM ROLE
+WHERE NAME = 'ADMIN'
 GO
 
 ALTER TABLE ISSUE

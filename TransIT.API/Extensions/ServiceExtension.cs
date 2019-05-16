@@ -56,6 +56,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IStateService, StateService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<ICountryService, CountryService>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddScoped<ICrudService<User>, UserService>();
             services.AddScoped<ICrudService<ActionType>, ActionTypeService>();
@@ -73,6 +75,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<ICrudService<State>, StateService>();
             services.AddScoped<ICrudService<Currency>, CurrencyService>();
             services.AddScoped<ICrudService<Country>, CountryService>();
+            services.AddScoped<ICrudService<Employee>, EmployeeService>();
+            services.AddScoped<ICrudService<Post>, PostService>();
 
             services.AddScoped<IODCrudService<User>, FilterService<User>>();
             services.AddScoped<IODCrudService<ActionType>, FilterService<ActionType>>();
@@ -90,6 +94,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IODCrudService<State>, FilterService<State>>();
             services.AddScoped<IODCrudService<Currency>, FilterService<Currency>>();
             services.AddScoped<IODCrudService<Country>, FilterService<Country>>();
+            services.AddScoped<IODCrudService<Employee>, FilterService<Employee>>();
+            services.AddScoped<IODCrudService<Post>, FilterService<Post>>();
         }
 
         public static void ConfigureModelRepositories(this IServiceCollection services)
@@ -111,6 +117,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IQueryRepository<VehicleType>, VehicleTypeRepository>();
             services.AddScoped<IQueryRepository<Currency>, CurrencyRepository>();
             services.AddScoped<IQueryRepository<Country>, CountryRepository>();
+            services.AddScoped<IQueryRepository<Employee>, EmployeeRepository>();
+            services.AddScoped<IQueryRepository<Post>, PostRepository>();
 
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
@@ -129,6 +137,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IVehicleTypeRepository, VehicleTypeRepository>();
             services.AddScoped<ICurrencyRepository, CurrencyRepository>();
             services.AddScoped<ICountryRepository, CountryRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
