@@ -18,7 +18,15 @@ namespace TransIT.BLL.Services
         protected readonly IQueryRepository<TEntity> _queryRepository;
         protected readonly ICrudService<TEntity> _crudService;
 
-        public ulong TotalRecordsAmount => (ulong)_queryRepository.GetQueryable().LongCount();
+        public ulong TotalRecordsAmount() =>
+            (ulong)_queryRepository
+                .GetQueryable()
+                .LongCount();
+        public ulong TotalRecordsAmount(Expression<Func<TEntity, bool>> expression) =>
+            (ulong)_queryRepository
+                .GetQueryable()
+                .Where(expression)
+                .LongCount();
         
         public FilterService(
             IQueryRepository<TEntity> queryRepository,
