@@ -35,6 +35,8 @@ namespace TransIT.API.Extensions
                 c.AddProfile(new SupplierProfile());
                 c.AddProfile(new CurrencyProfile());
                 c.AddProfile(new CountryProfile());
+                c.AddProfile(new PostProfile());
+                c.AddProfile(new EmployeeProfile());
             }).CreateMapper());
         }
 
@@ -56,8 +58,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IStateService, StateService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
             services.AddScoped<ICountryService, CountryService>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IPostService, PostService>();
 
             services.AddScoped<ICrudService<User>, UserService>();
             services.AddScoped<ICrudService<ActionType>, ActionTypeService>();
