@@ -23,6 +23,8 @@ namespace TransIT.DAL.UnitOfWork
         IVehicleRepository VehicleRepository { get; }
         IVehicleTypeRepository VehicleTypeRepository { get; }
         ITokenRepository TokenRepository { get; }
+        IEmployeeRepository EmployeeRepository { get; }
+        IPostRepository PostRepository { get; }
 
         Task<int> SaveAsync();
     }
