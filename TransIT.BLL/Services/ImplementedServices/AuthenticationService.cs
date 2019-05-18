@@ -73,17 +73,13 @@ namespace TransIT.BLL.Services.ImplementedServices
         {
             try
             {
-                var principal = _jwtFactory.GetPrincipalFromExpiredToken(token.AccessToken);
-                var user = await _unitOfWork.UserRepository.GetByIdAsync(int.Parse(principal.jwt.Subject));
-                var role = await _unitOfWork.RoleRepository.GetByIdAsync((int) user.RoleId);
+                var user = await _unitOfWork.UserRepository.GetByIdAsync(
+                    int.Parse(
+                        _jwtFactory.GetPrincipalFromExpiredToken(token.AccessToken).jwt.Subject
+                        )
+                    );
+                var newToken = _jwtFactory.GenerateToken(user.Id, user.Login, user.Role.Name);
                 
-                _unitOfWork.TokenRepository.Remove(
-                    (await _unitOfWork.TokenRepository.GetAllAsync(t =>
-                        (int) t.CreateId == user.Id
-                        && t.RefreshToken == token.RefreshToken))
-                    .SingleOrDefault());
-
-                var newToken = _jwtFactory.GenerateToken(user.Id, user.Login, role.Name);
                 await _unitOfWork.TokenRepository.AddAsync(new Token
                 {
                     RefreshToken = newToken.RefreshToken,

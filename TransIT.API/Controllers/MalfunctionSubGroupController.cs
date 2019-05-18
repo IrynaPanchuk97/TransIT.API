@@ -9,7 +9,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN,ENGINEER")]
     public class MalfunctionSubGroupController : DataController<MalfunctionSubgroup, MalfunctionSubgroupDTO>
     {
         private readonly IMalfunctionSubgroupService _malfunctionSubgroupService;
@@ -23,25 +23,25 @@ namespace TransIT.API.Controllers
             _malfunctionSubgroupService = malfunctionSubgroupService;
         }
 
-        [HttpGet]
-        [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Create([FromBody] MalfunctionSubgroupDTO obj)
         {
-            return base.Get(offset, amount);
+            return base.Create(obj);
         }
 
-        [HttpGet("{id}")]
-        [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get(int id)
+        [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Update(int id, [FromBody] MalfunctionSubgroupDTO obj)
         {
-            return base.Get(id);
+            return base.Update(id, obj);
         }
 
-        [HttpGet("/search")]
-        [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
-        public override Task<IActionResult> Get([FromQuery] string search)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Delete(int id)
         {
-            return base.Get(search);
+            return base.Delete(id);
         }
     }
 }
