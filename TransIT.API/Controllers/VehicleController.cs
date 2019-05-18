@@ -10,7 +10,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN,CUSTOMER")]
+    [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER")]
     public class VehicleController : DataController<Vehicle, VehicleDTO>
     {
         private readonly IVehicleService _vehicleService;
@@ -24,25 +24,25 @@ namespace TransIT.API.Controllers
             _vehicleService = vehicleService;
         }
 
-        [HttpGet("{id}")]
-        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
-        public override Task<IActionResult> Get(int id)
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Create([FromBody] VehicleDTO obj)
         {
-            return base.Get(id);
+            return base.Create(obj);
         }
 
-        [HttpGet("/search")]
-        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
-        public override Task<IActionResult> Get([FromQuery] string search)
+        [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Update(int id, [FromBody] VehicleDTO obj)
         {
-            return base.Get(search);
+            return base.Update(id, obj);
         }
 
-        [HttpGet]
-        [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST,WORKER")]
-        public override Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public override Task<IActionResult> Delete(int id)
         {
-            return base.Get(offset, amount);
+            return base.Delete(id);
         }
     }
 }
