@@ -24,18 +24,21 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "ADMIN")]
         public override Task<IActionResult> Create([FromBody] StateDTO obj)
         {
             return base.Create(obj);
         }
         
         [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public override Task<IActionResult> Update(int id, [FromBody] StateDTO obj)
         {
             return base.Update(id, obj);
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
         public override Task<IActionResult> Delete(int id)
         {
             return base.Delete(id);
