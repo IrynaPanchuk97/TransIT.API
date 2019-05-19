@@ -26,19 +26,19 @@ namespace TransIT.API.Controllers
         [HttpPost]
         public override Task<IActionResult> Create([FromBody] StateDTO obj)
         {
-            return Task.FromResult(StatusCode(501) as IActionResult);
+            return base.Create(obj);
         }
         
         [HttpPut("{id}")]
         public override Task<IActionResult> Update(int id, [FromBody] StateDTO obj)
         {
-            return Task.FromResult(StatusCode(501) as IActionResult);
+            return base.Update(id, obj);
         }
 
         [HttpDelete("{id}")]
         public override Task<IActionResult> Delete(int id)
         {
-            return Task.FromResult(StatusCode(501) as IActionResult);
+            return base.Delete(id);
         }
     }
 }
