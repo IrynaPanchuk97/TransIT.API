@@ -118,8 +118,7 @@ namespace TransIT.BLL.Services
             DataTableRequestViewModel dataFilter,
             IQueryable<TEntity> data,
             Expression<Func<TEntity, bool>> whereExpression) =>
-            ProcessQuery(dataFilter, data)
-                .Where(whereExpression);
+            ProcessQuery(dataFilter, data.Where(whereExpression));
 
         private IQueryable<TEntity> TableOrderBy(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
         {

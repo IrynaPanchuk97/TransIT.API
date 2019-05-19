@@ -113,7 +113,7 @@ namespace TransIT.BLL.Helpers
             source.Provider.CreateQuery<TEntity>(
                 BuildOrderByExpression(
                     source,
-                    orderByProperty, 
+                    CapitalizeSentence(orderByProperty),
                     desc ? "OrderByDescending" : "OrderBy"
                     )
                 );
@@ -122,7 +122,7 @@ namespace TransIT.BLL.Helpers
             source.Provider.CreateQuery<TEntity>(
                 BuildOrderByExpression(
                     source,
-                    orderByProperty, 
+                    CapitalizeSentence(orderByProperty), 
                     desc ? "ThenByDescending" : "ThenBy"
                     )
                 );
@@ -138,21 +138,20 @@ namespace TransIT.BLL.Helpers
         
         private static MethodCallExpression BuildOrderByExpression<TEntity>(
             IQueryable<TEntity> source,
-            string orderByProperty,
+            string[] propertyPath,
             string method)
         {
             var parameter = Expression.Parameter(source.ElementType, "p");
-            var propertyPath = CapitalizeSentence(orderByProperty);
             var propertyAccess = GetAccessProperty(parameter, propertyPath);
-            var property = GetPropertyByPath(
+            var propertyType = GetPropertyByPath(
                 source.ElementType.GetProperty(propertyPath.First()),
                 propertyPath.Skip(1)
-            );
+                ).PropertyType;
 
             return Expression.Call(
                 typeof(Queryable),
                 method,
-                new[] {source.ElementType, property.PropertyType},
+                new[] {source.ElementType, propertyType},
                 source.Expression,
                 Expression.Quote(
                     Expression.Lambda(propertyAccess, parameter)
@@ -184,7 +183,8 @@ namespace TransIT.BLL.Helpers
         }
         
         public static string[] CapitalizeSentence(string str) =>
-            str.Split('.')
+            str.ToLower()
+                .Split('.')
                 .Select(Capitalize)
                 .ToArray();
         
