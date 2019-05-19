@@ -684,10 +684,6 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("STATE");
 
-                entity.HasIndex(e => e.Name)
-                    .HasName("UQ__STATE__D9C1FA00205A8EA2")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.TransName)
                     .HasName("UQ__STATE__DF65CE272C763E63")
                     .IsUnique();
