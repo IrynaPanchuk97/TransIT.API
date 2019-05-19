@@ -204,7 +204,7 @@ GO
 CREATE TABLE STATE
 (
   ID          INT NOT NULL IDENTITY PRIMARY KEY,
-  NAME        NVARCHAR(50) COLLATE Cyrillic_General_CI_AS_KS UNIQUE,
+  NAME        NVARCHAR(50) COLLATE Cyrillic_General_CI_AS_KS,
   TRANS_NAME  NVARCHAR(50) COLLATE Cyrillic_General_CI_AS_KS UNIQUE,
 
   CREATE_DATE DATETIME DEFAULT (GETDATE()),
@@ -826,7 +826,6 @@ GO
 
 INSERT INTO [ROLE] (NAME, TRANS_NAME)
 VALUES ('ADMIN', N'Адмін'),
-       ('WORKER', N'Працівник'),
        ('ENGINEER', N'Інженер'),
        ('CUSTOMER', N'Реєстратор'),
        ('ANALYST', N'Аналітик');

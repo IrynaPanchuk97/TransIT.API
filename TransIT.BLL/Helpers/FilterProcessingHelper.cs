@@ -183,8 +183,7 @@ namespace TransIT.BLL.Helpers
         }
         
         public static string[] CapitalizeSentence(string str) =>
-            str.ToLower()
-                .Split('.')
+            str.Split('.')
                 .Select(Capitalize)
                 .ToArray();
         
