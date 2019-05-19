@@ -9,7 +9,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN,ENGINEER")]
+    [Authorize(Roles = "ADMIN,ENGINEER,ANALYST")]
     public class MalfunctionGroupController : DataController<MalfunctionGroup, MalfunctionGroupDTO>
     {
         private readonly IMalfunctionGroupService _malfunctionGroupService;
