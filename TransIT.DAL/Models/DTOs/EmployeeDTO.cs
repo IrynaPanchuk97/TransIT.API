@@ -7,6 +7,7 @@
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string ShortName { get; set; }
+        public int BoardNumber { get; set; }
         public PostDTO Post { get; set; }
     }
 }
