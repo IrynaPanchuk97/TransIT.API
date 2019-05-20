@@ -54,7 +54,7 @@ namespace TransIT.BLL.Services.ImplementedServices
                 var model = await GetAsync(id);
                 if (model.IsFixed)
                 {
-                    throw new ConstraintException("Current state can not be delete");   
+                    throw new ConstraintException("Current state can not be deleted");   
                 }
 
                 _repository.Remove(model);
