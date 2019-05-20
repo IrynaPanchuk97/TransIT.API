@@ -96,6 +96,8 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<Supplier> SupplierMod { get; set; }
         public virtual ICollection<Token> TokenCreate { get; set; }
         public virtual ICollection<Token> TokenMod { get; set; }
+        public virtual ICollection<Transition> TransitionCreate { get; set; }
+        public virtual ICollection<Transition> TransitionMod { get; set; }
         public virtual ICollection<Vehicle> VehicleCreate { get; set; }
         public virtual ICollection<Vehicle> VehicleMod { get; set; }
         public virtual ICollection<VehicleType> VehicleTypeCreate { get; set; }
