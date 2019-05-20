@@ -275,6 +275,10 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.HasIndex(e => e.BoardNumber)
+                    .HasName("UQ_EMPLOYEE_BOARD_NUMBER_UNIQUE")
+                    .IsUnique();
+
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
                     .HasColumnType("datetime")
@@ -303,7 +307,10 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.PostId).HasColumnName("POST_ID");
 
+                entity.Property(e => e.BoardNumber).HasColumnName("BOARD_NUMBER");
+
                 entity.Property(e => e.ShortName)
+                    .IsRequired()
                     .HasColumnName("SHORT_NAME")
                     .HasMaxLength(50);
 
