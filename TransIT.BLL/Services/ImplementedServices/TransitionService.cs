@@ -23,9 +23,9 @@ namespace TransIT.BLL.Services.ImplementedServices
             .TransitionRepository
             .GetAllAsync(transition =>
                 strs.Any(str =>
-                    transition.FromState.TransName.ToUpperInvariant() == str
-                    || transition.ToState.TransName.ToUpperInvariant() == str
-                    || transition.ActionType.Name.ToUpperInvariant() == str
+                    transition.FromState.TransName.ToUpperInvariant().Contains(str)
+                    || transition.ToState.TransName.ToUpperInvariant().Contains(str)
+                    || transition.ActionType.Name.ToUpperInvariant().Contains(str)
                 )
             );
     }
