@@ -94,15 +94,24 @@ namespace TransIT.BLL.Services
                 ? _queryRepository.GetQueryable()
                 : (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable();
 
-        private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data) =>
-            TableOrderBy(
-                    dataFilter,
-                    dataFilter.Filters == null || dataFilter.Length == 0
-                        ? data
-                        : ProcessQueryFilter(dataFilter.Filters, data)
-                    )
-                .Skip(dataFilter.Start)
-                .Take(dataFilter.Length);
+        private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
+        {
+            if (dataFilter.Filters != null
+                && dataFilter.Filters.Any())
+                data = ProcessQueryFilter(dataFilter.Filters, data);
+            
+            if (dataFilter.Columns != null
+                && dataFilter.Columns.Any())
+                data = TableOrderBy(dataFilter, data);
+            
+            if (dataFilter.Start > 0
+                && dataFilter.Length > 0)
+                data = data
+                    .Skip(dataFilter.Start)
+                    .Take(dataFilter.Length);
+
+            return data;
+        }
 
         private IQueryable<TEntity> ProcessQueryFilter(
             IEnumerable<DataTableRequestViewModel.FilterType> filters,
@@ -123,9 +132,7 @@ namespace TransIT.BLL.Services
         private IQueryable<TEntity> TableOrderBy(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
         {
             if (dataFilter.Order == null
-                || dataFilter.Columns == null
-                || !dataFilter.Order.Any()
-                || !dataFilter.Columns.Any()) return data;
+                || !dataFilter.Order.Any()) return data;
             
             data = data.OrderBy(
                 dataFilter.Columns[dataFilter.Order[0].Column].Data,
