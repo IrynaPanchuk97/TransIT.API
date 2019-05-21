@@ -17,7 +17,6 @@ namespace TransIT.DAL.Models.Entities
         public DateTime? ModDate { get; set; }
         public int? CreateId { get; set; }
         public int? ModId { get; set; }
-        public string Code { get; set; }
         public string FullName { get; set; }
         public int? CountryId { get; set; }
         public int? CurrencyId { get; set; }

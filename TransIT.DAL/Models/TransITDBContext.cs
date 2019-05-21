@@ -64,6 +64,8 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
+                entity.Property(e => e.IsFixed).HasColumnName("IS_FIXED");
+
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
                     .HasColumnType("datetime")
@@ -229,6 +231,10 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("DOCUMENT");
 
+                entity.HasIndex(e => e.Path)
+                    .HasName("UQ_PATH_DOCUMENT")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CreateDate)
@@ -252,6 +258,13 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.Name)
                     .HasColumnName("NAME")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.Path)
+                    .IsRequired()
+                    .HasColumnName("PATH")
+                    .HasMaxLength(500)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
 
                 entity.HasOne(d => d.Create)
                     .WithMany(p => p.DocumentCreate)
@@ -729,16 +742,15 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("SUPPLIER");
 
+                entity.HasIndex(e => e.FullName)
+                    .HasName("UQ_FULL_NAME_SUPPLIER")
+                    .IsUnique();
+
                 entity.HasIndex(e => e.Name)
                     .HasName("UQ__SUPPLIER__D9C1FA0044345D15")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.Code)
-                    .HasColumnName("CODE")
-                    .HasMaxLength(10)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.CountryId).HasColumnName("COUNTRY");
 
@@ -757,6 +769,7 @@ namespace TransIT.DAL.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.FullName)
+                    .IsRequired()
                     .HasColumnName("FULL_NAME")
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -847,6 +860,8 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
                 entity.Property(e => e.FromStateId).HasColumnName("FROM_STATE_ID");
+
+                entity.Property(e => e.IsFixed).HasColumnName("IS_FIXED");
 
                 entity.Property(e => e.ModDate)
                    .HasColumnName("MOD_DATE")

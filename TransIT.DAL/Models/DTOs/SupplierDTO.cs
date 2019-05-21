@@ -10,7 +10,6 @@ namespace TransIT.DAL.Models.DTOs
         public DateTime? ModDate { get; set; }
         public UserDTO Create { get; set; }
         public UserDTO Mod { get; set; }
-        public string Code { get; set; }
         public string FullName { get; set; }
         public CountryDTO Country { get; set; }
         public CurrencyDTO Currency { get; set; }
