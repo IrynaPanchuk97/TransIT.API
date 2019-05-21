@@ -9,6 +9,7 @@ using Microsoft.AspNet.OData.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
+using TransIT.API.Hubs;
 
 namespace TransIT.API
 {
@@ -38,6 +39,7 @@ namespace TransIT.API
             services.ConfigureModelRepositories();
             services.ConfigureDataAccessServices();
             services.AddOData();
+            services.AddSignalR();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -60,6 +62,10 @@ namespace TransIT.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<IssueHub>("/hubissue");
+            });
             app.UseMvc(routerBuilder =>
             {
                 routerBuilder.EnableDependencyInjection();

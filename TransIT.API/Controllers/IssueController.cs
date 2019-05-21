@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using TransIT.API.Extensions;
+using TransIT.API.Hubs;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -19,14 +21,17 @@ namespace TransIT.API.Controllers
     public class IssueController : DataController<Issue, IssueDTO>
     {
         private readonly IIssueService _issueService;
+        private readonly IHubContext<IssueHub> _issueHub;
         
         public IssueController(
-            IMapper mapper, 
+            IMapper mapper,
             IIssueService issueService,
-            IODCrudService<Issue> odService
+            IODCrudService<Issue> odService,
+            IHubContext<IssueHub> issueHub
             ) : base(mapper, issueService, odService)
         {
             _issueService = issueService;
+            _issueHub = issueHub;
         }
 
         [HttpPost(DataTableTemplateUri)]
@@ -90,10 +95,13 @@ namespace TransIT.API.Controllers
         }
 
         [HttpPost]
-        public override Task<IActionResult> Create([FromBody] IssueDTO obj)
+        public override async Task<IActionResult> Create([FromBody] IssueDTO obj)
         {
             obj.State = null;
-            return base.Create(obj);
+            await _issueHub.Clients.All
+//                .Group(ROLE.ENGINEER)
+                .SendAsync("ReceiveIssues");
+            return await base.Create(obj);
         }
 
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)

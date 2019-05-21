@@ -1,6 +1,7 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,6 +56,21 @@ namespace TransIT.API.Extensions
             {
                 configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
+                
+                configureOptions.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        
+                        if (!string.IsNullOrEmpty(accessToken)
+                            && context.HttpContext.Request.Path
+                                .StartsWithSegments("/hub"))
+                            context.Token = accessToken;
+                        
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             services.AddScoped<IJwtFactory, JwtFactory>();
