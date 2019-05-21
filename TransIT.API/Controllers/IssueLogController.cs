@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -90,7 +90,16 @@ namespace TransIT.API.Controllers
             {
                 var entity = _mapper.Map<IssueLog>(obj);
                 entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                entity = await _issueLogService.CreateAsync(entity);
+                
+                try
+                {
+                    entity = await _issueLogService.CreateAsync(entity);
+                }
+                catch (ConstraintException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
                 if (entity != null)
                     return CreatedAtAction(
                         nameof(Create),
