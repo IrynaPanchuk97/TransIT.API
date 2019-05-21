@@ -27,8 +27,9 @@ namespace TransIT.DAL.UnitOfWork
         public  ITokenRepository TokenRepository { get; }
         public IEmployeeRepository EmployeeRepository { get; }
         public IPostRepository PostRepository { get; }
+        public ITransitionRepository TransitionRepository { get; set; }
 
-        public UnitOfWork(DbContext context, IActionTypeRepository actionTypeRepository, ICountryRepository countryRepository, ICurrencyRepository currencyRepository, IBillRepository billRepository, IDocumentRepository documentRepository, IIssueRepository issueRepository, IIssueLogRepository issueLogRepository, IMalfunctionRepository malfunctionRepository, IMalfunctionGroupRepository malfunctionGroupRepository, IMalfunctionSubgroupRepository malfunctionSubgroupRepository, IRoleRepository roleRepository, IUserRepository userRepository, IStateRepository stateRepository, ISupplierRepository supplierRepository, IVehicleRepository vehicleRepository, IVehicleTypeRepository vehicleTypeRepository, ITokenRepository tokenRepository, IEmployeeRepository employeeRepository, IPostRepository postRepository)
+        public UnitOfWork(DbContext context, IActionTypeRepository actionTypeRepository, ICountryRepository countryRepository, ICurrencyRepository currencyRepository, IBillRepository billRepository, IDocumentRepository documentRepository, IIssueRepository issueRepository, IIssueLogRepository issueLogRepository, IMalfunctionRepository malfunctionRepository, IMalfunctionGroupRepository malfunctionGroupRepository, IMalfunctionSubgroupRepository malfunctionSubgroupRepository, IRoleRepository roleRepository, IUserRepository userRepository, IStateRepository stateRepository, ISupplierRepository supplierRepository, IVehicleRepository vehicleRepository, IVehicleTypeRepository vehicleTypeRepository, ITokenRepository tokenRepository, IEmployeeRepository employeeRepository, IPostRepository postRepository, ITransitionRepository transitionRepository)
         {
             _context = context;
             ActionTypeRepository = actionTypeRepository;
@@ -50,6 +51,7 @@ namespace TransIT.DAL.UnitOfWork
             TokenRepository = tokenRepository;
             EmployeeRepository = employeeRepository;
             PostRepository = postRepository;
+            TransitionRepository = transitionRepository;
         }
 
         public Task<int> SaveAsync()
