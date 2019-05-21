@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,5 +31,35 @@ namespace TransIT.BLL.Services.ImplementedServices
                     || transition.ActionType.Name.ToUpperInvariant().Contains(str)
                 )
             );
+
+        public async override Task DeleteAsync(int id)
+        {
+            try
+            {
+                var model = await GetAsync(id);
+                if (model.IsFixed)
+                {
+                    throw new ConstraintException("Current state can not be deleted");
+                }
+
+                _repository.Remove(model);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                var sqlExc = e.GetBaseException() as SqlException;
+                if (sqlExc?.Number == 547)
+                {
+                    _logger.LogDebug(sqlExc, $"Number of sql exception: {sqlExc.Number.ToString()}");
+                    throw new ConstraintException("There are constrained entities, delete them firstly.", sqlExc);
+                }
+                _logger.LogError(e, nameof(DeleteAsync), e.Entries);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(DeleteAsync));
+                throw;
+            }
+        }
     }
 }
