@@ -883,31 +883,6 @@ DBCC CHECKIDENT (ROLE, RESEED, 0);
 DBCC CHECKIDENT (STATE, RESEED, 0);
 GO
 
-INSERT INTO [ROLE] (NAME, TRANS_NAME)
-VALUES ('ADMIN', N'Адмін'),
-       ('ENGINEER', N'Інженер'),
-       ('CUSTOMER', N'Реєстратор'),
-       ('ANALYST', N'Аналітик');
-GO
-
-INSERT INTO [STATE] (NAME, TRANS_NAME)
-VALUES ('NEW', N'Нова'),
-       ('VERIFIED', N'Верифіковано'),
-       ('REJECTED', N'Відхилено'),
-       ('TODO', N'До виконання'),
-       ('EXECUTING', N'В роботі'),
-       ('DONE', N'Готово'),
-       ('CONFIRMED', N'Підтверджено'),
-       ('UNCONFIRMED', N'Не підтверджено');
-GO
-
--- admin helloworld
-INSERT INTO [USER] (LOGIN, EMAIL, PASSWORD, ROLE_ID)
-SELECT 'admin', 'admin@admin', 'VXcrydRLS7cIYPVpBOGFxg==:hR1FzwJv0k8YPOHWpJqRqQ==', ROLE_ID
-FROM ROLE
-WHERE NAME = 'ADMIN'
-GO
-
 ALTER TABLE ISSUE
   ADD CONSTRAINT DF_ISSUE_STATE
     DEFAULT (1) FOR STATE_ID;
