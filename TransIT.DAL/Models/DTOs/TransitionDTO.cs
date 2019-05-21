@@ -10,5 +10,6 @@ namespace TransIT.DAL.Models.DTOs
         public virtual ActionTypeDTO ActionType { get; set; }
         public virtual StateDTO FromState { get; set; }
         public virtual StateDTO ToState { get; set; }
+        public bool IsFixed { get; set; }
     }
 }
