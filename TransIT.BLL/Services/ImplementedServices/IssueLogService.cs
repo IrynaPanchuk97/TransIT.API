@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
@@ -18,6 +18,7 @@ namespace TransIT.BLL.Services.ImplementedServices
     public class IssueLogService : CrudService<IssueLog>, IIssueLogService
     {
         private IIssueRepository _issueRepository;
+        private ITransitionRepository _transitionRepository;
 
         /// <summary>
         /// Ctor
@@ -30,10 +31,12 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<IssueLog>> logger,
             IIssueRepository issueRepository,
-            IIssueLogRepository repository
+            IIssueLogRepository repository,
+            ITransitionRepository transitionRepository
         ) : base(unitOfWork, logger, repository)
         {
             _issueRepository = issueRepository;
+            _transitionRepository = transitionRepository;
         }
 
         public async Task<IEnumerable<IssueLog>> GetRangeByIssueIdAsync(int issueId)
@@ -59,6 +62,14 @@ namespace TransIT.BLL.Services.ImplementedServices
                 model.Issue.StateId = model.NewStateId;
                 model.Issue.Deadline = oldIssue.Deadline;
                 model.Issue.AssignedToId = oldIssue.AssignedToId;
+                
+                if (!(await _transitionRepository.GetAllAsync(x =>
+                        x.FromStateId == model.OldStateId
+                        && x.ToStateId == model.NewStateId
+                        && x.ActionTypeId == model.ActionTypeId)
+                    ).Any())
+                    throw new ConstraintException("Can not move to the state according to transition settings.");
+                
                 return await base.CreateAsync(model);
             }
             catch (Exception e)
