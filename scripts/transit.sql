@@ -345,8 +345,7 @@ CREATE TABLE SUPPLIER
   MOD_DATE    DATETIME DEFAULT (GETDATE()),
   CREATE_ID   INT,
   MOD_ID      INT,
-  CODE VARCHAR(10),
-  FULL_NAME VARCHAR(100) COLLATE Cyrillic_General_CI_AS_KS NOT NULL UNIQUE,
+  FULL_NAME VARCHAR(100) COLLATE Cyrillic_General_CI_AS_KS NOT NULL,
   COUNTRY INT,
   CURRENCY INT,
   EDRPOU VARCHAR(50),
@@ -881,31 +880,6 @@ GO
 
 DBCC CHECKIDENT (ROLE, RESEED, 0);
 DBCC CHECKIDENT (STATE, RESEED, 0);
-GO
-
-INSERT INTO [ROLE] (NAME, TRANS_NAME)
-VALUES ('ADMIN', N'Адмін'),
-       ('ENGINEER', N'Інженер'),
-       ('CUSTOMER', N'Реєстратор'),
-       ('ANALYST', N'Аналітик');
-GO
-
-INSERT INTO [STATE] (NAME, TRANS_NAME)
-VALUES ('NEW', N'Нова'),
-       ('VERIFIED', N'Верифіковано'),
-       ('REJECTED', N'Відхилено'),
-       ('TODO', N'До виконання'),
-       ('EXECUTING', N'В роботі'),
-       ('DONE', N'Готово'),
-       ('CONFIRMED', N'Підтверджено'),
-       ('UNCONFIRMED', N'Не підтверджено');
-GO
-
--- admin helloworld
-INSERT INTO [USER] (LOGIN, EMAIL, PASSWORD, ROLE_ID)
-SELECT 'admin', 'admin@admin', 'VXcrydRLS7cIYPVpBOGFxg==:hR1FzwJv0k8YPOHWpJqRqQ==', ROLE_ID
-FROM ROLE
-WHERE NAME = 'ADMIN'
 GO
 
 ALTER TABLE ISSUE
