@@ -86,17 +86,28 @@ namespace TransIT.API.Controllers
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(int id, [FromBody] TEntityDTO obj)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var entity = _mapper.Map<TEntity>(obj);
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                if (ModelState.IsValid)
+                {
+                    var entity = _mapper.Map<TEntity>(obj);
+                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                entity.Id = id;
-                entity.ModId = userId;
+                    entity.Id = id;
+                    entity.ModId = userId;
 
-                var result = await _dataService.UpdateAsync(entity);
-                if (result != null)
-                    return NoContent();
+                    var result = await _dataService.UpdateAsync(entity);
+                    if (result != null)
+                        return NoContent();
+                }
+            }
+            catch(ConstraintException ex)
+            {
+                return Conflict(ex.Message);
+            }
+            catch(ArgumentException ex)
+            {
+                return Conflict(ex.Message);
             }
             return BadRequest();
         }
