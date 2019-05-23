@@ -25,6 +25,7 @@ namespace TransIT.DAL.UnitOfWork
         ITokenRepository TokenRepository { get; }
         IEmployeeRepository EmployeeRepository { get; }
         IPostRepository PostRepository { get; }
+        ITransitionRepository TransitionRepository { get; set; }
 
         Task<int> SaveAsync();
     }

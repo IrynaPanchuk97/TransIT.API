@@ -65,7 +65,7 @@ namespace TransIT.API.Extensions
                         
                         if (!string.IsNullOrEmpty(accessToken)
                             && context.HttpContext.Request.Path
-                                .StartsWithSegments("/hub"))
+                                .StartsWithSegments("/issuehub"))
                             context.Token = accessToken;
                         
                         return Task.CompletedTask;

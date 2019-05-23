@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -14,27 +14,23 @@ using TransIT.DAL.UnitOfWork;
 
 namespace TransIT.BLL.Services.ImplementedServices
 {
-    /// <summary>
-    /// Malfunction Group CRUD service
-    /// </summary>
-    /// <see cref="IActionTypeService"/>
-    public class ActionTypeService : CrudService<ActionType>, IActionTypeService
+    public class TransitionService : CrudService<Transition>, ITransitionService
     {
-        /// <summary>
-        /// Ctor
-        /// </summary>
-        /// <param name="unitOfWork">Unit of work pattern</param>
-        /// <param name="logger">Log on error</param>
-        /// <param name="repository">CRUD operations on entity</param>
-        /// <see cref="CrudService{TEntity}"/>
-        public ActionTypeService(
+        public TransitionService(
             IUnitOfWork unitOfWork,
-            ILogger<CrudService<ActionType>> logger,
-            IActionTypeRepository repository) : base(unitOfWork, logger, repository) { }
-        
-        protected override Task<IEnumerable<ActionType>> SearchExpressionAsync(IEnumerable<string> strs) =>
-                _unitOfWork.ActionTypeRepository.GetAllAsync(entity =>
-                    strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
+            ILogger<CrudService<Transition>> logger,
+            ITransitionRepository repository) : base(unitOfWork, logger, repository) { }
+
+        protected override Task<IEnumerable<Transition>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            _unitOfWork
+            .TransitionRepository
+            .GetAllAsync(transition =>
+                strs.Any(str =>
+                    transition.FromState.TransName.ToUpperInvariant().Contains(str)
+                    || transition.ToState.TransName.ToUpperInvariant().Contains(str)
+                    || transition.ActionType.Name.ToUpperInvariant().Contains(str)
+                )
+            );
 
         public async override Task DeleteAsync(int id)
         {

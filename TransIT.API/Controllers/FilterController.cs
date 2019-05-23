@@ -88,13 +88,14 @@ namespace TransIT.API.Controllers
             new DataTableResponseViewModel
             {
                 Draw = (ulong) model.Draw,
-                Data = res?.ToArray(),
+                Data = res.ToArray(),
                 RecordsTotal = totalAmount,
                 RecordsFiltered =
                     model.Filters != null
                     && model.Filters.Any()
-                    || !string.IsNullOrEmpty(model.Search.Value)
-                        ? (ulong) res?.Count()
+                    || model.Search != null
+                    && !string.IsNullOrEmpty(model.Search.Value)
+                        ? (ulong) res.Count()
                         : totalAmount,
                 Error = errorMessage
             };

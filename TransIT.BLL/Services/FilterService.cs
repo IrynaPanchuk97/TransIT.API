@@ -46,32 +46,17 @@ namespace TransIT.BLL.Services
 
         public virtual async Task<IEnumerable<TEntity>> GetQueriedWithWhereAsync(
             DataTableRequestViewModel dataFilter,
-            Expression<Func<TEntity, bool>> whereExpression)
-        {
-            _ = ThrowIfIncorrectArguments(dataFilter);
-            return ProcessQuery(
+            Expression<Func<TEntity, bool>> whereExpression) =>
+            ProcessQuery(
                 dataFilter,
                 await DetermineDataSource(dataFilter),
                 whereExpression
                 );
-        }
 
         protected virtual Task<IQueryable<TEntity>> GetQueriedAsync(
             DataTableRequestViewModel dataFilter,
-            IQueryable<TEntity> dataSource)
-        {
-            _ = ThrowIfIncorrectArguments(dataFilter);
-            return Task.FromResult(ProcessQuery(dataFilter, dataSource));
-        }
-        
-        private bool ThrowIfIncorrectArguments(DataTableRequestViewModel dataFilter) =>
-            !dataFilter.Columns.Any()
-                ? throw new ArgumentException(
-                    $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Columns)} is empty.")
-                : !dataFilter.Order.Any()
-                    ? throw new ArgumentException(
-                        $"{nameof(DataTableRequestViewModel)}.{nameof(dataFilter.Order)} is empty.")
-                    : true;
+            IQueryable<TEntity> dataSource) =>
+            Task.FromResult(ProcessQuery(dataFilter, dataSource));
         
         public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
         {
@@ -90,19 +75,35 @@ namespace TransIT.BLL.Services
         }
 
         private async Task<IQueryable<TEntity>> DetermineDataSource(DataTableRequestViewModel dataFilter) =>
-            string.IsNullOrEmpty(dataFilter.Search.Value)
-                ? _queryRepository.GetQueryable()
-                : (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable();
+            dataFilter.Search != null
+            && !string.IsNullOrEmpty(dataFilter.Search.Value)
+                ? (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable()
+                : _queryRepository.GetQueryable();
 
-        private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data) =>
-            TableOrderBy(
-                    dataFilter,
-                    dataFilter.Filters == null || dataFilter.Length == 0
-                        ? data
-                        : ProcessQueryFilter(dataFilter.Filters, data)
-                    )
-                .Skip(dataFilter.Start)
-                .Take(dataFilter.Length);
+        private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
+        {
+            if (dataFilter.Filters != null
+                && dataFilter.Filters.Any())
+                data = ProcessQueryFilter(dataFilter.Filters, data);
+            
+            if (dataFilter.Columns != null
+                && dataFilter.Order != null
+                && dataFilter.Columns.Any()
+                && dataFilter.Order.Any()
+                && dataFilter.Order.All(o =>
+                    o != null
+                    && !string.IsNullOrEmpty(o.Dir)
+                    && o.Column >= 0))
+                data = TableOrderBy(dataFilter, data);
+            
+            if (dataFilter.Start >= 0
+                && dataFilter.Length > 0)
+                data = data
+                    .Skip(dataFilter.Start)
+                    .Take(dataFilter.Length);
+
+            return data;
+        }
 
         private IQueryable<TEntity> ProcessQueryFilter(
             IEnumerable<DataTableRequestViewModel.FilterType> filters,
@@ -122,11 +123,6 @@ namespace TransIT.BLL.Services
 
         private IQueryable<TEntity> TableOrderBy(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
         {
-            if (dataFilter.Order == null
-                || dataFilter.Columns == null
-                || !dataFilter.Order.Any()
-                || !dataFilter.Columns.Any()) return data;
-            
             data = data.OrderBy(
                 dataFilter.Columns[dataFilter.Order[0].Column].Data,
                 dataFilter.Order[0].Dir == DataTableRequestViewModel.DataTableDescending

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using TransIT.API.Extensions;
 using TransIT.API.Hubs;
+using TransIT.API.Hubs.Interfaces;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -97,9 +98,8 @@ namespace TransIT.API.Controllers
         [HttpPost]
         public override async Task<IActionResult> Create([FromBody] IssueDTO obj)
         {
-            obj.State = null;
-            await _issueHub.Clients.All
-//                .Group(ROLE.ENGINEER)
+            await _issueHub.Clients
+                .Group(ROLE.ENGINEER)
                 .SendAsync("ReceiveIssues");
             return await base.Create(obj);
         }

@@ -25,7 +25,6 @@ namespace TransIT.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<DbContext, TransITDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
@@ -33,13 +32,13 @@ namespace TransIT.API
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             
+            services.AddSignalR();
             services.ConfigureAutoMapper();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureCors();
             services.ConfigureModelRepositories();
             services.ConfigureDataAccessServices();
             services.AddOData();
-            services.AddSignalR();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -62,14 +61,14 @@ namespace TransIT.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<IssueHub>("/hubissue");
-            });
             app.UseMvc(routerBuilder =>
             {
                 routerBuilder.EnableDependencyInjection();
                 routerBuilder.Count().OrderBy().Filter().MaxTop(1000);
+            });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<IssueHub>("/issuehub");
             });
         }
     }
