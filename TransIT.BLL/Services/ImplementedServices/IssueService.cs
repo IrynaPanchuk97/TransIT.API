@@ -69,6 +69,10 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         protected override Task<IEnumerable<Issue>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.IssueRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Summary.ToUpperInvariant().Contains(str)));
+                strs.Any(str => entity.Summary.ToUpperInvariant().Contains(str)
+                || entity.Malfunction.Name.ToUpperInvariant().Contains(str)
+                || entity.Malfunction.MalfunctionSubgroup.Name.ToUpperInvariant().Contains(str)
+                || entity.Malfunction.MalfunctionSubgroup.MalfunctionGroup.Name.ToUpperInvariant().Contains(str)
+                || entity.Number.ToString().ToUpperInvariant().Contains(str)));
     }
 }
