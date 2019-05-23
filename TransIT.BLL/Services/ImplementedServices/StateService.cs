@@ -62,9 +62,11 @@ namespace TransIT.BLL.Services.ImplementedServices
                     throw new ArgumentException("Incorrect model");
                 }
 
-                _repository.Update(model);
+                newModel.TransName = model.TransName;
+
+                _repository.Update(newModel);
                 await _unitOfWork.SaveAsync();
-                return model;
+                return newModel;
             }
             catch (DbUpdateException e)
             {
