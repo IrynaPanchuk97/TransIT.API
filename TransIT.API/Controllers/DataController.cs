@@ -101,15 +101,15 @@ namespace TransIT.API.Controllers
                     if (result != null)
                         return NoContent();
                 }
-            }
-            catch(ConstraintException ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch(ArgumentException ex)
-            {
-                return Conflict(ex.Message);
-            }
+                catch (ConstraintException ex)
+                {
+                    return Conflict(ex.Message);
+                }
+                catch (ArgumentException ex)
+                {
+                    return Conflict(ex.Message);
+                }
+            }         
             return BadRequest();
         }
 
