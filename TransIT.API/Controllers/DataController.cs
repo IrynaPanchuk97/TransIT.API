@@ -86,10 +86,11 @@ namespace TransIT.API.Controllers
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(int id, [FromBody] TEntityDTO obj)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                try
                 {
+
                     var entity = _mapper.Map<TEntity>(obj);
                     var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
