@@ -46,7 +46,7 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         protected override Task<IEnumerable<State>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.StateRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
+                strs.Any(str => entity.TransName.ToUpperInvariant().Contains(str)));
 
         public async override Task<State> UpdateAsync(State model)
         {
