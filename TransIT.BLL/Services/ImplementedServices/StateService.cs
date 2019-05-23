@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
 
@@ -46,6 +47,36 @@ namespace TransIT.BLL.Services.ImplementedServices
         protected override Task<IEnumerable<State>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.StateRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
+
+        public async override Task<State> UpdateAsync(State model)
+        {
+            try
+            {
+                var newModel = await GetAsync(model.Id);
+                if (newModel.IsFixed)
+                {
+                    throw new ConstraintException("Current state can not be edited");
+                }
+                if(model.IsFixed)
+                {
+                    throw new ArgumentException("Incorrect model");
+                }
+
+                _repository.Update(model);
+                await _unitOfWork.SaveAsync();
+                return model;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync));
+                throw;
+            }
+        }
 
         public async override Task DeleteAsync(int id)
         {
