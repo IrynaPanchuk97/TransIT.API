@@ -41,27 +41,15 @@ namespace TransIT.API.Controllers
                 : (IActionResult) BadRequest();
         }
         
+        [DataTableFilterExceptionFilter]
         [HttpPost(DataTableTemplateIssueLogByIssueUrl)]
         public virtual async Task<IActionResult> Filter(
             int issueId,
             DataTableRequestViewModel model)
         {
-            var errorMessage = string.Empty;
-            IEnumerable<IssueLogDTO> res;
-            try
-            {
-                res = await GetMappedEntitiesByIssueId(issueId, model);
-            }
-            catch (ArgumentException ex)
-            {
-                res = null;
-                errorMessage = ex.Message;
-            }
-
             var dtResponse = ComposeDataTableResponseViewModel(
-                res,
+                await GetMappedEntitiesByIssueId(issueId, model),
                 model,
-                errorMessage,
                 _filterService.TotalRecordsAmount()
                 );
             dtResponse.RecordsFiltered = (ulong) dtResponse.Data.LongLength;

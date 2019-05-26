@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Models.ViewModels;
@@ -30,30 +31,16 @@ namespace TransIT.API.Controllers
             _mapper = mapper;
         }
         
+        [DataTableFilterExceptionFilter]
         [HttpPost(DataTableTemplateUri)]
-        public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model)
-        {
-            var errorMessage = string.Empty;
-            IEnumerable<TEntityDTO> res;
-            try
-            {
-                res = await GetMappedEntitiesByModel(model);
-            }
-            catch (ArgumentException ex)
-            {
-                res = null;
-                errorMessage = ex.Message;
-            }
-
-            return Json(
+        public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model) =>
+            Json(
                 ComposeDataTableResponseViewModel(
-                    res,
+                    await GetMappedEntitiesByModel(model),
                     model,
-                    errorMessage,
                     _filterService.TotalRecordsAmount()
                     )
                 );
-        }
 
         protected async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
             _mapper.Map<IEnumerable<TEntityDTO>>(
@@ -62,9 +49,9 @@ namespace TransIT.API.Controllers
 
         protected virtual DataTableResponseViewModel ComposeDataTableResponseViewModel(
             IEnumerable<TEntityDTO> res,
-            DataTableRequestViewModel model,   
-            string errorMessage,
-            ulong totalAmount) =>
+            DataTableRequestViewModel model,
+            ulong totalAmount,   
+            string errorMessage = "") =>
             new DataTableResponseViewModel
             {
                 Draw = (ulong) model.Draw,

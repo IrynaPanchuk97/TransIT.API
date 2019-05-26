@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.API.Extensions;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
@@ -29,38 +30,39 @@ namespace TransIT.API.Controllers
             _issueService = issueService;
         }
 
+        [DataTableFilterExceptionFilter]
         [HttpPost(DataTableTemplateUri)]
         public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
             var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
             var userId = GetUserId();
-            var errorMessage = string.Empty;
-            IssueDTO[] res = null;
-            try
-            {
-                res = _mapper.Map<IEnumerable<IssueDTO>>(
-                    isCustomer
-                        ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == userId)
-                        : await _filterService.GetQueriedAsync(model)
-                    ).ToArray();
-            }
-            catch (ArgumentException ex)
-            {
-                errorMessage = ex.Message;
-            }
 
             return Json(
                 ComposeDataTableResponseViewModel(
-                        res,
-                        model,
-                        errorMessage,
-                        isCustomer
-                            ? _filterService.TotalRecordsAmount(x => x.CreateId == userId)
-                            : _filterService.TotalRecordsAmount()
-                        )
+                    await GetQueryiedForSpecificUser(model, userId, isCustomer),
+                    model,
+                    GetTotalRecordsForSpecificUser(userId, isCustomer)
+                    )
                 );
         }
         
+        private async Task<IEnumerable<IssueDTO>> GetQueryiedForSpecificUser(
+            DataTableRequestViewModel model,
+            int userId,
+            bool isCustomer) =>
+            _mapper.Map<IEnumerable<IssueDTO>>(
+                isCustomer
+                    ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == userId)
+                    : await _filterService.GetQueriedAsync(model)
+                );
+
+        private ulong GetTotalRecordsForSpecificUser(
+            int userId,
+            bool isCustomer) =>
+            isCustomer
+                ? _filterService.TotalRecordsAmount(x => x.CreateId == userId)
+                : _filterService.TotalRecordsAmount();
+
         [HttpGet]
         public override async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
