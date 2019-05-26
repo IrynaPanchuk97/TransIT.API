@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
 
@@ -113,21 +114,11 @@ namespace TransIT.API.Controllers
             return BadRequest();
         }
 
+        [DeleteExceptionFilter]
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _dataService.DeleteAsync(id);
-            }
-            catch(UnauthorizedAccessException ex)
-            {
-                return Forbid(ex.Message);
-            }
-            catch (ConstraintException ex)
-            {
-                return Conflict(ex.Message);
-            }
+            await _dataService.DeleteAsync(id);
             return NoContent();
         }
 
