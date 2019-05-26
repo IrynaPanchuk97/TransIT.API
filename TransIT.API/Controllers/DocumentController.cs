@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,7 +19,7 @@ namespace TransIT.API.Controllers
         public DocumentController(
             IMapper mapper,
             IDocumentService documentService,
-            IODCrudService<Document> odService
+            IFilterService<Document> odService
             ) : base(mapper, documentService, odService)
         {
             _documentService = documentService;
@@ -27,15 +28,10 @@ namespace TransIT.API.Controllers
         [HttpGet("~/api/v1/" + nameof(IssueLog) + "/{issueLogId}/" + nameof(Document))]
         public async virtual Task<IActionResult> GetByIssueLog(int issueLogId)
         {
-            if (ModelState.IsValid)
-            {
-                var res = await _documentService.GetRangeByIssueLogIdAsync(issueLogId);
-                if (res != null)
-                    return Json(res.Select(x =>
-                        _mapper.Map<DocumentDTO>(x)));
-            }
-
-            return BadRequest();
+            var result = await _documentService.GetRangeByIssueLogIdAsync(issueLogId);
+            return result != null
+                ? Json(_mapper.Map<IEnumerable<DocumentDTO>>(result))
+                : (IActionResult) BadRequest();
         }
     }
 }

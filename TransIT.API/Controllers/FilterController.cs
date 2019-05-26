@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Models.ViewModels;
@@ -20,60 +21,26 @@ namespace TransIT.API.Controllers
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
-        protected const string ODataTemplateUri = "~/api/v1/odata/[controller]";
         protected const string DataTableTemplateUri = "~/api/v1/datatable/[controller]";
-        protected readonly IODCrudService<TEntity> _filterService;
+        protected readonly IFilterService<TEntity> _filterService;
         protected readonly IMapper _mapper;
 
-        public FilterController(IODCrudService<TEntity> filterService, IMapper mapper)
+        public FilterController(IFilterService<TEntity> filterService, IMapper mapper)
         {
             _filterService = filterService;
             _mapper = mapper;
         }
         
-        [HttpGet(ODataTemplateUri)]
-        public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
-        {
-            if (ModelState.IsValid)
-            {
-                var res = await _filterService.GetQueriedAsync(query);
-                if (res != null)
-                    return Json(
-                        _mapper.Map<IEnumerable<TEntityDTO>>(res)
-                        );
-            }
-            return BadRequest();
-        }
-        
+        [DataTableFilterExceptionFilter]
         [HttpPost(DataTableTemplateUri)]
-        public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var errorMessage = string.Empty;
-                IEnumerable<TEntityDTO> res;
-                try
-                {
-                    res = await GetMappedEntitiesByModel(model);
-                }
-                catch (ArgumentException ex)
-                {
-                    res = null;
-                    errorMessage = ex.Message;
-                }
-
-                return Json(
-                    ComposeDataTableResponseViewModel(
-                        res,
-                        model,
-                        errorMessage,
-                        _filterService.TotalRecordsAmount()
-                        )
-                    );
-            }
-
-            return BadRequest();
-        }
+        public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model) =>
+            Json(
+                ComposeDataTableResponseViewModel(
+                    await GetMappedEntitiesByModel(model),
+                    model,
+                    _filterService.TotalRecordsAmount()
+                    )
+                );
 
         protected async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>
             _mapper.Map<IEnumerable<TEntityDTO>>(
@@ -82,9 +49,9 @@ namespace TransIT.API.Controllers
 
         protected virtual DataTableResponseViewModel ComposeDataTableResponseViewModel(
             IEnumerable<TEntityDTO> res,
-            DataTableRequestViewModel model,   
-            string errorMessage,
-            ulong totalAmount) =>
+            DataTableRequestViewModel model,
+            ulong totalAmount,   
+            string errorMessage = "") =>
             new DataTableResponseViewModel
             {
                 Draw = (ulong) model.Draw,

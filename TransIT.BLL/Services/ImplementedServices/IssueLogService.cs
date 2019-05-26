@@ -63,23 +63,20 @@ namespace TransIT.BLL.Services.ImplementedServices
                 model.Issue.Deadline = oldIssue.Deadline;
                 model.Issue.AssignedToId = oldIssue.AssignedToId;
                 
-//                if (model.OldStateId != model.NewStateId
-//                    && model.OldStateId != null
-//                    && model.NewStateId != null
-//                    && model.ActionTypeId != null
-//                    && !(await _transitionRepository.GetAllAsync(x =>
-//                        x.FromStateId == model.OldStateId
-//                        && x.ToStateId == model.NewStateId
-//                        && x.ActionTypeId == model.ActionTypeId)
-//                    ).Any())
-//                    throw new ConstraintException("Can not move to the state according to transition settings.");
+                if (model.OldStateId != model.NewStateId
+                    && !(await _transitionRepository.GetAllAsync(x =>
+                        x.FromStateId == model.OldStateId
+                        && x.ActionTypeId == model.ActionTypeId
+                        && x.ToStateId == model.NewStateId)
+                    ).Any())
+                    throw new ConstraintException("Can not move to the state according to transition settings.");
                 
                 return await base.CreateAsync(model);
             }
             catch (Exception e)
             {
                 _logger.LogError(e, nameof(CreateAsync));
-                throw e;
+                throw;
             }
         }
         

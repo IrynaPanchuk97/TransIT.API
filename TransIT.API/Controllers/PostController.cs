@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public PostController(
             IMapper mapper, 
             IPostService postService,
-            IODCrudService<Post> odService
+            IFilterService<Post> odService
             ) : base(mapper, postService, odService)
         {
             _postService = postService;

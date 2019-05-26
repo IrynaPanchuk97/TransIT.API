@@ -23,25 +23,19 @@ namespace TransIT.API.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn([FromBody] LoginViewModel credentials)
         {
-            if (ModelState.IsValid)
-            {
-                var res = await _authenticationService.SignInAsync(credentials);
-                if (res != null) return Json(res);
-            }
-            return BadRequest();
+            var result = await _authenticationService.SignInAsync(credentials);
+            return result != null 
+                ? Json(result)
+                : (IActionResult) BadRequest();
         }
 
         [HttpPost]
         public async Task<IActionResult> RefreshToken([FromBody] TokenDTO token)
         {
-            if (ModelState.IsValid)
-            {
-                var res = await _authenticationService.TokenAsync(token);
-                return res == null
-                    ? Forbid() as IActionResult
-                    : Json(res);
-            }
-            return BadRequest();
+            var result = await _authenticationService.TokenAsync(token);
+            return result != null
+                ? Json(result)
+                : (IActionResult) Forbid();
         }
     }
 }

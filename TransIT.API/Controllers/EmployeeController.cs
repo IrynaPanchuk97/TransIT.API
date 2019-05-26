@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public EmployeeController(
             IMapper mapper, 
             IEmployeeService employeeService,
-            IODCrudService<Employee> odService
+            IFilterService<Employee> odService
             ) : base(mapper, employeeService, odService)
         {
             _employeeService = employeeService;

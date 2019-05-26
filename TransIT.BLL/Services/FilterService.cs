@@ -12,7 +12,7 @@ using TransIT.DAL.Repositories;
 
 namespace TransIT.BLL.Services
 {
-    public class FilterService<TEntity> : IODCrudService<TEntity>
+    public class FilterService<TEntity> : IFilterService<TEntity>
         where TEntity : class, IEntity, new()
     {        
         protected readonly IQueryRepository<TEntity> _queryRepository;
@@ -22,6 +22,7 @@ namespace TransIT.BLL.Services
             (ulong)_queryRepository
                 .GetQueryable()
                 .LongCount();
+        
         public ulong TotalRecordsAmount(Expression<Func<TEntity, bool>> expression) =>
             (ulong)_queryRepository
                 .GetQueryable()
@@ -57,22 +58,6 @@ namespace TransIT.BLL.Services
             DataTableRequestViewModel dataFilter,
             IQueryable<TEntity> dataSource) =>
             Task.FromResult(ProcessQuery(dataFilter, dataSource));
-        
-        public virtual Task<IEnumerable<TEntity>> GetQueriedAsync(ODataQueryOptions<TEntity> options)
-        {
-            try
-            {
-                return Task.FromResult<IEnumerable<TEntity>>(
-                    options
-                        .ApplyTo(_queryRepository.GetQueryable())
-                        .Cast<TEntity>()
-                    );
-            }
-            catch (ODataException)
-            {
-                return Task.FromResult<IEnumerable<TEntity>>(null);
-            }
-        }
 
         private async Task<IQueryable<TEntity>> DetermineDataSource(DataTableRequestViewModel dataFilter) =>
             dataFilter.Search != null

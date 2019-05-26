@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TransIT.API.Extensions;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
@@ -21,7 +23,7 @@ namespace TransIT.API.Controllers
         public UserController(
             IMapper mapper, 
             IUserService userService,
-            IODCrudService<User> odService
+            IFilterService<User> odService
             ) : base(mapper, userService, odService)
         {
             _userService = userService;
@@ -39,17 +41,12 @@ namespace TransIT.API.Controllers
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> ChangePassword(int id, [FromBody] ChangePasswordViewModel changePassword)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _userService.GetAsync(id);
-                var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-                user.ModId = adminId;
-
-                var result = await _userService.UpdatePasswordAsync(user, changePassword.Password);
-                if (result != null) return NoContent();
-            }
-            return BadRequest();
+            var user = await _userService.GetAsync(id);
+            var adminId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            user.ModId = adminId;
+            return await _userService.UpdatePasswordAsync(user, changePassword.Password) != null 
+                ? NoContent()
+                : (IActionResult) BadRequest();
         }
         
         [HttpGet]
@@ -60,14 +57,13 @@ namespace TransIT.API.Controllers
                 case ROLE.ADMIN:
                     return await base.Get(offset, amount);
                 case ROLE.ENGINEER:
-                    var res = await _userService.GetAssignees(offset, amount);
-                    if (res != null)
-                        return Json(res.Select(x =>
-                            _mapper.Map<UserDTO>(x)));
-                    break;
+                    var result = await _userService.GetAssignees(offset, amount);
+                    return result != null
+                        ? Json(_mapper.Map<IEnumerable<UserDTO>>(result))
+                        : (IActionResult) BadRequest();
+                default:
+                    return BadRequest();
             }
-
-            return BadRequest();
         }
 
         [HttpGet("/search")]

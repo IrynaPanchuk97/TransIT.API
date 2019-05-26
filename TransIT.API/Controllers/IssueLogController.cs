@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -24,7 +26,7 @@ namespace TransIT.API.Controllers
         public IssueLogController(
             IMapper mapper,
             IIssueLogService issueLogService,
-            IODCrudService<IssueLog> odService
+            IFilterService<IssueLog> odService
             ) : base(mapper, issueLogService, odService)
         {
             _issueLogService = issueLogService;
@@ -33,46 +35,25 @@ namespace TransIT.API.Controllers
         [HttpGet(IssueLogByIssueUrl)]
         public virtual async Task<IActionResult> GetByIssue(int issueId)
         {
-            if (ModelState.IsValid)
-            {
-                var res = await _issueLogService.GetRangeByIssueIdAsync(issueId);
-                if (res != null)
-                    return Json(
-                        _mapper.Map<IEnumerable<IssueLogDTO>>(res)
-                        );
-            }
-            return BadRequest();
+            var result = await _issueLogService.GetRangeByIssueIdAsync(issueId);
+            return result != null
+                ? Json(_mapper.Map<IEnumerable<IssueLogDTO>>(result))
+                : (IActionResult) BadRequest();
         }
         
+        [DataTableFilterExceptionFilter]
         [HttpPost(DataTableTemplateIssueLogByIssueUrl)]
         public virtual async Task<IActionResult> Filter(
             int issueId,
             DataTableRequestViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var errorMessage = string.Empty;
-                IEnumerable<IssueLogDTO> res;
-                try
-                {
-                    res = await GetMappedEntitiesByIssueId(issueId, model);
-                }
-                catch (ArgumentException ex)
-                {
-                    res = null;
-                    errorMessage = ex.Message;
-                }
-
-                var dtResponse = ComposeDataTableResponseViewModel(
-                    res,
-                    model,
-                    errorMessage,
-                    _filterService.TotalRecordsAmount()
-                    );
-                dtResponse.RecordsFiltered = (ulong) dtResponse.Data.LongLength;
-                return Json(dtResponse);
-            }
-            return BadRequest();
+            var dtResponse = ComposeDataTableResponseViewModel(
+                await GetMappedEntitiesByIssueId(issueId, model),
+                model,
+                _filterService.TotalRecordsAmount()
+                );
+            dtResponse.RecordsFiltered = (ulong) dtResponse.Data.LongLength;
+            return Json(dtResponse);
         }
 
         private async Task<IEnumerable<IssueLogDTO>> GetMappedEntitiesByIssueId(int issueId, DataTableRequestViewModel model) =>
@@ -86,40 +67,12 @@ namespace TransIT.API.Controllers
         [HttpPost]
         public override async Task<IActionResult> Create([FromBody] IssueLogDTO obj)
         {
-            if (ModelState.IsValid)
-            {
-                var entity = _mapper.Map<IssueLog>(obj);
-                entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                
-                try
-                {
-                    entity = await _issueLogService.CreateAsync(entity);
-                }
-                catch (ConstraintException ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
-                if (entity != null)
-                    return CreatedAtAction(
-                        nameof(Create),
-                        _mapper.Map<IssueLogDTO>(entity));
-            }
-            return BadRequest();
-        }
-
-        [HttpPut("{id}")]
-        public override async Task<IActionResult> Update(int id, [FromBody] IssueLogDTO obj)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = _mapper.Map<IssueLog>(obj);
-                entity.Id = id;
-                entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-                if (await _issueLogService.UpdateAsync(entity) != null)
-                    return NoContent();
-            }
-            return BadRequest();
+            var entity = _mapper.Map<IssueLog>(obj);
+            entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            entity = await _issueLogService.CreateAsync(entity);
+            return entity != null
+                ? CreatedAtAction(nameof(Create), _mapper.Map<IssueLogDTO>(entity))
+                : (IActionResult) BadRequest();
         }
     }
 }

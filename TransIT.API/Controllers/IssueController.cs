@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using Microsoft.AspNetCore.SignalR;
 using TransIT.API.Extensions;
 using TransIT.API.Hubs;
@@ -26,7 +27,7 @@ namespace TransIT.API.Controllers
         public IssueController(
             IMapper mapper,
             IIssueService issueService,
-            IODCrudService<Issue> odService,
+            IFilterService<Issue> odService
             IHubContext<IssueHub> issueHub
             ) : base(mapper, issueService, odService)
         {
@@ -34,64 +35,52 @@ namespace TransIT.API.Controllers
             _issueHub = issueHub;
         }
 
+        [DataTableFilterExceptionFilter]
         [HttpPost(DataTableTemplateUri)]
         public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
-                var userId = GetUserId();
-                var errorMessage = string.Empty;
-                IssueDTO[] res = null;
-                try
-                {
-                    res = _mapper.Map<IEnumerable<IssueDTO>>(
-                        isCustomer
-                            ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == userId)
-                            : await _filterService.GetQueriedAsync(model)
-                        ).ToArray();
-                }
-                catch (ArgumentException ex)
-                {
-                    errorMessage = ex.Message;
-                }
+            var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
+            var userId = GetUserId();
 
-                return Json(
-                    ComposeDataTableResponseViewModel(
-                            res,
-                            model,
-                            errorMessage,
-                            isCustomer
-                                ? _filterService.TotalRecordsAmount(x => x.CreateId == userId)
-                                : _filterService.TotalRecordsAmount()
-                            )
-                    );
-            }
-
-            return BadRequest();
+            return Json(
+                ComposeDataTableResponseViewModel(
+                    await GetQueryiedForSpecificUser(model, userId, isCustomer),
+                    model,
+                    GetTotalRecordsForSpecificUser(userId, isCustomer)
+                    )
+                );
         }
         
+        private async Task<IEnumerable<IssueDTO>> GetQueryiedForSpecificUser(
+            DataTableRequestViewModel model,
+            int userId,
+            bool isCustomer) =>
+            _mapper.Map<IEnumerable<IssueDTO>>(
+                isCustomer
+                    ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == userId)
+                    : await _filterService.GetQueriedAsync(model)
+                );
+
+        private ulong GetTotalRecordsForSpecificUser(
+            int userId,
+            bool isCustomer) =>
+            isCustomer
+                ? _filterService.TotalRecordsAmount(x => x.CreateId == userId)
+                : _filterService.TotalRecordsAmount();
+
         [HttpGet]
         public override async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
-            if (ModelState.IsValid)
+            switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
             {
-                IEnumerable<IssueDTO> res = null;
-
-                switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
-                {
-                    case ROLE.CUSTOMER:
-                        res = await GetForCustomer(offset, amount);
-                        break;
-                    case ROLE.ENGINEER:                        
-                    case ROLE.ANALYST:
-                        res = await GetIssues(offset, amount);
-                        break;
-                }
-                if (res != null)
-                    return Json(res);
+                case ROLE.CUSTOMER:
+                    return Json(await GetForCustomer(offset, amount));
+                case ROLE.ENGINEER:                        
+                case ROLE.ANALYST:
+                    return Json(await GetIssues(offset, amount));
+                default:
+                    return BadRequest();
             }
-            return BadRequest();
         }
 
         [HttpPost]
@@ -107,17 +96,17 @@ namespace TransIT.API.Controllers
         {
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var res = await _issueService.GetRegisteredIssuesAsync(offset, amount, userId);
-            if (res != null)
-                return _mapper.Map<IEnumerable<IssueDTO>>(res);
-            return null;
+            return res != null
+                ? _mapper.Map<IEnumerable<IssueDTO>>(res)
+                : null;
         }
 
         private async Task<IEnumerable<IssueDTO>> GetIssues(uint offset, uint amount)
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
-            if (res != null)
-                return _mapper.Map<IEnumerable<IssueDTO>>(res);
-            return null;
-        }        
+            return res != null
+                ? _mapper.Map<IEnumerable<IssueDTO>>(res)
+                : null;
+        }
     }
 }

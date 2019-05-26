@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public CountryController(
             IMapper mapper,
             ICountryService countryService,
-            IODCrudService<Country> odService
+            IFilterService<Country> odService
             ) : base(mapper, countryService, odService)
         {
             _countryService = countryService;

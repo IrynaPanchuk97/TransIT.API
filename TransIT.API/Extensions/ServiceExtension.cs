@@ -83,25 +83,25 @@ namespace TransIT.API.Extensions
             services.AddScoped<ICrudService<Post>, PostService>();
             services.AddScoped<ICrudService<Transition>, TransitionService>();
 
-            services.AddScoped<IODCrudService<User>, FilterService<User>>();
-            services.AddScoped<IODCrudService<ActionType>, FilterService<ActionType>>();
-            services.AddScoped<IODCrudService<Vehicle>, FilterService<Vehicle>>();
-            services.AddScoped<IODCrudService<VehicleType>, FilterService<VehicleType>>();
-            services.AddScoped<IODCrudService<Malfunction>, FilterService<Malfunction>>();
-            services.AddScoped<IODCrudService<MalfunctionGroup>, FilterService<MalfunctionGroup>>();
-            services.AddScoped<IODCrudService<MalfunctionSubgroup>, FilterService<MalfunctionSubgroup>>();
-            services.AddScoped<IODCrudService<Bill>, FilterService<Bill>>();
-            services.AddScoped<IODCrudService<Document>, FilterService<Document>>();
-            services.AddScoped<IODCrudService<Issue>, FilterService<Issue>>();
-            services.AddScoped<IODCrudService<IssueLog>, FilterService<IssueLog>>();
-            services.AddScoped<IODCrudService<Supplier>, FilterService<Supplier>>();
-            services.AddScoped<IODCrudService<Role>, FilterService<Role>>();
-            services.AddScoped<IODCrudService<State>, FilterService<State>>();
-            services.AddScoped<IODCrudService<Currency>, FilterService<Currency>>();
-            services.AddScoped<IODCrudService<Country>, FilterService<Country>>();
-            services.AddScoped<IODCrudService<Employee>, FilterService<Employee>>();
-            services.AddScoped<IODCrudService<Post>, FilterService<Post>>();
-            services.AddScoped<IODCrudService<Transition>, FilterService<Transition>>();
+            services.AddScoped<IFilterService<User>, FilterService<User>>();
+            services.AddScoped<IFilterService<ActionType>, FilterService<ActionType>>();
+            services.AddScoped<IFilterService<Vehicle>, FilterService<Vehicle>>();
+            services.AddScoped<IFilterService<VehicleType>, FilterService<VehicleType>>();
+            services.AddScoped<IFilterService<Malfunction>, FilterService<Malfunction>>();
+            services.AddScoped<IFilterService<MalfunctionGroup>, FilterService<MalfunctionGroup>>();
+            services.AddScoped<IFilterService<MalfunctionSubgroup>, FilterService<MalfunctionSubgroup>>();
+            services.AddScoped<IFilterService<Bill>, FilterService<Bill>>();
+            services.AddScoped<IFilterService<Document>, FilterService<Document>>();
+            services.AddScoped<IFilterService<Issue>, FilterService<Issue>>();
+            services.AddScoped<IFilterService<IssueLog>, FilterService<IssueLog>>();
+            services.AddScoped<IFilterService<Supplier>, FilterService<Supplier>>();
+            services.AddScoped<IFilterService<Role>, FilterService<Role>>();
+            services.AddScoped<IFilterService<State>, FilterService<State>>();
+            services.AddScoped<IFilterService<Currency>, FilterService<Currency>>();
+            services.AddScoped<IFilterService<Country>, FilterService<Country>>();
+            services.AddScoped<IFilterService<Employee>, FilterService<Employee>>();
+            services.AddScoped<IFilterService<Post>, FilterService<Post>>();
+            services.AddScoped<IFilterService<Transition>, FilterService<Transition>>();
         }
 
         public static void ConfigureModelRepositories(this IServiceCollection services)

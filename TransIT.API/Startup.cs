@@ -5,8 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TransIT.API.Extensions;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNet.OData.Extensions;
 using Microsoft.EntityFrameworkCore;
+using TransIT.API.EndpointFilters.OnActionExecuting;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
 using TransIT.API.Hubs;
@@ -38,9 +39,12 @@ namespace TransIT.API
             services.ConfigureCors();
             services.ConfigureModelRepositories();
             services.ConfigureDataAccessServices();
-            services.AddOData();
 
-            services.AddMvc()
+            services.AddMvc(options =>
+                {        
+                    options.Filters.Add(typeof(ValidateModelStateAttribute));
+                    options.Filters.Add(typeof(ApiExceptionFilterAttribute));
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
         }
@@ -61,11 +65,7 @@ namespace TransIT.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
-            app.UseMvc(routerBuilder =>
-            {
-                routerBuilder.EnableDependencyInjection();
-                routerBuilder.Count().OrderBy().Filter().MaxTop(1000);
-            });
+            app.UseMvc();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<IssueHub>("/issuehub");

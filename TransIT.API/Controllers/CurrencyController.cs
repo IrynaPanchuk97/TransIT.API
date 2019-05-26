@@ -17,7 +17,7 @@ namespace TransIT.API.Controllers
         public CurrencyController(
             IMapper mapper,
             ICurrencyService currencyService,
-            IODCrudService<Currency> odService
+            IFilterService<Currency> odService
             ) : base(mapper, currencyService, odService)
         {
             _currencyService = currencyService;
