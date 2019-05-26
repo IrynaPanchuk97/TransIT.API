@@ -7,7 +7,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.API.EndpointFilters.OnException;
+using Microsoft.AspNetCore.SignalR;
 using TransIT.API.Extensions;
+using TransIT.API.Hubs;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -20,14 +22,17 @@ namespace TransIT.API.Controllers
     public class IssueController : DataController<Issue, IssueDTO>
     {
         private readonly IIssueService _issueService;
+        private readonly IHubContext<IssueHub> _issueHub;
         
         public IssueController(
-            IMapper mapper, 
+            IMapper mapper,
             IIssueService issueService,
             IFilterService<Issue> odService
+            IHubContext<IssueHub> issueHub
             ) : base(mapper, issueService, odService)
         {
             _issueService = issueService;
+            _issueHub = issueHub;
         }
 
         [DataTableFilterExceptionFilter]
@@ -76,6 +81,15 @@ namespace TransIT.API.Controllers
                 default:
                     return BadRequest();
             }
+        }
+
+        [HttpPost]
+        public override async Task<IActionResult> Create([FromBody] IssueDTO obj)
+        {
+            await _issueHub.Clients
+                .Group(ROLE.ENGINEER)
+                .SendAsync("ReceiveIssues");
+            return await base.Create(obj);
         }
 
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)
