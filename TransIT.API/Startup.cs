@@ -9,6 +9,7 @@ using Microsoft.AspNet.OData.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
+using TransIT.API.Hubs;
 
 namespace TransIT.API
 {
@@ -24,7 +25,6 @@ namespace TransIT.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<DbContext, TransITDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AzureConnection"));
@@ -32,6 +32,7 @@ namespace TransIT.API
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
             
+            services.AddSignalR();
             services.ConfigureAutoMapper();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureCors();
@@ -64,6 +65,10 @@ namespace TransIT.API
             {
                 routerBuilder.EnableDependencyInjection();
                 routerBuilder.Count().OrderBy().Filter().MaxTop(1000);
+            });
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<IssueHub>("/issuehub");
             });
         }
     }

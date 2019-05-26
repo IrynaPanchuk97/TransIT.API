@@ -11,7 +11,9 @@ namespace TransIT.API.Extensions
                     .AllowAnyHeader()
                     .AllowCredentials()
                     .AllowAnyMethod()
-                    .AllowAnyOrigin()));
+                    .WithOrigins("http://localhost:4200")
+                    .WithOrigins("https://transportit.azurewebsites.net")
+                ));
         }
     }
 }
