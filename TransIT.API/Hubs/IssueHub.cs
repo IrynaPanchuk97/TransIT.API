@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using TransIT.API.Extensions;
-using TransIT.API.Hubs.Interfaces;
 
 namespace TransIT.API.Hubs
 {

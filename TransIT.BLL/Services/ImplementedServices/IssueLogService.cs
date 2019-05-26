@@ -63,12 +63,16 @@ namespace TransIT.BLL.Services.ImplementedServices
                 model.Issue.Deadline = oldIssue.Deadline;
                 model.Issue.AssignedToId = oldIssue.AssignedToId;
                 
-                if (!(await _transitionRepository.GetAllAsync(x =>
-                        x.FromStateId == model.OldStateId
-                        && x.ToStateId == model.NewStateId
-                        && x.ActionTypeId == model.ActionTypeId)
-                    ).Any())
-                    throw new ConstraintException("Can not move to the state according to transition settings.");
+//                if (model.OldStateId != model.NewStateId
+//                    && model.OldStateId != null
+//                    && model.NewStateId != null
+//                    && model.ActionTypeId != null
+//                    && !(await _transitionRepository.GetAllAsync(x =>
+//                        x.FromStateId == model.OldStateId
+//                        && x.ToStateId == model.NewStateId
+//                        && x.ActionTypeId == model.ActionTypeId)
+//                    ).Any())
+//                    throw new ConstraintException("Can not move to the state according to transition settings.");
                 
                 return await base.CreateAsync(model);
             }
@@ -81,6 +85,8 @@ namespace TransIT.BLL.Services.ImplementedServices
         
         protected override Task<IEnumerable<IssueLog>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.IssueLogRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Description.ToUpperInvariant().Contains(str)));
+                strs.Any(str => entity.Description.ToUpperInvariant().Contains(str)
+                || entity.NewState.Name.ToUpperInvariant().Contains(str)
+                || entity.OldState.Name.ToUpperInvariant().Contains(str)));
     }
 }
