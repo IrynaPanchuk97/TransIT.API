@@ -24,7 +24,7 @@ namespace TransIT.API.Controllers
         public IssueLogController(
             IMapper mapper,
             IIssueLogService issueLogService,
-            IODCrudService<IssueLog> odService
+            IFilterService<IssueLog> odService
             ) : base(mapper, issueLogService, odService)
         {
             _issueLogService = issueLogService;

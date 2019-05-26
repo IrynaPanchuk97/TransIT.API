@@ -60,11 +60,7 @@ namespace TransIT.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
-            app.UseMvc(routerBuilder =>
-            {
-                routerBuilder.EnableDependencyInjection();
-                routerBuilder.Count().OrderBy().Filter().MaxTop(1000);
-            });
+            app.UseMvc();
         }
     }
 }

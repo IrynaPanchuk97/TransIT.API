@@ -24,7 +24,7 @@ namespace TransIT.API.Controllers
         public DataController(
             IMapper mapper,
             ICrudService<TEntity> dataService,
-            IODCrudService<TEntity> filterService) : base(filterService, mapper)
+            IFilterService<TEntity> filterService) : base(filterService, mapper)
         {
             _dataService = dataService;
         }

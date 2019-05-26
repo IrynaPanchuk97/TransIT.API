@@ -20,7 +20,7 @@ namespace TransIT.API.Controllers
         public TransitionController(
             IMapper mapper,
             ITransitionService transitionService,
-            IODCrudService<Transition> odService
+            IFilterService<Transition> odService
             ) : base(mapper, transitionService, odService)
         {
             _transitionService = transitionService;

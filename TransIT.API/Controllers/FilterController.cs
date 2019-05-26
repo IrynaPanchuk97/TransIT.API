@@ -20,29 +20,14 @@ namespace TransIT.API.Controllers
         where TEntity : class, IEntity, new()
         where TEntityDTO : class
     {
-        protected const string ODataTemplateUri = "~/api/v1/odata/[controller]";
         protected const string DataTableTemplateUri = "~/api/v1/datatable/[controller]";
-        protected readonly IODCrudService<TEntity> _filterService;
+        protected readonly IFilterService<TEntity> _filterService;
         protected readonly IMapper _mapper;
 
-        public FilterController(IODCrudService<TEntity> filterService, IMapper mapper)
+        public FilterController(IFilterService<TEntity> filterService, IMapper mapper)
         {
             _filterService = filterService;
             _mapper = mapper;
-        }
-        
-        [HttpGet(ODataTemplateUri)]
-        public async Task<IActionResult> Get(ODataQueryOptions<TEntity> query)
-        {
-            if (ModelState.IsValid)
-            {
-                var res = await _filterService.GetQueriedAsync(query);
-                if (res != null)
-                    return Json(
-                        _mapper.Map<IEnumerable<TEntityDTO>>(res)
-                        );
-            }
-            return BadRequest();
         }
         
         [HttpPost(DataTableTemplateUri)]

@@ -23,7 +23,7 @@ namespace TransIT.API.Controllers
         public IssueController(
             IMapper mapper, 
             IIssueService issueService,
-            IODCrudService<Issue> odService
+            IFilterService<Issue> odService
             ) : base(mapper, issueService, odService)
         {
             _issueService = issueService;

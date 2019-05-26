@@ -18,7 +18,7 @@ namespace TransIT.API.Controllers
         public DocumentController(
             IMapper mapper,
             IDocumentService documentService,
-            IODCrudService<Document> odService
+            IFilterService<Document> odService
             ) : base(mapper, documentService, odService)
         {
             _documentService = documentService;
