@@ -33,31 +33,26 @@ namespace TransIT.API.Controllers
         [HttpPost(DataTableTemplateUri)]
         public virtual async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
-            if (ModelState.IsValid)
+            var errorMessage = string.Empty;
+            IEnumerable<TEntityDTO> res;
+            try
             {
-                var errorMessage = string.Empty;
-                IEnumerable<TEntityDTO> res;
-                try
-                {
-                    res = await GetMappedEntitiesByModel(model);
-                }
-                catch (ArgumentException ex)
-                {
-                    res = null;
-                    errorMessage = ex.Message;
-                }
-
-                return Json(
-                    ComposeDataTableResponseViewModel(
-                        res,
-                        model,
-                        errorMessage,
-                        _filterService.TotalRecordsAmount()
-                        )
-                    );
+                res = await GetMappedEntitiesByModel(model);
+            }
+            catch (ArgumentException ex)
+            {
+                res = null;
+                errorMessage = ex.Message;
             }
 
-            return BadRequest();
+            return Json(
+                ComposeDataTableResponseViewModel(
+                    res,
+                    model,
+                    errorMessage,
+                    _filterService.TotalRecordsAmount()
+                    )
+                );
         }
 
         protected async Task<IEnumerable<TEntityDTO>> GetMappedEntitiesByModel(DataTableRequestViewModel model) =>

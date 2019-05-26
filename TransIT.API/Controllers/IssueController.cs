@@ -32,61 +32,48 @@ namespace TransIT.API.Controllers
         [HttpPost(DataTableTemplateUri)]
         public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
-            if (ModelState.IsValid)
+            var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
+            var userId = GetUserId();
+            var errorMessage = string.Empty;
+            IssueDTO[] res = null;
+            try
             {
-                var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
-                var userId = GetUserId();
-                var errorMessage = string.Empty;
-                IssueDTO[] res = null;
-                try
-                {
-                    res = _mapper.Map<IEnumerable<IssueDTO>>(
-                        isCustomer
-                            ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == userId)
-                            : await _filterService.GetQueriedAsync(model)
-                        ).ToArray();
-                }
-                catch (ArgumentException ex)
-                {
-                    errorMessage = ex.Message;
-                }
-
-                return Json(
-                    ComposeDataTableResponseViewModel(
-                            res,
-                            model,
-                            errorMessage,
-                            isCustomer
-                                ? _filterService.TotalRecordsAmount(x => x.CreateId == userId)
-                                : _filterService.TotalRecordsAmount()
-                            )
-                    );
+                res = _mapper.Map<IEnumerable<IssueDTO>>(
+                    isCustomer
+                        ? await _filterService.GetQueriedWithWhereAsync(model, x => x.CreateId == userId)
+                        : await _filterService.GetQueriedAsync(model)
+                    ).ToArray();
+            }
+            catch (ArgumentException ex)
+            {
+                errorMessage = ex.Message;
             }
 
-            return BadRequest();
+            return Json(
+                ComposeDataTableResponseViewModel(
+                        res,
+                        model,
+                        errorMessage,
+                        isCustomer
+                            ? _filterService.TotalRecordsAmount(x => x.CreateId == userId)
+                            : _filterService.TotalRecordsAmount()
+                        )
+                );
         }
         
         [HttpGet]
         public override async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
-            if (ModelState.IsValid)
+            switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
             {
-                IEnumerable<IssueDTO> res = null;
-
-                switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
-                {
-                    case ROLE.CUSTOMER:
-                        res = await GetForCustomer(offset, amount);
-                        break;
-                    case ROLE.ENGINEER:                        
-                    case ROLE.ANALYST:
-                        res = await GetIssues(offset, amount);
-                        break;
-                }
-                if (res != null)
-                    return Json(res);
+                case ROLE.CUSTOMER:
+                    return Json(await GetForCustomer(offset, amount));
+                case ROLE.ENGINEER:                        
+                case ROLE.ANALYST:
+                    return Json(await GetIssues(offset, amount));
+                default:
+                    return BadRequest();
             }
-            return BadRequest();
         }
 
         [HttpPost]

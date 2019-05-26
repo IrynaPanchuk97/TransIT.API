@@ -33,85 +33,69 @@ namespace TransIT.API.Controllers
         [HttpGet]
         public virtual async Task<IActionResult> Get([FromQuery] uint offset = 0, uint amount = 1000)
         {
-            if (ModelState.IsValid)
-            {
-                var res = await _dataService.GetRangeAsync(offset, amount);
-                if (res != null) 
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(res));
-            }
-            return BadRequest();
+            var result = await _dataService.GetRangeAsync(offset, amount);
+            return result != null
+                ? Json(_mapper.Map<IEnumerable<TEntityDTO>>(result))
+                : (IActionResult) BadRequest();
         }
 
         [HttpGet("{id}")]
         public virtual async Task<IActionResult> Get(int id)
         {
-            if (ModelState.IsValid)
-            {
-                var res = await _dataService.GetAsync(id);
-                if (res != null)
-                    return Json(_mapper.Map<TEntityDTO>(res));
-            }
-            return BadRequest();
+            var result = await _dataService.GetAsync(id);
+            return result != null
+                ? Json(_mapper.Map<TEntityDTO>(result))
+                : (IActionResult) BadRequest();
         }
 
         [HttpGet("/search")]
         public virtual async Task<IActionResult> Get([FromQuery] string search)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await _dataService.SearchAsync(search);
-                if (result != null) 
-                    return Json(_mapper.Map<IEnumerable<TEntityDTO>>(result));
-            }
-            return BadRequest();
+            var result = await _dataService.SearchAsync(search);
+            return result != null
+                ? Json(_mapper.Map<IEnumerable<TEntityDTO>>(result))
+                : (IActionResult) BadRequest();
         }
 
         [HttpPost]
         public virtual async Task<IActionResult> Create([FromBody] TEntityDTO obj)
         {
-            if (ModelState.IsValid)
-            {
-                var entity = _mapper.Map<TEntity>(obj);
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var entity = _mapper.Map<TEntity>(obj);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                entity.ModId = userId;
-                entity.CreateId = userId;
+            entity.ModId = userId;
+            entity.CreateId = userId;
 
-                var createdEntity = await _dataService.CreateAsync(entity);
-                if (createdEntity != null)
-                    return CreatedAtAction(nameof(Create), _mapper.Map<TEntityDTO>(createdEntity));
-            }
-            return BadRequest();
+            var createdEntity = await _dataService.CreateAsync(entity);
+            return createdEntity != null
+                ? CreatedAtAction(nameof(Create), _mapper.Map<TEntityDTO>(createdEntity))
+                : (IActionResult) BadRequest();
         }
 
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(int id, [FromBody] TEntityDTO obj)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
+                var entity = _mapper.Map<TEntity>(obj);
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                    var entity = _mapper.Map<TEntity>(obj);
-                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                entity.Id = id;
+                entity.ModId = userId;
 
-                    entity.Id = id;
-                    entity.ModId = userId;
-
-                    var result = await _dataService.UpdateAsync(entity);
-                    if (result != null)
-                        return NoContent();
-                }
-                catch (ConstraintException ex)
-                {
-                    return Conflict(ex.Message);
-                }
-                catch (ArgumentException ex)
-                {
-                    return Conflict(ex.Message);
-                }
-            }         
-            return BadRequest();
+                var result = await _dataService.UpdateAsync(entity);
+                return result != null
+                    ? NoContent()
+                    : (IActionResult) BadRequest();
+            }
+            catch (ConstraintException ex)
+            {
+                return Conflict(ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return Conflict(ex.Message);
+            }
         }
 
         [DeleteExceptionFilter]
