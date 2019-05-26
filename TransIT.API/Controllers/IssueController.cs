@@ -76,13 +76,6 @@ namespace TransIT.API.Controllers
             }
         }
 
-        [HttpPost]
-        public override Task<IActionResult> Create([FromBody] IssueDTO obj)
-        {
-            obj.State = null;
-            return base.Create(obj);
-        }
-
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)
         {
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
