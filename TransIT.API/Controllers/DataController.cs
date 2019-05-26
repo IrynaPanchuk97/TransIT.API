@@ -88,16 +88,28 @@ namespace TransIT.API.Controllers
         {
             if (ModelState.IsValid)
             {
-                var entity = _mapper.Map<TEntity>(obj);
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                try
+                {
 
-                entity.Id = id;
-                entity.ModId = userId;
+                    var entity = _mapper.Map<TEntity>(obj);
+                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                var result = await _dataService.UpdateAsync(entity);
-                if (result != null)
-                    return NoContent();
-            }
+                    entity.Id = id;
+                    entity.ModId = userId;
+
+                    var result = await _dataService.UpdateAsync(entity);
+                    if (result != null)
+                        return NoContent();
+                }
+                catch (ConstraintException ex)
+                {
+                    return Conflict(ex.Message);
+                }
+                catch (ArgumentException ex)
+                {
+                    return Conflict(ex.Message);
+                }
+            }         
             return BadRequest();
         }
 

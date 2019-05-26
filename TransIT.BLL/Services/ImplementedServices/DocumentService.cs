@@ -34,6 +34,6 @@ namespace TransIT.BLL.Services.ImplementedServices
         protected override Task<IEnumerable<Document>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.DocumentRepository.GetAllAsync(entity =>
                 strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)
-                    || entity.Description.ToUpperInvariant().Contains(str)));
+                || entity.Description.ToUpperInvariant().Contains(str)));
     }
 }

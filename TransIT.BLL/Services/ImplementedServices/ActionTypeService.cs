@@ -36,6 +36,37 @@ namespace TransIT.BLL.Services.ImplementedServices
                 _unitOfWork.ActionTypeRepository.GetAllAsync(entity =>
                     strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
 
+        public async override Task<ActionType> UpdateAsync(ActionType model)
+        {
+            try
+            {
+                var newModel = await GetAsync(model.Id);
+                if (newModel.IsFixed)
+                {
+                    throw new ConstraintException("Current state can not be edited");
+                }
+                if (model.IsFixed)
+                {
+                    throw new ArgumentException("Incorrect model");
+                }
+                newModel.Name = model.Name;
+
+                _repository.Update(newModel);
+                await _unitOfWork.SaveAsync();
+                return newModel;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
+                return null;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync));
+                throw;
+            }
+        }
+
         public async override Task DeleteAsync(int id)
         {
             try

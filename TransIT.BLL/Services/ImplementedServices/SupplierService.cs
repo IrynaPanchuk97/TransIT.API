@@ -30,6 +30,10 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         protected override Task<IEnumerable<Supplier>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.SupplierRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
+                strs.Any(str =>entity.Name.ToUpperInvariant().Contains(str)
+                || entity.Edrpou.ToUpperInvariant().Contains(str)
+                || entity.Country.Name.ToUpperInvariant().Contains(str)
+                || entity.Currency.ShortName.ToUpperInvariant().Contains(str)
+                || entity.Currency.FullName.ToUpperInvariant().Contains(str)));
     }
 }
