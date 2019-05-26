@@ -69,15 +69,7 @@ namespace TransIT.API.Controllers
         {
             var entity = _mapper.Map<IssueLog>(obj);
             entity.CreateId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            
-            try
-            {
-                entity = await _issueLogService.CreateAsync(entity);
-            }
-            catch (ConstraintException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            entity = await _issueLogService.CreateAsync(entity);
             return entity != null
                 ? CreatedAtAction(nameof(Create), _mapper.Map<IssueLogDTO>(entity))
                 : (IActionResult) BadRequest();

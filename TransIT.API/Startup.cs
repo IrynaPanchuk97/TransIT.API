@@ -8,6 +8,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TransIT.API.EndpointFilters.OnActionExecuting;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
 
@@ -43,6 +44,7 @@ namespace TransIT.API
             services.AddMvc(options =>
                 {        
                     options.Filters.Add(typeof(ValidateModelStateAttribute));
+                    options.Filters.Add(typeof(ApiExceptionFilterAttribute));
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
