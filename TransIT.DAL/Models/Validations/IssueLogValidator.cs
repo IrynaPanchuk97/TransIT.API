@@ -17,6 +17,11 @@ namespace TransIT.DAL.Models.Validations
             RuleFor(t => t.ActionType.Id)
                 .NotNull()
                 .GreaterThan(0);
+            RuleFor(t => t.NewState)
+                .NotNull();
+            RuleFor(t => t.NewState.Id)
+                .NotNull()
+                .GreaterThan(0);
         }
     }
 }
