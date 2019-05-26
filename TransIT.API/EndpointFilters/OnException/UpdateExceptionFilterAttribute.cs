@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace TransIT.API.EndpointFilters.OnException
 {
-    public class DeleteExceptionFilterAttribute : Attribute, IAsyncExceptionFilter
+    public class UpdateExceptionFilterAttribute : Attribute, IAsyncExceptionFilter
     {
         public Task OnExceptionAsync(ExceptionContext context)
         {
@@ -16,11 +16,10 @@ namespace TransIT.API.EndpointFilters.OnException
             
             result.Content = context.Exception.Message;
             result.StatusCode =
-                exceptionType == typeof(UnauthorizedAccessException)
-                    ? StatusCodes.Status403Forbidden
-                    : exceptionType == typeof(ConstraintException)
-                        ? StatusCodes.Status409Conflict
-                        : StatusCodes.Status400BadRequest;
+                exceptionType == typeof(ArgumentException)
+                || exceptionType == typeof(ConstraintException)
+                    ? StatusCodes.Status409Conflict
+                    : StatusCodes.Status400BadRequest;
             
             context.ExceptionHandled = true;
             return Task.CompletedTask;

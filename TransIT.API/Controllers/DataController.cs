@@ -72,30 +72,20 @@ namespace TransIT.API.Controllers
                 : (IActionResult) BadRequest();
         }
 
+        [UpdateExceptionFilter]
         [HttpPut("{id}")]
         public virtual async Task<IActionResult> Update(int id, [FromBody] TEntityDTO obj)
         {
-            try
-            {
-                var entity = _mapper.Map<TEntity>(obj);
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var entity = _mapper.Map<TEntity>(obj);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-                entity.Id = id;
-                entity.ModId = userId;
+            entity.Id = id;
+            entity.ModId = userId;
 
-                var result = await _dataService.UpdateAsync(entity);
-                return result != null
-                    ? NoContent()
-                    : (IActionResult) BadRequest();
-            }
-            catch (ConstraintException ex)
-            {
-                return Conflict(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return Conflict(ex.Message);
-            }
+            var result = await _dataService.UpdateAsync(entity);
+            return result != null
+                ? NoContent()
+                : (IActionResult) BadRequest();
         }
 
         [DeleteExceptionFilter]

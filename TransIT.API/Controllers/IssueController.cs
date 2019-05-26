@@ -87,17 +87,17 @@ namespace TransIT.API.Controllers
         {
             int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var res = await _issueService.GetRegisteredIssuesAsync(offset, amount, userId);
-            if (res != null)
-                return _mapper.Map<IEnumerable<IssueDTO>>(res);
-            return null;
+            return res != null
+                ? _mapper.Map<IEnumerable<IssueDTO>>(res)
+                : null;
         }
 
         private async Task<IEnumerable<IssueDTO>> GetIssues(uint offset, uint amount)
         {
             var res = await _issueService.GetRangeAsync(offset, amount);
-            if (res != null)
-                return _mapper.Map<IEnumerable<IssueDTO>>(res);
-            return null;
-        }        
+            return res != null
+                ? _mapper.Map<IEnumerable<IssueDTO>>(res)
+                : null;
+        }
     }
 }

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Security.AccessControl;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -90,17 +92,6 @@ namespace TransIT.API.Controllers
             }
             return entity != null
                 ? CreatedAtAction(nameof(Create), _mapper.Map<IssueLogDTO>(entity))
-                : (IActionResult) BadRequest();
-        }
-
-        [HttpPut("{id}")]
-        public override async Task<IActionResult> Update(int id, [FromBody] IssueLogDTO obj)
-        {
-            var entity = _mapper.Map<IssueLog>(obj);
-            entity.Id = id;
-            entity.ModId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            return await _issueLogService.UpdateAsync(entity) != null
-                ? NoContent()
                 : (IActionResult) BadRequest();
         }
     }
