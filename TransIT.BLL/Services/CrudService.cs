@@ -77,7 +77,7 @@ namespace TransIT.BLL.Services
             catch (DbUpdateException e)
             {
                 _logger.LogError(e, nameof(CreateAsync), e.Entries);
-                return null;
+                throw;
             }
             catch (Exception e)
             {
