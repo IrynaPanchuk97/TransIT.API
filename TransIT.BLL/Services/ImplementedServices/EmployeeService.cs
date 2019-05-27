@@ -36,6 +36,7 @@ namespace TransIT.BLL.Services.ImplementedServices
                 || !string.IsNullOrEmpty(entity.FirstName) && entity.FirstName.ToUpperInvariant().Contains(str)
                 || !string.IsNullOrEmpty(entity.MiddleName) && entity.MiddleName.ToUpperInvariant().Contains(str)
                 || !string.IsNullOrEmpty(entity.LastName) && entity.LastName.ToUpperInvariant().Contains(str)
+                || entity.BoardNumber.ToString().ToUpperInvariant().Contains(str)
                 || entity.ShortName.ToUpperInvariant().Contains(str)));
     }
 }
