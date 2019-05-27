@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -27,7 +25,7 @@ namespace TransIT.API.Controllers
         public IssueController(
             IMapper mapper,
             IIssueService issueService,
-            IFilterService<Issue> odService
+            IFilterService<Issue> odService,
             IHubContext<IssueHub> issueHub
             ) : base(mapper, issueService, odService)
         {
