@@ -60,7 +60,8 @@ namespace TransIT.BLL.Services
         private async Task<IQueryable<TEntity>> DetermineDataSource(DataTableRequestViewModel dataFilter) =>
             dataFilter.Search != null
             && !string.IsNullOrEmpty(dataFilter.Search.Value)
-                ? (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable()
+                ? (await _crudService.SearchAsync(dataFilter.Search.Value)
+                   ?? _queryRepository.GetQueryable()).AsQueryable()
                 : _queryRepository.GetQueryable();
 
         private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
