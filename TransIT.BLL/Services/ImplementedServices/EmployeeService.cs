@@ -32,9 +32,10 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         protected override Task<IEnumerable<Employee>> SearchExpressionAsync(IEnumerable<string> strs) =>
             _unitOfWork.EmployeeRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.FirstName.ToUpperInvariant().Contains(str)
-                || entity.MiddleName.ToUpperInvariant().Contains(str)
-                || entity.LastName.ToUpperInvariant().Contains(str)
+                strs.Any(str => entity.Post.Name.ToUpperInvariant().Contains(str)
+                || !string.IsNullOrEmpty(entity.FirstName) && entity.FirstName.ToUpperInvariant().Contains(str)
+                || !string.IsNullOrEmpty(entity.MiddleName) && entity.MiddleName.ToUpperInvariant().Contains(str)
+                || !string.IsNullOrEmpty(entity.LastName) && entity.LastName.ToUpperInvariant().Contains(str)
                 || entity.ShortName.ToUpperInvariant().Contains(str)));
     }
 }
