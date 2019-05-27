@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Query;
-using Microsoft.OData;
 using TransIT.BLL.Helpers;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Models.ViewModels;
@@ -62,7 +60,8 @@ namespace TransIT.BLL.Services
         private async Task<IQueryable<TEntity>> DetermineDataSource(DataTableRequestViewModel dataFilter) =>
             dataFilter.Search != null
             && !string.IsNullOrEmpty(dataFilter.Search.Value)
-                ? (await _crudService.SearchAsync(dataFilter.Search.Value)).AsQueryable()
+                ? (await _crudService.SearchAsync(dataFilter.Search.Value)
+                   ?? _queryRepository.GetQueryable()).AsQueryable()
                 : _queryRepository.GetQueryable();
 
         private IQueryable<TEntity> ProcessQuery(DataTableRequestViewModel dataFilter, IQueryable<TEntity> data)
