@@ -156,7 +156,7 @@ namespace TransIT.BLL.Services
         {
             try
             {
-                return await SearchExpressionAsync(
+                return await _repository.SearchExpressionAsync(
                     search
                         .Split(new[] {' ', ',', '.'}, StringSplitOptions.RemoveEmptyEntries)
                         .Select(x => x.Trim().ToUpperInvariant())
@@ -168,12 +168,5 @@ namespace TransIT.BLL.Services
                 return null;
             }
         }
-        
-        /// <summary>
-        /// Expression to find matches
-        /// </summary>
-        /// <param name="strs">Trimmed strings</param>
-        /// <returns>Matched entities</returns>
-        protected abstract Task<IEnumerable<TEntity>> SearchExpressionAsync(IEnumerable<string> strs);
     }
 }

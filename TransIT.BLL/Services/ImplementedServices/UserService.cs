@@ -7,9 +7,7 @@ using Microsoft.Extensions.Logging;
 using TransIT.API.Extensions;
 using TransIT.BLL.Security.Hashers;
 using TransIT.BLL.Services.Interfaces;
-using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
-using TransIT.DAL.Models.ViewModels;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
 
@@ -109,13 +107,5 @@ namespace TransIT.BLL.Services.ImplementedServices
             .Where(x => x.Role.Name == ROLE.WORKER)
             .Skip((int)offset)
             .Take((int)amount);
-        
-        protected override Task<IEnumerable<User>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            _unitOfWork.UserRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Login.ToUpperInvariant().Contains(str)
-                || entity.Email.ToUpperInvariant().Contains(str)
-                || entity.PhoneNumber.ToUpperInvariant().Contains(str)
-                || entity.LastName.ToUpperInvariant().Contains(str)
-                || entity.FirstName.ToUpperInvariant().Contains(str)));
     }
 }

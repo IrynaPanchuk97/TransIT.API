@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
@@ -21,6 +22,16 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
             return await base.AddAsync(issue);
         }
 
+        public override Task<IQueryable<Issue>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            Task.FromResult(
+                GetQueryable().Where(entity =>
+                    strs.Any(str => entity.Summary.ToUpperInvariant().Contains(str)
+                    || entity.Malfunction.Name.ToUpperInvariant().Contains(str)
+                    || entity.Malfunction.MalfunctionSubgroup.Name.ToUpperInvariant().Contains(str)
+                    || entity.Malfunction.MalfunctionSubgroup.MalfunctionGroup.Name.ToUpperInvariant().Contains(str)
+                    || entity.Number.ToString().ToUpperInvariant().Contains(str)))
+                );
+        
         protected override IQueryable<Issue> ComplexEntities => Entities
             .Include(i => i.AssignedTo)
             .Include(i => i.Create)

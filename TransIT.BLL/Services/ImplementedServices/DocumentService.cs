@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
@@ -30,10 +28,5 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         public Task<IEnumerable<Document>> GetRangeByIssueLogIdAsync(int issueLogId) =>
             _repository.GetAllAsync(i => i.IssueLogId == issueLogId);
-
-        protected override Task<IEnumerable<Document>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            _unitOfWork.DocumentRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)
-                || entity.Description.ToUpperInvariant().Contains(str)));
     }
 }

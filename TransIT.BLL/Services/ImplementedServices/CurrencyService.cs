@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -26,9 +23,5 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<Currency>> logger,
             ICurrencyRepository repository) : base(unitOfWork, logger, repository) { }
-
-        protected override Task<IEnumerable<Currency>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            _unitOfWork.CurrencyRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.ShortName.ToUpperInvariant().Contains(str)));
     }
 }

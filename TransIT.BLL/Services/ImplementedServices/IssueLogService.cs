@@ -79,11 +79,5 @@ namespace TransIT.BLL.Services.ImplementedServices
                 throw;
             }
         }
-        
-        protected override Task<IEnumerable<IssueLog>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            _unitOfWork.IssueLogRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Description.ToUpperInvariant().Contains(str)
-                || entity.NewState.Name.ToUpperInvariant().Contains(str)
-                || entity.OldState.Name.ToUpperInvariant().Contains(str)));
     }
 }
