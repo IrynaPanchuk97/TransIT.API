@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
-using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
 
@@ -43,10 +41,6 @@ namespace TransIT.BLL.Services.ImplementedServices
             var states = await _repository.GetAllAsync(s => s.Name == name);
             return states.SingleOrDefault();
         }
-
-        protected override Task<IEnumerable<State>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            _unitOfWork.StateRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.TransName.ToUpperInvariant().Contains(str)));
 
         public async override Task<State> UpdateAsync(State model)
         {

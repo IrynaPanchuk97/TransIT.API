@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -27,9 +23,5 @@ namespace TransIT.BLL.Services.ImplementedServices
             IUnitOfWork unitOfWork,
             ILogger<CrudService<MalfunctionGroup>> logger,
             IMalfunctionGroupRepository repository) : base(unitOfWork, logger, repository) { }
-
-        protected override Task<IEnumerable<MalfunctionGroup>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            _unitOfWork.MalfunctionGroupRepository.GetAllAsync(entity =>
-                strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
     }
 }

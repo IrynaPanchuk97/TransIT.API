@@ -8,7 +8,7 @@ using TransIT.DAL.Models.Entities.Abstractions;
 
 namespace TransIT.DAL.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity>, IQueryRepository<TEntity>
+    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>, IQueryRepository<TEntity>
         where TEntity : class, IEntity
     {
         private readonly DbContext _context;
@@ -72,5 +72,7 @@ namespace TransIT.DAL.Repositories
         protected virtual IQueryable<TEntity> ComplexEntities => Entities;
 
         public IQueryable<TEntity> GetQueryable() => ComplexEntities;
+        
+        public abstract Task<IQueryable<TEntity>> SearchExpressionAsync(IEnumerable<string> strs);
     }
 }

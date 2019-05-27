@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 
@@ -11,6 +13,13 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
             : base(context)
         {
         }
+        
+        public override Task<IQueryable<Document>> SearchExpressionAsync(IEnumerable<string> strs) =>
+            Task.FromResult(
+                GetQueryable().Where(entity =>
+                    strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)
+                    || entity.Description.ToUpperInvariant().Contains(str)))
+                );
 
         protected override IQueryable<Document> ComplexEntities => Entities
             .Include(t => t.Create)

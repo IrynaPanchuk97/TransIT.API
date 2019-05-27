@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
@@ -32,10 +29,6 @@ namespace TransIT.BLL.Services.ImplementedServices
             ILogger<CrudService<ActionType>> logger,
             IActionTypeRepository repository) : base(unitOfWork, logger, repository) { }
         
-        protected override Task<IEnumerable<ActionType>> SearchExpressionAsync(IEnumerable<string> strs) =>
-                _unitOfWork.ActionTypeRepository.GetAllAsync(entity =>
-                    strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)));
-
         public async override Task<ActionType> UpdateAsync(ActionType model)
         {
             try
