@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.AspNet.OData.Query;
-using Microsoft.OData;
 using TransIT.BLL.Helpers;
 using TransIT.DAL.Models.Entities.Abstractions;
 using TransIT.DAL.Models.ViewModels;
