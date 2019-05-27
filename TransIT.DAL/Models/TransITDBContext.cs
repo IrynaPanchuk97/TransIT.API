@@ -292,6 +292,10 @@ namespace TransIT.DAL.Models
                     .HasName("UQ_EMPLOYEE_BOARD_NUMBER_UNIQUE")
                     .IsUnique();
 
+                entity.HasIndex(e => e.ShortName)
+                    .HasName("UQ_EMPLOYEE_SHORT_NAME_UNIQUE")
+                    .IsUnique();
+
                 entity.Property(e => e.CreateDate)
                     .HasColumnName("CREATE_DATE")
                     .HasColumnType("datetime")
