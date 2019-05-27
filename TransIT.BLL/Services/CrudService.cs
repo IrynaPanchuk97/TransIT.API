@@ -154,12 +154,13 @@ namespace TransIT.BLL.Services
         /// <returns>All matches</returns>
         public async virtual Task<IEnumerable<TEntity>> SearchAsync(string search)
         {
-            var words = search
-                .Split(' ', ',', '.')
-                .Select(x => x.Trim().ToUpperInvariant());
             try
             {
-                return await SearchExpressionAsync(words);
+                return await SearchExpressionAsync(
+                    search
+                        .Split(new[] {' ', ',', '.'}, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(x => x.Trim().ToUpperInvariant())
+                    );
             }
             catch (Exception e)
             {
