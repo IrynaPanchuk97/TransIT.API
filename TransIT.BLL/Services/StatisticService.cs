@@ -32,12 +32,12 @@ namespace TransIT.BLL.Services
             IMalfunctionGroupRepository malfunctionGroupRepository,
             IMalfunctionSubgroupRepository malfunctionSubGroupRepository)
         {
-            _issues = issueRepository.GetQueryable();
-            _vehicles = vehicleRepository.GetQueryable();
-            _vehicleTypes = vehicleTypeRepository.GetQueryable();
-            _malfunctions = malfunctionRepository.GetQueryable();
-            _malfunctionSubgroups = malfunctionSubGroupRepository.GetQueryable();
-            _malfunctionGroups = malfunctionGroupRepository.GetQueryable();
+            _issues = issueRepository.GetQueryable().AsNoTracking();
+            _vehicles = vehicleRepository.GetQueryable().AsNoTracking();
+            _vehicleTypes = vehicleTypeRepository.GetQueryable().AsNoTracking();
+            _malfunctions = malfunctionRepository.GetQueryable().AsNoTracking();
+            _malfunctionSubgroups = malfunctionSubGroupRepository.GetQueryable().AsNoTracking();
+            _malfunctionGroups = malfunctionGroupRepository.GetQueryable().AsNoTracking();
 
 //            _issueRepository = issueRepository;
 //            _vehicleTypeRepository = vehicleTypeRepository;
@@ -138,12 +138,10 @@ namespace TransIT.BLL.Services
             select new VehicleTypeMalfunctionGroup
             {
                 VehicleType = _vehicleTypes.FirstOrDefault(x => x.Id == g.Key.vehicleType),
-                GroupCount = (
-                    _malfunctionGroups.FirstOrDefault(x => x.Id == g.Key.malfunctionGroup),
-                    (ulong)(from i in _issues
+                Group = _malfunctionGroups.FirstOrDefault(x => x.Id == g.Key.malfunctionGroup),
+                Count = (ulong)(from i in _issues
                             where i.Malfunction.MalfunctionSubgroup.MalfunctionGroupId == g.Key.malfunctionGroup
-                            select i).LongCount()
-                    )
+                            select i).LongCount()                    
             };
     }
 }

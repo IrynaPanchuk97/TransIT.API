@@ -6,7 +6,8 @@ namespace TransIT.DAL.Models.ViewModels
     public class VehicleTypeMalfunctionGroup
     {
         public VehicleType VehicleType { get; set; }
-        public (MalfunctionGroup group, ulong count) GroupCount { get; set; }
+        public MalfunctionGroup Group { get; set; }
+        public ulong Count { get; set; }
     }
 
     public class VehicleTypeMalfunctionGroupViewModel
