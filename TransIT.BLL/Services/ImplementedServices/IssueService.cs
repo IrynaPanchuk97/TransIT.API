@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
@@ -36,6 +37,26 @@ namespace TransIT.BLL.Services.ImplementedServices
         {
             var issues = await _repository.GetAllAsync(i => i.CreateId == userId);
             return issues.AsQueryable().Skip((int)offset).Take((int)amount);
+        }
+        
+        public override async Task<Issue> UpdateAsync(Issue model)
+        {
+            try
+            {
+                model = _repository.UpdateWithIgnoreProperty(model, x => x.StateId);
+                await _unitOfWork.SaveAsync();
+                return model;
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync), e.Entries);
+                throw;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(UpdateAsync));
+                throw;
+            }
         }
 
         public async Task DeleteByUserAsync(int issueId, int userId)
