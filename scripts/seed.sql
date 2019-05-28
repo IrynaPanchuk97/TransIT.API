@@ -1,7 +1,7 @@
 ﻿INSERT INTO [ROLE] (NAME, TRANS_NAME)
 VALUES ('ADMIN', N'Адмін'),
        ('ENGINEER', N'Інженер'),
-       ('CUSTOMER', N'Реєстратор'),
+       ('REGISTER', N'Реєстратор'),
        ('ANALYST', N'Аналітик');
 GO
 

@@ -9,7 +9,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN,ENGINEER,CUSTOMER,ANALYST")]
+    [Authorize(Roles = "ADMIN,ENGINEER,REGISTER,ANALYST")]
     public class ActionTypeController : DataController<ActionType, ActionTypeDTO>
     {
         private readonly IActionTypeService _actionTypeService;

@@ -16,7 +16,7 @@ using TransIT.DAL.Models.ViewModels;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ENGINEER,CUSTOMER,ANALYST")]
+    [Authorize(Roles = "ENGINEER,REGISTER,ANALYST")]
     public class IssueController : DataController<Issue, IssueDTO>
     {
         private readonly IIssueService _issueService;
@@ -37,7 +37,7 @@ namespace TransIT.API.Controllers
         [HttpPost(DataTableTemplateUri)]
         public override async Task<IActionResult> Filter(DataTableRequestViewModel model)
         {
-            var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.CUSTOMER;
+            var isCustomer = User.FindFirst(ROLE.ROLE_SCHEMA)?.Value == ROLE.REGISTER;
             var userId = GetUserId();
 
             return Json(
@@ -71,7 +71,7 @@ namespace TransIT.API.Controllers
         {
             switch (User.FindFirst(ROLE.ROLE_SCHEMA)?.Value)
             {
-                case ROLE.CUSTOMER:
+                case ROLE.REGISTER:
                     return Json(await GetForCustomer(offset, amount));
                 case ROLE.ENGINEER:                        
                 case ROLE.ANALYST:
