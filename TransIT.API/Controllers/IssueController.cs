@@ -84,10 +84,9 @@ namespace TransIT.API.Controllers
         [HttpPost]
         public override async Task<IActionResult> Create([FromBody] IssueDTO obj)
         {
-            await _issueHub.Clients
-                .Group(ROLE.ENGINEER)
-                .SendAsync("ReceiveIssues");
-            return await base.Create(obj);
+            IActionResult result = await base.Create(obj);
+            await _issueHub.Clients.Group(ROLE.ENGINEER).SendAsync("ReceiveIssues");
+            return result;
         }
 
         private async Task<IEnumerable<IssueDTO>> GetForCustomer(uint offset, uint amount)

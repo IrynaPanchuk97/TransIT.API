@@ -16,7 +16,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
 
         public override async Task<Issue> AddAsync(Issue issue)
         {
-            int previousMax = Entities.DefaultIfEmpty().Max(i => i.Number) ?? 0;
+            int previousMax = await Entities.DefaultIfEmpty().MaxAsync(i => i.Number) ?? 0;
             issue.Number = previousMax + 1;
 
             return await base.AddAsync(issue);
