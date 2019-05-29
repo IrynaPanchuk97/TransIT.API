@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Xml.Linq;
 using AutoMapper;
 using TransIT.DAL.Models.DTOs;
@@ -10,6 +11,7 @@ namespace TransIT.DAL.Models.Mappings
         public IssueLogProfile()
         {
             CreateMap<IssueLogDTO, IssueLog>()
+                .ForMember(i => i.Document, opt => opt.Ignore())
                 .ForMember(i => i.ModId, opt => opt.Ignore())
                 .ForMember(i => i.CreateId, opt => opt.Ignore())
                 .ForMember(i => i.Mod, opt => opt.Ignore())
@@ -25,8 +27,10 @@ namespace TransIT.DAL.Models.Mappings
                 .ForMember(i => i.NewState, opt => opt.Ignore())
                 .ForMember(i => i.OldState, opt => opt.Ignore())
                 .ForMember(i => i.ActionType, opt => opt.Ignore());
-
-            CreateMap<IssueLog, IssueLogDTO>();
+            
+            CreateMap<IssueLog, IssueLogDTO>()
+                .ForMember(i => i.Documents, opt => opt.MapFrom(x => x.Document))
+                .PreserveReferences();
         }
     }
 }
