@@ -76,11 +76,7 @@ namespace TransIT.API
 
             app.UseSwaggerUI(c =>
             {
-<<<<<<< HEAD
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "TransIT API");                
-=======
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyAPI");                
->>>>>>> 796751082bb84bc3a03c45ad374880693bf79483
             });
 
             app.UseSignalR(routes =>
