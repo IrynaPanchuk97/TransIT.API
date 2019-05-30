@@ -16,5 +16,7 @@ namespace TransIT.DAL.Models.DTOs
         public UserDTO Mod { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
+
+        public DocumentDTO[] Documents { get; set; }
     }
 }
