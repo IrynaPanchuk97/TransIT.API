@@ -8,7 +8,7 @@ using TransIT.DAL.Repositories.InterfacesRepositories;
 
 namespace TransIT.BLL.Services
 {
-    public class StatisticService
+    public class StatisticService : IStatisticService
     {
         protected readonly IQueryable<Issue> _issues;
         protected readonly IQueryable<VehicleType> _vehicleTypes;
@@ -34,8 +34,8 @@ namespace TransIT.BLL.Services
         }
 
 
-        public Task<IQueryable<VehicleTypeMalfunctionGroup>> GetStatisticGroup() =>
-            Task.FromResult(from j in from i in _issues
+        public Task<IEnumerable<VehicleTypeMalfunctionGroup>> GetStatisticGroup() =>
+            Task.FromResult<IEnumerable<VehicleTypeMalfunctionGroup>>(from j in from i in _issues
                                       join vt in _vehicleTypes on i.Vehicle.VehicleTypeId equals vt.Id
                                       join mg in _malfunctionGroups on i.Malfunction.MalfunctionSubgroup.MalfunctionGroupId equals mg.Id
                                       select new { vt, mg, i }
@@ -50,8 +50,8 @@ namespace TransIT.BLL.Services
                             });
 
 
-        public Task<IQueryable<VehicleTypeMalfunctionSubgroup>> GetStatisticSubGroup(int groupId) =>
-             Task.FromResult(from j in from i in _issues
+        public Task<IEnumerable<VehicleTypeMalfunctionSubgroup>> GetStatisticSubGroup(int groupId) =>
+             Task.FromResult<IEnumerable<VehicleTypeMalfunctionSubgroup>>(from j in from i in _issues
                                        join vt in _vehicleTypes on i.Vehicle.VehicleTypeId equals vt.Id
                                        join msg in _malfunctionSubgroups on i.Malfunction.MalfunctionSubgroupId equals msg.Id
                                        where msg.MalfunctionGroupId == groupId
@@ -65,9 +65,6 @@ namespace TransIT.BLL.Services
                                                  where i.Malfunction.MalfunctionSubgroup.MalfunctionGroupId == g.Key.malfunctionSubgroup
                                                  select i).LongCount()
                              });
-
-
-
 
     }
 }

@@ -38,6 +38,8 @@ namespace TransIT.API.Extensions
                 c.AddProfile(new PostProfile());
                 c.AddProfile(new EmployeeProfile());
                 c.AddProfile(new TransitionProfile());
+                c.AddProfile(new GroupStatisticProfile());
+                c.AddProfile(new SubgroupStatisticProfile());
             }).CreateMapper());
         }
 
@@ -62,6 +64,7 @@ namespace TransIT.API.Extensions
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITransitionService, TransitionService>();
+            services.AddScoped<IStatisticService, StatisticService>();
 
             services.AddScoped<ICrudService<User>, UserService>();
             services.AddScoped<ICrudService<ActionType>, ActionTypeService>();
