@@ -6,11 +6,14 @@ using Microsoft.Extensions.DependencyInjection;
 using TransIT.API.Extensions;
 using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Swagger;
 using TransIT.API.EndpointFilters.OnActionExecuting;
 using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Security.Hashers;
 using TransIT.DAL.Models;
 using TransIT.API.Hubs;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TransIT.API
 {
@@ -32,7 +35,7 @@ namespace TransIT.API
             });
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
-            
+
             services.AddSignalR();
             services.ConfigureAutoMapper();
             services.ConfigureAuthentication(Configuration);
@@ -40,8 +43,10 @@ namespace TransIT.API
             services.ConfigureModelRepositories();
             services.ConfigureDataAccessServices();
 
+            services.ConfigureSwagger();
+
             services.AddMvc(options =>
-                {        
+                {
                     options.Filters.Add(typeof(ValidateModelStateAttribute));
                     options.Filters.Add(typeof(ApiExceptionFilterAttribute));
                 })
@@ -66,6 +71,14 @@ namespace TransIT.API
             app.UseAuthentication();
             app.UseCors("CorsPolicy");
             app.UseMvc();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TransIT API");                
+            });
+
             app.UseSignalR(routes =>
             {
                 routes.MapHub<IssueHub>("/issuehub");

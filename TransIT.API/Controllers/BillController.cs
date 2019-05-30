@@ -7,7 +7,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ENGINEER,CUSTOMER,ANALYST")]
+    [Authorize(Roles = "ENGINEER,REGISTER,ANALYST")]
     public class BillController : DataController<Bill, BillDTO>
     {
         private readonly IBillService _billService;

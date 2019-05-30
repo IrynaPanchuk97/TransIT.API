@@ -11,7 +11,7 @@ using TransIT.DAL.Models.Entities;
 
 namespace TransIT.API.Controllers
 {
-    [Authorize(Roles = "ADMIN,WORKER,ENGINEER,CUSTOMER,ANALYST")]
+    [Authorize(Roles = "ADMIN,WORKER,ENGINEER,REGISTER,ANALYST")]
     public class StateController : DataController<State, StateDTO>
     {
         private readonly IStateService _stateService;
