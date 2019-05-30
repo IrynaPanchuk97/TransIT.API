@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Models.ViewModels;
@@ -33,21 +36,35 @@ namespace TransIT.BLL.Services
             _malfunctionGroups = malfunctionGroupRepository.GetQueryable().AsNoTracking();
         }
 
+        public IEnumerable<VehicleTypeMalfunctionGroup> GetStatisticGroup()
+        {
+            var result =
+                from i in _issues
+                join v in _vehicles on i.VehicleId equals v.Id
+                join vt in _vehicleTypes on v.VehicleTypeId equals vt.Id
+                join m in _malfunctions on i.MalfunctionId equals m.Id
+                join ms in _malfunctionSubgroups on m.MalfunctionSubgroupId equals ms.Id
+                join mg in _malfunctionGroups on ms.MalfunctionGroupId equals mg.Id
+                let malfunctionGroupId = mg.Id
+                let vehicleTypeId = vt.Id
+                let issueId = i.Id
+                group new {malfunctionGroupId, vehicleTypeId, issueId}
+                    by new {malfunctionGroupId, vehicleTypeId}
+                into g
+//                orderby g.Key.malfunctionGroupId, g.Key.vehicleTypeId
+                select g;
 
-        public Task<IEnumerable<VehicleTypeMalfunctionGroup>> GetStatisticGroup() =>
-            Task.FromResult<IEnumerable<VehicleTypeMalfunctionGroup>>(from j in from i in _issues
-                                      join vt in _vehicleTypes on i.Vehicle.VehicleTypeId equals vt.Id
-                                      join mg in _malfunctionGroups on i.Malfunction.MalfunctionSubgroup.MalfunctionGroupId equals mg.Id
-                                      select new { vt, mg, i }
-                            group j by new { malfunctionGroup = j.mg.Id, vehicleType = j.vt.Id } into g
-                            select new VehicleTypeMalfunctionGroup
-                            {
-                                VehicleType = _vehicleTypes.FirstOrDefault(x => x.Id == g.Key.vehicleType),
-                                Group = _malfunctionGroups.FirstOrDefault(x => x.Id == g.Key.malfunctionGroup),
-                                Count = (ulong)(from i in _issues
-                                                where i.Malfunction.MalfunctionSubgroup.MalfunctionGroupId == g.Key.malfunctionGroup
-                                                select i).LongCount()
-                            });
+            return result.Select(y => new VehicleTypeMalfunctionGroup
+            {
+                VehicleType = _vehicleTypes.FirstOrDefault(x => x.Id == y.Key.vehicleTypeId),
+                Group = _malfunctionGroups.FirstOrDefault(x => x.Id == y.Key.malfunctionGroupId),
+                Count = (ulong)(
+                    from i in _issues
+                    where i.Malfunction.MalfunctionSubgroup.MalfunctionGroupId == y.Key.malfunctionGroupId
+                    select i
+                ).LongCount()
+            });
+        }
 
 
         public Task<IEnumerable<VehicleTypeMalfunctionSubgroup>> GetStatisticSubGroup(int groupId) =>

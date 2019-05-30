@@ -71,7 +71,7 @@ namespace TransIT.DAL.Repositories
 
         protected virtual IQueryable<TEntity> ComplexEntities => Entities;
 
-        public IQueryable<TEntity> GetQueryable() => ComplexEntities;
+        public IQueryable<TEntity> GetQueryable() => Entities;
         
         public abstract Task<IQueryable<TEntity>> SearchExpressionAsync(IEnumerable<string> strs);
     }
