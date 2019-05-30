@@ -6,8 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using TransIT.BLL.Helpers;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
+using TransIT.DAL.Repositories;
 using TransIT.DAL.Repositories.InterfacesRepositories;
 using TransIT.DAL.UnitOfWork;
 
@@ -19,6 +21,8 @@ namespace TransIT.BLL.Services.ImplementedServices
     /// <see cref="IIssueService"/>
     public class IssueService : CrudService<Issue>, IIssueService
     {
+        private IVehicleRepository _vehicleRepository;
+
         /// <summary>
         /// Ctor
         /// </summary>
@@ -29,7 +33,11 @@ namespace TransIT.BLL.Services.ImplementedServices
         public IssueService(
             IUnitOfWork unitOfWork,
             ILogger<CrudService<Issue>> logger,
-            IIssueRepository repository) : base(unitOfWork, logger, repository) { }
+            IIssueRepository repository,
+            IVehicleRepository vehicleRepository) : base(unitOfWork, logger, repository)
+        {
+            _vehicleRepository = vehicleRepository;
+        }
 
         /// <see cref="IIssueService"/>
         public async Task<IEnumerable<Issue>> GetRegisteredIssuesAsync(uint offset, uint amount, int userId)
@@ -37,7 +45,21 @@ namespace TransIT.BLL.Services.ImplementedServices
             var issues = await _repository.GetAllAsync(i => i.CreateId == userId);
             return issues.AsQueryable().Skip((int)offset).Take((int)amount);
         }
-        
+
+        public override async Task<Issue> CreateAsync(Issue issue)
+        {
+            Vehicle vehicle = await _vehicleRepository.GetByIdAsync(issue.VehicleId);
+            if (IsWarrantyCase(vehicle))
+                issue.Warranty = Warranties.WARRANTY_CASE;
+
+            return await base.CreateAsync(issue);
+        }
+
+        private bool IsWarrantyCase(Vehicle vehicle)
+        {
+            return DateTime.Now.CompareTo(vehicle?.WarrantyEndDate) < 0;
+        }
+
         public override async Task<Issue> UpdateAsync(Issue model)
         {
             try
