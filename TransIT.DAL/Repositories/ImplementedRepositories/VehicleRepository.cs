@@ -10,10 +10,10 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
     public class VehicleRepository : BaseRepository<Vehicle>, IVehicleRepository
     {
         public VehicleRepository(DbContext context)
-            :base(context)
+            : base(context)
         {
         }
-        
+
         public override Task<IQueryable<Vehicle>> SearchExpressionAsync(IEnumerable<string> strs) =>
             Task.FromResult(
                 GetQueryable().Where(entity =>
@@ -22,11 +22,13 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
                     || entity.InventoryId.ToUpperInvariant().Contains(str)
                     || entity.Model.ToUpperInvariant().Contains(str)
                     || entity.Vincode.ToUpperInvariant().Contains(str)
-                    || entity.VehicleType.Name.ToUpperInvariant().Contains(str)))
+                    || entity.VehicleType.Name.ToUpperInvariant().Contains(str)
+                    || entity.Location.Name.ToUpperInvariant().Contains(str)))
                 );
 
         protected override IQueryable<Vehicle> ComplexEntities => Entities.
                     Include(u => u.VehicleType).
+                    Include(u => u.Location).
                     Include(a => a.Create).
                     Include(b => b.Mod).OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);
     }
