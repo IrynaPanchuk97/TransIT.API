@@ -14,5 +14,6 @@ namespace TransIT.DAL.Models.DTOs
         public string Model { get; set; }
         public DateTime? WarrantyEndDate { get; set; }
         public DateTime? CommissioningDate { get; set; }
+        public LocationDTO Location { get; set; }
     }
 }
