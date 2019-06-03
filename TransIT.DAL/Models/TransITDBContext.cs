@@ -776,7 +776,7 @@ namespace TransIT.DAL.Models
                     .IsRequired()
                     .HasColumnName("FULL_NAME")
                     .HasMaxLength(100)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
