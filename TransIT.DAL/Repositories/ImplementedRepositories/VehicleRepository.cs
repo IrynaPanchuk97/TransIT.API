@@ -15,16 +15,15 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         }
 
         public override Task<IQueryable<Vehicle>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            Task.FromResult(
-                GetQueryable().Where(entity =>
-                    strs.Any(str => entity.Brand.ToUpperInvariant().Contains(str)
-                    || entity.RegNum.ToUpperInvariant().Contains(str)
-                    || entity.InventoryId.ToUpperInvariant().Contains(str)
-                    || entity.Model.ToUpperInvariant().Contains(str)
-                    || entity.Vincode.ToUpperInvariant().Contains(str)
-                    || entity.VehicleType.Name.ToUpperInvariant().Contains(str)
-                    || entity.Location.Name.ToUpperInvariant().Contains(str)))
-                );
+                  Task.FromResult(
+                      GetQueryable().Where(entity =>
+                          strs.Any(str => !string.IsNullOrEmpty(entity.Brand) && entity.Brand.ToUpperInvariant().Contains(str)
+                          || !string.IsNullOrEmpty(entity.RegNum) && entity.RegNum.ToUpperInvariant().Contains(str)
+                          || !string.IsNullOrEmpty(entity.InventoryId) && entity.InventoryId.ToUpperInvariant().Contains(str)
+                          || !string.IsNullOrEmpty(entity.Model) && entity.Model.ToUpperInvariant().Contains(str)
+                          || !string.IsNullOrEmpty(entity.Vincode) && entity.Vincode.ToUpperInvariant().Contains(str)
+                          || !string.IsNullOrEmpty(entity.VehicleType.Name) && entity.VehicleType.Name.ToUpperInvariant().Contains(str)
+                      )));
 
         protected override IQueryable<Vehicle> ComplexEntities => Entities.
                     Include(u => u.VehicleType).
