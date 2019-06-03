@@ -13,16 +13,16 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
                : base(context)
         {
         }
-        
+
         public override Task<IQueryable<Supplier>> SearchExpressionAsync(IEnumerable<string> strs) =>
-            Task.FromResult(
-                GetQueryable().Where(entity =>
-                    strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)
-                    || entity.Edrpou.ToUpperInvariant().Contains(str)
-                    || entity.Country.Name.ToUpperInvariant().Contains(str)
-                    || entity.Currency.ShortName.ToUpperInvariant().Contains(str)
-                    || entity.Currency.FullName.ToUpperInvariant().Contains(str)))
-                );
+             Task.FromResult(
+                 GetQueryable().Where(entity =>
+                     strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)
+                     || !string.IsNullOrEmpty(entity.Edrpou) && entity.Edrpou.ToUpperInvariant().Contains(str)
+                     || !string.IsNullOrEmpty(entity.FullName) && entity.FullName.ToUpperInvariant().Contains(str)
+                     || !string.IsNullOrEmpty(entity.Country.Name) && entity.Country.Name.ToUpperInvariant().Contains(str)
+                     || !string.IsNullOrEmpty(entity.Currency.FullName) && entity.Currency.FullName.ToUpperInvariant().Contains(str)))
+                 );
 
         protected override IQueryable<Supplier> ComplexEntities => Entities
                    .Include(t => t.Create)
