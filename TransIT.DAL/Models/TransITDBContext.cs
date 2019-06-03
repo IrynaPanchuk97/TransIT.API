@@ -20,6 +20,7 @@ namespace TransIT.DAL.Models
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<Issue> Issue { get; set; }
         public virtual DbSet<IssueLog> IssueLog { get; set; }
+        public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Malfunction> Malfunction { get; set; }
         public virtual DbSet<MalfunctionGroup> MalfunctionGroup { get; set; }
         public virtual DbSet<MalfunctionSubgroup> MalfunctionSubgroup { get; set; }
@@ -496,6 +497,43 @@ namespace TransIT.DAL.Models
                     .WithMany(p => p.IssueLog)
                     .HasForeignKey(d => d.SupplierId)
                     .HasConstraintName("FK_ISSUE_LOG_SUPPLIER");
+            });
+
+            modelBuilder.Entity<Location>(entity =>
+            {
+                entity.ToTable("LOCATION");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreateDate)
+                   .HasColumnName("CREATE_DATE")
+                   .HasColumnType("datetime")
+                   .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
+
+                entity.Property(e => e.Description).HasColumnName("DESCRIPTION");
+
+                entity.Property(e => e.ModDate)
+                   .HasColumnName("MOD_DATE")
+                   .HasColumnType("datetime")
+                   .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ModId).HasColumnName("MOD_ID");
+
+                entity.Property(e => e.Name)
+                   .HasColumnName("NAME")
+                   .HasMaxLength(50);
+
+                entity.HasOne(d => d.Create)
+                   .WithMany(p => p.LocationCreate)
+                   .HasForeignKey(d => d.CreateId)
+                   .HasConstraintName("FK_CREATE_LOCATION_USER");
+
+                entity.HasOne(d => d.Mod)
+                   .WithMany(p => p.LocationMod)
+                   .HasForeignKey(d => d.ModId)
+                   .HasConstraintName("FK_MOD_LOCATION_USER");
             });
 
             modelBuilder.Entity<Malfunction>(entity =>
@@ -987,6 +1025,10 @@ namespace TransIT.DAL.Models
             {
                 entity.ToTable("VEHICLE");
 
+                entity.HasIndex(e => e.Vincode)
+                    .HasName("UQ_VINCODE_UNIQUE")
+                    .IsUnique();
+
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Brand)
@@ -1008,6 +1050,8 @@ namespace TransIT.DAL.Models
                     .HasColumnName("INVENTORY_ID")
                     .HasMaxLength(40);
 
+                entity.Property(e => e.LocationId).HasColumnName("LOCATION_ID");
+
                 entity.Property(e => e.ModDate)
                     .HasColumnName("MOD_DATE")
                     .HasColumnType("datetime")
@@ -1021,11 +1065,12 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.RegNum)
                     .HasColumnName("REG_NUM")
-                    .HasMaxLength(8);
+                    .HasMaxLength(15);
 
                 entity.Property(e => e.VehicleTypeId).HasColumnName("VEHICLE_TYPE_ID");
 
                 entity.Property(e => e.Vincode)
+                    .IsRequired()
                     .HasColumnName("VINCODE")
                     .HasMaxLength(20);
 
@@ -1037,6 +1082,11 @@ namespace TransIT.DAL.Models
                     .WithMany(p => p.VehicleCreate)
                     .HasForeignKey(d => d.CreateId)
                     .HasConstraintName("FK_MOD_VEHICLE_USER");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.Vehicle)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK_VEHICLE_LOCATION");
 
                 entity.HasOne(d => d.Mod)
                     .WithMany(p => p.VehicleMod)

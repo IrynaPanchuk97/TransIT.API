@@ -26,6 +26,8 @@ namespace TransIT.DAL.Models.Entities
             IssueLogCreate = new HashSet<IssueLog>();
             IssueLogMod = new HashSet<IssueLog>();
             IssueMod = new HashSet<Issue>();
+            LocationCreate = new HashSet<Location>();
+            LocationMod = new HashSet<Location>();
             MalfunctionCreate = new HashSet<Malfunction>();
             MalfunctionGroupCreate = new HashSet<MalfunctionGroup>();
             MalfunctionGroupMod = new HashSet<MalfunctionGroup>();
@@ -40,6 +42,8 @@ namespace TransIT.DAL.Models.Entities
             SupplierMod = new HashSet<Supplier>();
             TokenCreate = new HashSet<Token>();
             TokenMod = new HashSet<Token>();
+            TransitionCreate = new HashSet<Transition>();
+            TransitionMod = new HashSet<Transition>();
             VehicleCreate = new HashSet<Vehicle>();
             VehicleMod = new HashSet<Vehicle>();
             VehicleTypeCreate = new HashSet<VehicleType>();
@@ -82,6 +86,8 @@ namespace TransIT.DAL.Models.Entities
         public virtual ICollection<IssueLog> IssueLogCreate { get; set; }
         public virtual ICollection<IssueLog> IssueLogMod { get; set; }
         public virtual ICollection<Issue> IssueMod { get; set; }
+        public virtual ICollection<Location> LocationCreate { get; set; }
+        public virtual ICollection<Location> LocationMod { get; set; }
         public virtual ICollection<Malfunction> MalfunctionCreate { get; set; }
         public virtual ICollection<MalfunctionGroup> MalfunctionGroupCreate { get; set; }
         public virtual ICollection<MalfunctionGroup> MalfunctionGroupMod { get; set; }

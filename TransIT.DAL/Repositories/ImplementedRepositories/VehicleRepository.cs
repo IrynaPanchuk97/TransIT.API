@@ -10,7 +10,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
     public class VehicleRepository : BaseRepository<Vehicle>, IVehicleRepository
     {
         public VehicleRepository(DbContext context)
-            :base(context)
+            : base(context)
         {
         }
 
@@ -27,6 +27,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
 
         protected override IQueryable<Vehicle> ComplexEntities => Entities.
                     Include(u => u.VehicleType).
+                    Include(u => u.Location).
                     Include(a => a.Create).
                     Include(b => b.Mod).OrderByDescending(u => u.ModDate).ThenByDescending(x => x.CreateDate);
     }

@@ -24,8 +24,10 @@ namespace TransIT.DAL.Models.Entities
         public int? ModId { get; set; }
         public DateTime? WarrantyEndDate { get; set; }
         public DateTime? CommissioningDate { get; set; }
+        public int? LocationId { get; set; }
 
         public virtual User Create { get; set; }
+        public virtual Location Location { get; set; }
         public virtual User Mod { get; set; }
         public virtual VehicleType VehicleType { get; set; }
         public virtual ICollection<Issue> Issue { get; set; }

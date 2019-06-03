@@ -38,6 +38,7 @@ namespace TransIT.API.Extensions
                 c.AddProfile(new PostProfile());
                 c.AddProfile(new EmployeeProfile());
                 c.AddProfile(new TransitionProfile());
+                c.AddProfile(new LocationProfile());
             }).CreateMapper());
         }
 
@@ -62,6 +63,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ITransitionService, TransitionService>();
+            services.AddScoped<ILocationService, LocationService>();
+
 
             services.AddScoped<ICrudService<User>, UserService>();
             services.AddScoped<ICrudService<ActionType>, ActionTypeService>();
@@ -82,6 +85,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<ICrudService<Employee>, EmployeeService>();
             services.AddScoped<ICrudService<Post>, PostService>();
             services.AddScoped<ICrudService<Transition>, TransitionService>();
+            services.AddScoped<ICrudService<Location>, LocationService>();
+
 
             services.AddScoped<IFilterService<User>, FilterService<User>>();
             services.AddScoped<IFilterService<ActionType>, FilterService<ActionType>>();
@@ -102,6 +107,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IFilterService<Employee>, FilterService<Employee>>();
             services.AddScoped<IFilterService<Post>, FilterService<Post>>();
             services.AddScoped<IFilterService<Transition>, FilterService<Transition>>();
+            services.AddScoped<IFilterService<Location>, FilterService<Location>>();
+
         }
 
         public static void ConfigureModelRepositories(this IServiceCollection services)
@@ -126,6 +133,8 @@ namespace TransIT.API.Extensions
             services.AddScoped<IQueryRepository<Employee>, EmployeeRepository>();
             services.AddScoped<IQueryRepository<Post>, PostRepository>();
             services.AddScoped<IQueryRepository<Transition>, TransitionRepository>();
+            services.AddScoped<IQueryRepository<Location>, LocationRepository>();
+
 
             services.AddScoped<IActionTypeRepository, ActionTypeRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
@@ -147,6 +156,7 @@ namespace TransIT.API.Extensions
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ITransitionRepository, TransitionRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
