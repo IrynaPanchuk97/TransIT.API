@@ -19,8 +19,8 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         public override Task<IQueryable<Location>> SearchExpressionAsync(IEnumerable<string> strs) =>
         Task.FromResult(
                 GetQueryable().Where(location =>
-                    strs.Any(str => location.Name.ToUpperInvariant().Contains(str)
-                                    || location.Description.ToUpperInvariant().Contains(str)))
+                    strs.Any(str => !string.IsNullOrEmpty(location.Name) && location.Name.ToUpperInvariant().Contains(str)
+                                    || !string.IsNullOrEmpty(location.Description) && location.Description.ToUpperInvariant().Contains(str)))
                 );
 
         protected override IQueryable<Location> ComplexEntities => Entities.

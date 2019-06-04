@@ -807,13 +807,13 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.Edrpou)
                     .HasColumnName("EDRPOU")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasMaxLength(14)
+                    .IsUnicode(true);
 
                 entity.Property(e => e.FullName)
                     .IsRequired()
                     .HasColumnName("FULL_NAME")
-                    .HasMaxLength(100)
+                    .HasMaxLength(500)
                     .IsUnicode(true);
 
                 entity.Property(e => e.ModDate)

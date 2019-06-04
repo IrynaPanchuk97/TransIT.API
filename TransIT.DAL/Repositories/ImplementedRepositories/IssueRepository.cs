@@ -25,11 +25,13 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         public override Task<IQueryable<Issue>> SearchExpressionAsync(IEnumerable<string> strs) =>
             Task.FromResult(
                 GetQueryable().Where(entity =>
-                    strs.Any(str => entity.Summary.ToUpperInvariant().Contains(str)
-                    || entity.Malfunction.Name.ToUpperInvariant().Contains(str)
-                    || entity.Malfunction.MalfunctionSubgroup.Name.ToUpperInvariant().Contains(str)
-                    || entity.Malfunction.MalfunctionSubgroup.MalfunctionGroup.Name.ToUpperInvariant().Contains(str)
-                    || entity.Number.ToString().ToUpperInvariant().Contains(str)))
+                    strs.Any(str => !string.IsNullOrEmpty(entity.Summary) && entity.Summary.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Malfunction.Name) && entity.Malfunction.Name.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Malfunction.MalfunctionSubgroup.Name) && entity.Malfunction.MalfunctionSubgroup.Name.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Malfunction.MalfunctionSubgroup.MalfunctionGroup.Name) && entity.Malfunction.MalfunctionSubgroup.MalfunctionGroup.Name.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Number.ToString()) && entity.Number.ToString().ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.State.TransName) && entity.State.TransName.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Vehicle.Model) && entity.Vehicle.Model.ToUpperInvariant().Contains(str)))
                 );
         
         protected override IQueryable<Issue> ComplexEntities => Entities
