@@ -29,6 +29,12 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
                     || entity.Malfunction.Name.ToUpperInvariant().Contains(str)
                     || entity.Malfunction.MalfunctionSubgroup.Name.ToUpperInvariant().Contains(str)
                     || entity.Malfunction.MalfunctionSubgroup.MalfunctionGroup.Name.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.State.TransName) && entity.State.TransName.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Vehicle.Brand) && entity.Vehicle.Brand.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Vehicle.InventoryId) && entity.Vehicle.InventoryId.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Vehicle.Model) && entity.Vehicle.Model.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Vehicle.RegNum) && entity.Vehicle.RegNum.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Vehicle.Vincode) && entity.Vehicle.Vincode.ToUpperInvariant().Contains(str)
                     || entity.Number.ToString().ToUpperInvariant().Contains(str)))
                 );
         
