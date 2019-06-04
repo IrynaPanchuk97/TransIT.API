@@ -17,11 +17,14 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         public override Task<IQueryable<IssueLog>> SearchExpressionAsync(IEnumerable<string> strs) =>
             Task.FromResult(
                 GetQueryable().Where(entity =>
-                    strs.Any(str => entity.Description.ToUpperInvariant().Contains(str)
-                    || entity.NewState.Name.ToUpperInvariant().Contains(str)
-                    || entity.OldState.Name.ToUpperInvariant().Contains(str)))
+                    strs.Any(str => !string.IsNullOrEmpty(entity.Description) && entity.Description.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.NewState.TransName) && entity.NewState.TransName.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.OldState.TransName) && entity.OldState.TransName.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Expenses.ToString()) && entity.Expenses.ToString().ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.ActionType.Name) && entity.ActionType.Name.ToUpperInvariant().Contains(str)
+                    || !string.IsNullOrEmpty(entity.Issue.Vehicle.InventoryId) && entity.Issue.Vehicle.InventoryId.ToUpperInvariant().Contains(str)))
                 );
-        
+
         protected override IQueryable<IssueLog> ComplexEntities => Entities
             .Include(t => t.ActionType)
             .Include(z => z.Create)
