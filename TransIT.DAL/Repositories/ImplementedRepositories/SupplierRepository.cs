@@ -17,7 +17,7 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
         public override Task<IQueryable<Supplier>> SearchExpressionAsync(IEnumerable<string> strs) =>
              Task.FromResult(
                  GetQueryable().Where(entity =>
-                     strs.Any(str => entity.Name.ToUpperInvariant().Contains(str)
+                     strs.Any(str => !string.IsNullOrEmpty(entity.Name) && entity.Name.ToUpperInvariant().Contains(str)
                      || !string.IsNullOrEmpty(entity.Edrpou) && entity.Edrpou.ToUpperInvariant().Contains(str)
                      || !string.IsNullOrEmpty(entity.FullName) && entity.FullName.ToUpperInvariant().Contains(str)
                      || !string.IsNullOrEmpty(entity.Country.Name) && entity.Country.Name.ToUpperInvariant().Contains(str)
