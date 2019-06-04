@@ -14,6 +14,7 @@ namespace TransIT.DAL.Models.DTOs
         public MalfunctionDTO Malfunction { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
+        public DateTime? Date { get; set; }
         public int? Number { get; set; }
         public int Priority { get; set; }
     }
