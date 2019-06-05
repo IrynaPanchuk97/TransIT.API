@@ -366,7 +366,7 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.Date)
                     .HasColumnName("DATE")
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Deadline)
