@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +34,33 @@ namespace TransIT.API.Controllers
             return result != null
                 ? Json(_mapper.Map<IEnumerable<DocumentDTO>>(result))
                 : (IActionResult) BadRequest();
+        }
+        [HttpPost]
+        public override async Task<IActionResult> Create([FromForm] DocumentDTO document)
+        {
+            if (document.File == null )
+                return Content("file not selected");
+            var filePath = Path.GetTempFileName();
+            var entity = _mapper.Map<Document>(document);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            entity.ModId = userId;
+            entity.CreateId = userId;
+
+     
+                if (document.File.Length > 0)
+                {
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await document.File.CopyToAsync(fileStream);
+                    }
+                }
+            
+
+            var createdEntity = await _documentService.CreateAsync(entity);
+            return createdEntity != null
+                ? CreatedAtAction(nameof(Create), _mapper.Map<DocumentDTO>(createdEntity))
+                : (IActionResult)BadRequest();
         }
     }
 }
