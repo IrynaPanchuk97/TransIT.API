@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -40,17 +41,19 @@ namespace TransIT.API.Controllers
         {
             if (document.File == null )
                 return Content("file not selected");
-            var filePath = Path.GetTempFileName();
+            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"uploadFile", document.File.FileName);
+
+            document.Path = filePath;
             var entity = _mapper.Map<Document>(document);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             entity.ModId = userId;
             entity.CreateId = userId;
 
-     
+
                 if (document.File.Length > 0)
                 {
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
                     {
                         await document.File.CopyToAsync(fileStream);
                     }
