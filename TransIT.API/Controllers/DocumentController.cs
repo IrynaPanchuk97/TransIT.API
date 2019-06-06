@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -36,6 +37,25 @@ namespace TransIT.API.Controllers
                 ? Json(_mapper.Map<IEnumerable<DocumentDTO>>(result))
                 : (IActionResult) BadRequest();
         }
+
+        [HttpGet("~/api/v1/" + nameof(Document) + "/{id}/file")]
+        public async virtual Task<IActionResult> DownloadFile(int id)
+        {
+            var result = await _documentService.GetAsync(id);
+            // byte[] fileData = System.IO.File.ReadAllBytes(result.Path);
+
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
+            if (!provider.TryGetContentType(Path.GetFileName(result.Path), out contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return result != null
+                ? PhysicalFile(result.Path, contentType)
+                : (IActionResult)BadRequest();
+        }
+
+
         [HttpPost]
         public override async Task<IActionResult> Create([FromForm] DocumentDTO document)
         {
