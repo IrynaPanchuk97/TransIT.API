@@ -13,6 +13,7 @@ namespace TransIT.DAL.Models.DTOs
         public UserDTO Create { get; set; }
         public DateTime? CreateDate { get; set; }
         public DateTime? ModDate { get; set; }
+        public DateTime? NewDate { get; set; }
         public string Path { get; set; }
     }
 }
