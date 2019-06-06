@@ -20,7 +20,6 @@ namespace TransIT.DAL.Models.Entities
         public int? CreateId { get; set; }
         public int? ModId { get; set; }
         public string Path { get; set; }
-
         public virtual User Create { get; set; }
         public virtual IssueLog IssueLog { get; set; }
         public virtual User Mod { get; set; }

@@ -47,31 +47,31 @@ namespace TransIT.API.Extensions
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
-            
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(configureOptions =>
-            {
-                configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-                configureOptions.TokenValidationParameters = tokenValidationParameters;
-                
-                configureOptions.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        var accessToken = context.Request.Query["access_token"];
-                        
-                        if (!string.IsNullOrEmpty(accessToken)
-                            && context.HttpContext.Request.Path
-                                .StartsWithSegments("/issuehub"))
-                            context.Token = accessToken;
-                        
-                        return Task.CompletedTask;
-                    }
-                };
-            });
+
+            _ = services.AddAuthentication(options =>
+              {
+                  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+              }).AddJwtBearer(configureOptions =>
+              {
+                  configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+                  configureOptions.TokenValidationParameters = tokenValidationParameters;
+
+                  configureOptions.Events = new JwtBearerEvents
+                  {
+                      OnMessageReceived = context =>
+                      {
+                          var accessToken = context.Request.Query["access_token"];
+
+                          if (!string.IsNullOrEmpty(accessToken)
+                              && context.HttpContext.Request.Path
+                                  .StartsWithSegments("/issuehub"))
+                              context.Token = accessToken;
+
+                          return Task.CompletedTask;
+                      }
+                  };
+              });
 
             services.AddScoped<IJwtFactory, JwtFactory>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
