@@ -62,7 +62,10 @@ namespace TransIT.API.Controllers
         {
             if (document.File == null )
                 return Content("file not selected");
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),"uploadFile", document.File.FileName);
+            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocument";
+            System.IO.Directory.CreateDirectory(filePath);
+
+             filePath = Path.Combine(filePath, document.File.FileName);
 
             document.Path = filePath;
             var entity = _mapper.Map<Document>(document);
@@ -74,7 +77,7 @@ namespace TransIT.API.Controllers
 
                 if (document.File.Length > 0)
                 {
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
+                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await document.File.CopyToAsync(fileStream);
                     }
