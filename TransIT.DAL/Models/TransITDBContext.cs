@@ -7,10 +7,10 @@ namespace TransIT.DAL.Models
 
     public partial class TransITDBContext : DbContext
     {
-        public TransITDBContext() {}
+        public TransITDBContext() { }
 
         public TransITDBContext(DbContextOptions<TransITDBContext> options)
-            : base(options) {}
+            : base(options) { }
 
         public virtual DbSet<ActionType> ActionType { get; set; }
         public virtual DbSet<Bill> Bill { get; set; }
@@ -34,7 +34,7 @@ namespace TransIT.DAL.Models
         public virtual DbSet<Vehicle> Vehicle { get; set; }
         public virtual DbSet<VehicleType> VehicleType { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -259,6 +259,11 @@ namespace TransIT.DAL.Models
                 entity.Property(e => e.Name)
                     .HasColumnName("NAME")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.NewDate)
+                    .HasColumnName("NEW_DATE")
+                    .HasColumnType("datetime");
+
 
                 entity.Property(e => e.Path)
                     .IsRequired()
