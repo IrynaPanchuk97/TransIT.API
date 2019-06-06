@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
-using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -56,27 +54,16 @@ namespace TransIT.API.Controllers
         }
 
 
-        //[DeleteExceptionFilter]
-        //[HttpDelete("~/api/v1/" + nameof(Document) + "/{id}")]
-        //public override async Task<IActionResult> Delete(int id)
-        //{
-        //    var result = await _documentService.GetAsync(id);
-        //    //var fileInfo = new System.IO.FileInfo(result.Path);
-        //    //await _documentService.DeleteAsync(id);
-        //    //fileInfo.Delete();
-        //    return NoContent();
-
-        //}
-
         [HttpPost]
         public override async Task<IActionResult> Create([FromForm] DocumentDTO document)
         {
-            if (document.File == null )
+            if (document.File == null&& !(document.File.Length > 0))
                 return Content("file not selected");
-            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocument";
+
+            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocuments";
             System.IO.Directory.CreateDirectory(filePath);
 
-             filePath = Path.Combine(filePath, document.File.FileName);
+            filePath = Path.Combine(filePath, document.File.FileName);
 
             document.Path = filePath;
             var entity = _mapper.Map<Document>(document);
@@ -85,17 +72,11 @@ namespace TransIT.API.Controllers
             entity.ModId = userId;
             entity.CreateId = userId;
 
-
-                if (document.File.Length > 0)
-                {
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
-                    {
-                        await document.File.CopyToAsync(fileStream);
-                    }
-                }
-            
-
             var createdEntity = await _documentService.CreateAsync(entity);
+            using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
+            {
+                await document.File.CopyToAsync(fileStream);
+            }
             return createdEntity != null
                 ? CreatedAtAction(nameof(Create), _mapper.Map<DocumentDTO>(createdEntity))
                 : (IActionResult)BadRequest();

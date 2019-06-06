@@ -38,8 +38,8 @@ namespace TransIT.BLL.Services.ImplementedServices
             {
                 var result = await _repository.GetByIdAsync(id);
                 var fileInfo = new System.IO.FileInfo(result.Path);
-                var model = new Document { Id = id };
-                _repository.Remove(model);
+;
+                _repository.Remove(result);
                 fileInfo.Delete();
                 await _unitOfWork.SaveAsync();
             }
