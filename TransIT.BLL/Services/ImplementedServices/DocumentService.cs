@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
@@ -28,5 +32,32 @@ namespace TransIT.BLL.Services.ImplementedServices
 
         public Task<IEnumerable<Document>> GetRangeByIssueLogIdAsync(int issueLogId) =>
             _repository.GetAllAsync(i => i.IssueLogId == issueLogId);
+        public override async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var result = await _repository.GetByIdAsync(id);
+                var fileInfo = new System.IO.FileInfo(result.Path);
+                var model = new Document { Id = id };
+                _repository.Remove(model);
+                fileInfo.Delete();
+                await _unitOfWork.SaveAsync();
+            }
+            catch (DbUpdateException e)
+            {
+                var sqlExc = e.GetBaseException() as SqlException;
+                if (sqlExc?.Number == 547)
+                {
+                    _logger.LogDebug(sqlExc, $"Number of sql exception: {sqlExc.Number.ToString()}");
+                    throw new ConstraintException("There are constrained entities, delete them firstly.", sqlExc);
+                }
+                _logger.LogError(e, nameof(DeleteAsync), e.Entries);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, nameof(DeleteAsync));
+                throw;
+            }
+        }
     }
 }

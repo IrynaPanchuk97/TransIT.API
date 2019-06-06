@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using TransIT.API.EndpointFilters.OnException;
 using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
@@ -50,12 +51,22 @@ namespace TransIT.API.Controllers
             {
                 contentType = "application/octet-stream";
             }
-            //return result != null
-            //    ? PhysicalFile(result.Path, contentType)
-            //    : (IActionResult)BadRequest();
+
             return File(fileData, contentType);
         }
 
+
+        //[DeleteExceptionFilter]
+        //[HttpDelete("~/api/v1/" + nameof(Document) + "/{id}")]
+        //public override async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = await _documentService.GetAsync(id);
+        //    //var fileInfo = new System.IO.FileInfo(result.Path);
+        //    //await _documentService.DeleteAsync(id);
+        //    //fileInfo.Delete();
+        //    return NoContent();
+
+        //}
 
         [HttpPost]
         public override async Task<IActionResult> Create([FromForm] DocumentDTO document)
@@ -77,7 +88,7 @@ namespace TransIT.API.Controllers
 
                 if (document.File.Length > 0)
                 {
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                    using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
                     {
                         await document.File.CopyToAsync(fileStream);
                     }
