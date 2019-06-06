@@ -59,8 +59,13 @@ namespace TransIT.API.Controllers
         {
             if (document.File == null&& !(document.File.Length > 0))
                 return Content("file not selected");
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
 
-            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocuments";
+            _ = provider.TryGetContentType(Path.GetFileName(document.File.FileName), out contentType);
+           if(contentType!=  "application/pdf") return Content("format is not pdf");
+
+            var filePath = Directory.GetCurrentDirectory() + "\\wwwroot\\" + "TransportITDocuments";
             System.IO.Directory.CreateDirectory(filePath);
 
             filePath = Path.Combine(filePath, DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss") +document.File.FileName);
@@ -77,6 +82,7 @@ namespace TransIT.API.Controllers
             {
                 await document.File.CopyToAsync(fileStream);
             }
+
             return createdEntity != null
                 ? CreatedAtAction(nameof(Create), _mapper.Map<DocumentDTO>(createdEntity))
                 : (IActionResult)BadRequest();
