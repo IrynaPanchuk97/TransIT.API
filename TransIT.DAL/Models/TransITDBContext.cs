@@ -269,7 +269,7 @@ namespace TransIT.DAL.Models
                     .IsRequired()
                     .HasColumnName("PATH")
                     .HasMaxLength(500)
-                    .IsUnicode(false)
+                    .IsUnicode(true)
                     .HasDefaultValueSql("('')");
 
                 entity.HasOne(d => d.Create)
