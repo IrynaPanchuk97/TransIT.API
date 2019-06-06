@@ -63,7 +63,7 @@ namespace TransIT.API.Controllers
             var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocuments";
             System.IO.Directory.CreateDirectory(filePath);
 
-            filePath = Path.Combine(filePath, DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss")+ document.File.FileName);
+            filePath = Path.Combine(filePath, document.File.FileName);
 
             document.Path = filePath;
             var entity = _mapper.Map<Document>(document);
