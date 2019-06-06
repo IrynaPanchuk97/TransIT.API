@@ -42,7 +42,7 @@ namespace TransIT.API.Controllers
         public async virtual Task<IActionResult> DownloadFile(int id)
         {
             var result = await _documentService.GetAsync(id);
-            // byte[] fileData = System.IO.File.ReadAllBytes(result.Path);
+            byte[] fileData = System.IO.File.ReadAllBytes(result.Path);
 
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
@@ -50,9 +50,10 @@ namespace TransIT.API.Controllers
             {
                 contentType = "application/octet-stream";
             }
-            return result != null
-                ? PhysicalFile(result.Path, contentType)
-                : (IActionResult)BadRequest();
+            //return result != null
+            //    ? PhysicalFile(result.Path, contentType)
+            //    : (IActionResult)BadRequest();
+            return File(fileData, contentType);
         }
 
 
