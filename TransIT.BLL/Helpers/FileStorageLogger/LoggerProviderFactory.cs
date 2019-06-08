@@ -9,7 +9,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
     {
         public static IFileStorageLogger GetFileStorageLogger()
         {
-            return new FileSystemStorage();
+            return new AzureFileStorage();
         }
     }
 }
