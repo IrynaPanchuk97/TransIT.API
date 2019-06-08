@@ -27,9 +27,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
             fileInfo.Delete();
         }
 
-        public byte[] Download(string FilePath)
-        {
-            return System.IO.File.ReadAllBytes(FilePath);
-        }
+        public byte[] Download(string FilePath)=> System.IO.File.ReadAllBytes(FilePath);
+
     }
 }
