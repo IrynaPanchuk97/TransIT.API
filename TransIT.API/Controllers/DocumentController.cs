@@ -64,8 +64,8 @@ namespace TransIT.API.Controllers
 
             _ = provider.TryGetContentType(Path.GetFileName(document.File.FileName), out contentType);
            if(contentType!=  "application/pdf") return Content("format is not pdf");
-
-            var filePath = Directory.GetCurrentDirectory() + "\\wwwroot\\" + "TransportITDocuments";
+            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocuments";
+          //  var filePath = Directory.GetCurrentDirectory() + "\\wwwroot\\" + "TransportITDocuments";
             System.IO.Directory.CreateDirectory(filePath);
 
             filePath = Path.Combine(filePath, DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss") +document.File.FileName);
