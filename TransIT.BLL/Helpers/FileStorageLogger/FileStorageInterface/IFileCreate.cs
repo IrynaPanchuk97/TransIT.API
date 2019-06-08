@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,6 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
 {
     interface IFileCreate
     {
-         Task<IActionResult> Create([FromForm] DocumentDTO document);
+         void Create(IFormFile file);
     }
 }

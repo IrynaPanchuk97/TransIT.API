@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface;
 using TransIT.DAL.Models.DTOs;
@@ -10,17 +12,17 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
 {
     class FileSystemStorage : IFileStorageLogger
     {
-        public Task<IActionResult> Create([FromForm] DocumentDTO document)
+        public void Create(IFormFile file)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> Delete(int id)
+        public void Delete(string FilePath)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IActionResult> DownloadFile(int id)
+        public IFormFile Download(string FilePath)
         {
             throw new NotImplementedException();
         }

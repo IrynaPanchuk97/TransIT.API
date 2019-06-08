@@ -8,6 +8,6 @@ namespace TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface
 {
     interface IFileDelete
     {
-        Task<IActionResult> Delete(int id);
+        void Delete(string FilePath);
     }
 }
