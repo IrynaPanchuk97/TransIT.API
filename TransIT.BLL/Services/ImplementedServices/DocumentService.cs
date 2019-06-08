@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using TransIT.BLL.Helpers.FileStorageLogger;
+using TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.Entities;
 using TransIT.DAL.Repositories.InterfacesRepositories;
@@ -25,18 +27,24 @@ namespace TransIT.BLL.Services.ImplementedServices
         /// <param name="logger">Log on error</param>
         /// <param name="repository">CRUD operations on entity</param>
         /// <see cref="CrudService{TEntity}"/>
+        private readonly IFileStorageLogger _storageLogger;
+
         public DocumentService(
             IUnitOfWork unitOfWork,
             ILogger<CrudService<Document>> logger,
-            IDocumentRepository repository) : base(unitOfWork, logger, repository) { }
+            IDocumentRepository repository) : base(unitOfWork, logger, repository) {
+            _storageLogger = LoggerProviderFactory.GetFileStorageLogger();
+        }
 
         public Task<IEnumerable<Document>> GetRangeByIssueLogIdAsync(int issueLogId) =>
             _repository.GetAllAsync(i => i.IssueLogId == issueLogId);
+
         public override async Task DeleteAsync(int id)
         {
             try
             {
                 var result = await _repository.GetByIdAsync(id);
+                _storageLogger.Delete(result.Path);
                 _repository.Remove(result);
                 await _unitOfWork.SaveAsync();
             }
@@ -56,5 +64,8 @@ namespace TransIT.BLL.Services.ImplementedServices
                 throw;
             }
         }
+
     }
 }
+
+

@@ -80,5 +80,13 @@ namespace TransIT.API.Controllers
                 ? CreatedAtAction(nameof(Create), _mapper.Map<DocumentDTO>(createdEntity))
                 : (IActionResult)BadRequest();
         }
+        [HttpDelete("~/api/v1/" + nameof(Document) + "/{id}")]
+        public override async Task<IActionResult> Delete(int id)
+        {
+            await _documentService.DeleteAsync(id);
+            return NoContent();
+        }
+
+
     }
 }
