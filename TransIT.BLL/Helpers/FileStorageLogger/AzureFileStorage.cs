@@ -30,6 +30,11 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
         {
             var task = DeleteAsync(FilePath);
         }
+        public byte[] Download(string FilePath)
+        {
+            var task = DownloadAsync(FilePath);
+            return task.Result;
+        }
         private async Task<Uri> CreateAsync(IFormFile file)
         {
             CloudStorageAccount storageAccount = null;
@@ -45,9 +50,10 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
 
                 }
                 CloudBlockBlob blob = container.GetBlockBlobReference(DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss") + file.FileName);
-
+                blob.Properties.ContentType = file.ContentType;
                 using (var memoryStream = new MemoryStream())
                 {
+                    file.OpenReadStream();
                     await file.CopyToAsync(memoryStream);
                     await blob.UploadFromStreamAsync(memoryStream);
                     return blob.Uri;
@@ -72,24 +78,20 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
 
         }
 
-        public byte[] Download(string FilePath)
+        public async Task<byte[]> DownloadAsync(string path)
         {
             CloudStorageAccount storageAccount = null;
-            if (CloudStorageAccount.TryParse(_configuration.GetConnectionString("transitdocuments"), out storageAccount))
-            {
+            byte[] result;
+            if (!CloudStorageAccount.TryParse(StorageConnectionString, out storageAccount)) return null;         
                 var client = storageAccount.CreateCloudBlobClient();
                 var container = client.GetContainerReference("transitdocuments");
-                CloudBlobDirectory dira = container.GetDirectoryReference("FolderName");
-
-                //Gets List of Blobs
-
-               // var list = dira.;
-
-              //  List<string> blobNames = list.OfType<CloudBlockBlob>().Select(b => b.Name).ToList();
-
-
-            }
-            return null;
+                CloudBlockBlob _blockBlob = container.GetBlockBlobReference(Path.GetFileName(path));
+                using (var mStream = new MemoryStream())
+                {
+                   await _blockBlob.DownloadToStreamAsync(mStream);
+                   result = mStream.ToArray();
+                }
+            return result;
         }
 
 
