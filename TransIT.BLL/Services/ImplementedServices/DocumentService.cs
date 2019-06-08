@@ -44,7 +44,7 @@ namespace TransIT.BLL.Services.ImplementedServices
             try
             {
                 var result = await _repository.GetByIdAsync(id);
-                _storageLogger.Delete(result.Path);
+                await Task.Run(() => _storageLogger.Delete(result.Path));
                 _repository.Remove(result);
                 await _unitOfWork.SaveAsync();
             }

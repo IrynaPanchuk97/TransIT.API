@@ -26,14 +26,17 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
             return task.Result.ToString();
 
         }
-
+        public void Delete(string FilePath)
+        {
+            var task = DeleteAsync(FilePath);
+        }
         private async Task<Uri> CreateAsync(IFormFile file)
         {
             CloudStorageAccount storageAccount = null;
             if (CloudStorageAccount.TryParse(StorageConnectionString, out storageAccount))
             {
                 var client = storageAccount.CreateCloudBlobClient();
-                var container = client.GetContainerReference("transdocuments");
+                var container = client.GetContainerReference("transitdocuments");
                 await container.CreateIfNotExistsAsync();
                 if (await container.CreateIfNotExistsAsync())
                 {
@@ -53,15 +56,20 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
             return null;
         }
 
-        public void Delete(string FilePath)
+        public async Task DeleteAsync(string path)
         {
             CloudStorageAccount storageAccount = null;
-            if (CloudStorageAccount.TryParse(_configuration.GetConnectionString("transitdocuments"), out storageAccount))
+
+            if (CloudStorageAccount.TryParse(StorageConnectionString, out storageAccount))
             {
                 var client = storageAccount.CreateCloudBlobClient();
-                var container = client.GetContainerReference("transITDocumentsUpload");
-                container.GetBlockBlobReference(FilePath).DeleteIfExistsAsync();
+                var container = client.GetContainerReference("transitdocuments");
+                CloudBlockBlob _blockBlob = container.GetBlockBlobReference(Path.GetFileName(path));
+                //delete blob from container    
+                await _blockBlob.DeleteAsync();
+
             }
+
         }
 
         public byte[] Download(string FilePath)
@@ -70,7 +78,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
             if (CloudStorageAccount.TryParse(_configuration.GetConnectionString("transitdocuments"), out storageAccount))
             {
                 var client = storageAccount.CreateCloudBlobClient();
-                var container = client.GetContainerReference("transITDocumentsUpload");
+                var container = client.GetContainerReference("transitdocuments");
                 CloudBlobDirectory dira = container.GetDirectoryReference("FolderName");
 
                 //Gets List of Blobs
