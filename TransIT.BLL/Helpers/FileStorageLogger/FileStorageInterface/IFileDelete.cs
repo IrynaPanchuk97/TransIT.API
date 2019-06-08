@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface
 {
-    interface IFileDelete
+    public interface IFileDelete
     {
         void Delete(string FilePath);
     }

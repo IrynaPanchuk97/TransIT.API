@@ -11,7 +11,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
 {
     class AzureFileStorage : IFileStorageLogger
     {
-        public void Create(IFormFile file)
+        public string Create(IFormFile file)
         {
             throw new NotImplementedException();
         }
@@ -21,7 +21,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
             throw new NotImplementedException();
         }
 
-        public IFormFile Download(string FilePath)
+        public byte[] Download(string FilePath)
         {
             throw new NotImplementedException();
         }

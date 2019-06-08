@@ -5,11 +5,11 @@ using TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface;
 
 namespace TransIT.BLL.Helpers.FileStorageLogger
 {
-    public class LoggerProviderFactory
+    public static class LoggerProviderFactory
     {
-        private static IFileStorageLogger GetFileStorageLogger()
+        public static IFileStorageLogger GetFileStorageLogger()
         {
-            throw new NotImplementedException();
+            return new FileSystemStorage();
         }
     }
 }

@@ -1,30 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface;
-using TransIT.DAL.Models.DTOs;
 
 namespace TransIT.BLL.Helpers.FileStorageLogger
 {
     class FileSystemStorage : IFileStorageLogger
     {
-        public void Create(IFormFile file)
+        public string Create(IFormFile file)
         {
-            throw new NotImplementedException();
+            var filePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "//source//" + "TransportITDocuments";
+            //  var filePath = Directory.GetCurrentDirectory() + "\\wwwroot\\" + "TransportITDocuments";
+            System.IO.Directory.CreateDirectory(filePath);
+            filePath = Path.Combine(filePath, DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss") + file.FileName);
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
+            {
+                 file.CopyTo(fileStream);
+            }
+            return filePath;
         }
 
         public void Delete(string FilePath)
         {
-            throw new NotImplementedException();
+            var fileInfo = new System.IO.FileInfo(FilePath);
+            fileInfo.Delete();
         }
 
-        public IFormFile Download(string FilePath)
+        public byte[] Download(string FilePath)
         {
-            throw new NotImplementedException();
+            return System.IO.File.ReadAllBytes(FilePath);
         }
     }
 }

@@ -8,8 +8,8 @@ using TransIT.DAL.Models.DTOs;
 
 namespace TransIT.BLL.Helpers.FileStorageLogger
 {
-    interface IFileCreate
+    public interface IFileCreate
     {
-         void Create(IFormFile file);
+         string Create(IFormFile file);
     }
 }

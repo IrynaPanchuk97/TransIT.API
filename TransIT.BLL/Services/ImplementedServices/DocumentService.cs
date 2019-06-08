@@ -37,10 +37,7 @@ namespace TransIT.BLL.Services.ImplementedServices
             try
             {
                 var result = await _repository.GetByIdAsync(id);
-                var fileInfo = new System.IO.FileInfo(result.Path);
-;
                 _repository.Remove(result);
-                fileInfo.Delete();
                 await _unitOfWork.SaveAsync();
             }
             catch (DbUpdateException e)
