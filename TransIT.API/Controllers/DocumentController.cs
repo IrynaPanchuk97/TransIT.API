@@ -67,7 +67,7 @@ namespace TransIT.API.Controllers
             _ = provider.TryGetContentType(Path.GetFileName(document.File.FileName), out contentType);
            if(contentType!=  "application/pdf") return Content("format is not pdf");
 
-            document.Path = _storageLogger.Create(document.File);
+            document.Path = _storageLogger.CreateAsync(document.File);
             var entity = _mapper.Map<Document>(document);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
