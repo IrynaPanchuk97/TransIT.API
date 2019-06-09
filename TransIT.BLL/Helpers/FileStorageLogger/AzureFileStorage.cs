@@ -35,6 +35,8 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
                 using (var memoryStream = new MemoryStream())
                 {
                     await file.CopyToAsync(memoryStream);
+                    long streamlen = memoryStream.Length;
+                    memoryStream.Position = 0;
                     await blob.UploadFromStreamAsync(memoryStream);
                     return blob.Uri;
                 }
@@ -62,10 +64,9 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
             
                 var client = storageAccount.CreateCloudBlobClient();
                 var container = client.GetContainerReference("transitdocuments");
-                CloudBlockBlob _blockBlob = container.GetBlockBlobReference(Path.GetFileName(path));
+            CloudBlockBlob _blockBlob = container.GetBlockBlobReference(Path.GetFileName(path));
             using (var mStream = new MemoryStream())
             {
-
                 await _blockBlob.DownloadToStreamAsync(mStream);
                 result = mStream.ToArray();
             }
