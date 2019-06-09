@@ -5,14 +5,12 @@ using Microsoft.WindowsAzure.Storage;
 using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
+using TransIT.BLL.Helpers.Configuration;
 
 namespace TransIT.BLL.Helpers.FileStorageLogger
 {
     class AzureFileStorage : IFileStorageLogger
     {
-        private readonly string StorageAccountName = "transitdocuments";
-        private readonly string StorageAccountkey = "pqu5uvteuvJqrcC2qLkxZH71MyV1bOPbzJKGOGTMGY73qlVxTTPNFDpkNLNH/pu6E9n7N7uJTdCya8u/TwtmEw==";
-        private readonly string StorageConnectionString = "DefaultEndpointsProtocol=https;AccountName=transitdocuments;AccountKey=pqu5uvteuvJqrcC2qLkxZH71MyV1bOPbzJKGOGTMGY73qlVxTTPNFDpkNLNH/pu6E9n7N7uJTdCya8u/TwtmEw==;EndpointSuffix=core.windows.net";
         private CloudStorageAccount storageAccount = null;
 
         public string Create(IFormFile file) => CreateAsync(file).Result.ToString();
@@ -22,7 +20,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
         
         private async Task<Uri> CreateAsync(IFormFile file)
         {
-            if (CloudStorageAccount.TryParse(StorageConnectionString, out storageAccount))
+            if (CloudStorageAccount.TryParse(AzureConfig.StorageConnectionString, out storageAccount))
             {
                 var client = storageAccount.CreateCloudBlobClient();
                 var container = client.GetContainerReference("transitdocuments");
@@ -46,7 +44,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
 
         public async Task DeleteAsync(string path)
         {
-            if (CloudStorageAccount.TryParse(StorageConnectionString, out storageAccount))
+            if (CloudStorageAccount.TryParse(AzureConfig.StorageConnectionString, out storageAccount))
             {
                 var client = storageAccount.CreateCloudBlobClient();
                 var container = client.GetContainerReference("transitdocuments");
@@ -60,8 +58,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
         public async Task<byte[]> DownloadAsync(string path)
         {
             byte[] result;
-            if (!CloudStorageAccount.TryParse(StorageConnectionString, out storageAccount)) return null;
-            
+            if (!CloudStorageAccount.TryParse(AzureConfig.StorageConnectionString, out storageAccount)) return null;
                 var client = storageAccount.CreateCloudBlobClient();
                 var container = client.GetContainerReference("transitdocuments");
             CloudBlockBlob _blockBlob = container.GetBlockBlobReference(Path.GetFileName(path));
