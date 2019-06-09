@@ -11,6 +11,8 @@ using TransIT.BLL.Services;
 using TransIT.BLL.Services.Interfaces;
 using TransIT.DAL.Models.DTOs;
 using TransIT.DAL.Models.Entities;
+using TransIT.BLL.Helpers.FileStorageLogger.FileStorageInterface;
+using TransIT.BLL.Helpers.FileStorageLogger;
 
 namespace TransIT.API.Controllers
 {
@@ -18,7 +20,8 @@ namespace TransIT.API.Controllers
     public class DocumentController : DataController<Document, DocumentDTO>
     {
         private readonly IDocumentService _documentService;
-        
+        private readonly IFileStorageLogger _storageLogger;
+
         public DocumentController(
             IMapper mapper,
             IDocumentService documentService,
@@ -26,6 +29,7 @@ namespace TransIT.API.Controllers
             ) : base(mapper, documentService, odService)
         {
             _documentService = documentService;
+            _storageLogger = LoggerProviderFactory.GetFileStorageLogger();
         }
 
         [HttpGet("~/api/v1/" + nameof(IssueLog) + "/{issueLogId}/" + nameof(Document))]
@@ -41,15 +45,13 @@ namespace TransIT.API.Controllers
         public async virtual Task<IActionResult> DownloadFile(int id)
         {
             var result = await _documentService.GetAsync(id);
-            byte[] fileData = System.IO.File.ReadAllBytes(result.Path);
-
+            byte[] fileData = _storageLogger.Download(result.Path);
             var provider = new FileExtensionContentTypeProvider();
             string contentType;
             if (!provider.TryGetContentType(Path.GetFileName(result.Path), out contentType))
             {
                 contentType = "application/octet-stream";
             }
-
             return File(fileData, contentType);
         }
 
@@ -65,12 +67,7 @@ namespace TransIT.API.Controllers
             _ = provider.TryGetContentType(Path.GetFileName(document.File.FileName), out contentType);
            if(contentType!=  "application/pdf") return Content("format is not pdf");
 
-            var filePath = Directory.GetCurrentDirectory() + "\\wwwroot\\" + "TransportITDocuments";
-            System.IO.Directory.CreateDirectory(filePath);
-
-            filePath = Path.Combine(filePath, DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss") +document.File.FileName);
-
-            document.Path = filePath;
+            document.Path = _storageLogger.Create(document.File);
             var entity = _mapper.Map<Document>(document);
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
@@ -78,14 +75,18 @@ namespace TransIT.API.Controllers
             entity.CreateId = userId;
 
             var createdEntity = await _documentService.CreateAsync(entity);
-            using (FileStream fileStream = new FileStream(filePath, FileMode.CreateNew))
-            {
-                await document.File.CopyToAsync(fileStream);
-            }
 
             return createdEntity != null
                 ? CreatedAtAction(nameof(Create), _mapper.Map<DocumentDTO>(createdEntity))
                 : (IActionResult)BadRequest();
         }
+        [HttpDelete("~/api/v1/" + nameof(Document) + "/{id}")]
+        public override async Task<IActionResult> Delete(int id)
+        {
+            await _documentService.DeleteAsync(id);
+            return NoContent();
+        }
+
+
     }
 }
