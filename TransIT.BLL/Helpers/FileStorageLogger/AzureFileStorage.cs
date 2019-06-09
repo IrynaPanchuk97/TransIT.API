@@ -28,7 +28,7 @@ namespace TransIT.BLL.Helpers.FileStorageLogger
                 if (await container.CreateIfNotExistsAsync())
                     await container.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
                 
-                CloudBlockBlob blob = container.GetBlockBlobReference(DateTime.Now.ToString("MM/dd/yyyy/HH/mm/ss") + file.FileName);
+                CloudBlockBlob blob = container.GetBlockBlobReference(DateTime.Now.ToString("MM_dd_yyyy_HH_mm_ss") + file.FileName);
 
                 using (var memoryStream = new MemoryStream())
                 {
