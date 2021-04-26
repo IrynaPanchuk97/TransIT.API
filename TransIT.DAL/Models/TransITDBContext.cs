@@ -369,11 +369,6 @@ namespace TransIT.DAL.Models
 
                 entity.Property(e => e.CreateId).HasColumnName("CREATE_ID");
 
-                entity.Property(e => e.Date)
-                    .HasColumnName("DATE")
-                    .HasColumnType("date")
-                    .HasDefaultValueSql("(getdate())");
-
                 entity.Property(e => e.Deadline)
                     .HasColumnName("DEADLINE")
                     .HasColumnType("datetime");

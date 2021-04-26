@@ -6,7 +6,7 @@ VALUES ('ADMIN', N'Адмін'),
 GO
 
 INSERT INTO [USER] (LOGIN, EMAIL, PASSWORD, ROLE_ID)
-SELECT 'admin', 'admin@admin', 'XCYOqAfSabfqEmxwkUo7Kg==:M+pelHn/19ZV3W/2sLQxNg==', ROLE.ID
+SELECT 'admin', 'admin@admin', 'W0Dy7oLAY/9j/U2LrIvSXg==:Ee0VXhVS21mbwvOxakqqzw==', ROLE.ID
 FROM ROLE
 WHERE NAME = 'ADMIN';
 GO

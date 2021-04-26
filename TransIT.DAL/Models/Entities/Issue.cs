@@ -26,7 +26,6 @@ namespace TransIT.DAL.Models.Entities
         public int? ModId { get; set; }
         public int? Number { get; set; }
         public int Priority { get; set; }
-        public DateTime Date { get; set; }
 
         public virtual Employee AssignedTo { get; set; }
         public virtual User Create { get; set; }

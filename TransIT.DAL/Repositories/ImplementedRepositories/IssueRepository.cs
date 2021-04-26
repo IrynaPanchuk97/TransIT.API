@@ -35,7 +35,6 @@ namespace TransIT.DAL.Repositories.ImplementedRepositories
                     || !string.IsNullOrEmpty(entity.Vehicle.Model) && entity.Vehicle.Model.ToUpperInvariant().Contains(str)
                     || !string.IsNullOrEmpty(entity.Vehicle.RegNum) && entity.Vehicle.RegNum.ToUpperInvariant().Contains(str)
                     || !string.IsNullOrEmpty(entity.Vehicle.Vincode) && entity.Vehicle.Vincode.ToUpperInvariant().Contains(str)
-                    || entity.Date.ToString("yyyy-MM-dd").Contains(str)
                     || entity.Number.ToString().ToUpperInvariant().Contains(str)))
                 );
         
